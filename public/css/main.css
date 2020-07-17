@@ -1,0 +1,16 @@
+tr.selected {
+    background: rgb(227, 243, 238)!important;
+}
+
+.dataTables_filter input {
+    padding:5px 10px;
+    border-radius: 5px;
+    border-color: #999;
+    outline-color: #999;
+}
+
+.c-sidebar .c-sidebar-nav-link.c-active, 
+.c-sidebar .c-active.c-sidebar-nav-dropdown-toggle {
+
+    background: #45a29e!important;
+}
