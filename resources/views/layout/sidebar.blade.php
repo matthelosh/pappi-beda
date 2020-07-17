@@ -15,7 +15,37 @@
         </div>
       </div>
       <ul class="c-sidebar-nav">
-        <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/">
+        @foreach($menus as $menu)
+          {{-- @if($menu->parent_id == 0) --}}
+            <li class="c-sidebar-nav-item {{ $menu->childs()->count() ? 'c-sidebar-nav-dropdown' : '' }}">
+              <a href="{{ $menu->url }}" class="c-sidebar-nav-link {{ ($menu->childs()->count() > 0) ? 'c-sidebar-nav-dropdown-toggle': '' }}">
+                @php($link = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$menu->icon )
+                <svg class="c-sidebar-nav-icon">
+                  <use xlink:href="{{ asset($link) }}"></use>
+                </svg>
+                {{ $menu->title }}
+              </a>
+              @if($menu->childs()->count() > 0)
+                <ul class="c-sidebar-nav-dropdown-items">
+                  @foreach($menu->childs as $child)
+                    @if($child->role == Auth::user()->role)
+                      <li class="c-sidebar-nav-item">
+                        <a href="{{ $child->url }}" class="c-sidebar-nav-link">
+                          @php($link_sub = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$child->icon )
+                          <svg class="c-sidebar-nav-icon">
+                            <use xlink:href="{{ asset($link_sub) }}"></use>
+                          </svg>
+                          {{ $child->title }}
+                        </a>
+                      </li>
+                    @endif
+                  @endforeach
+                </ul>
+              @endif
+            </li>
+          {{-- @endif --}}
+        @endforeach
+        {{-- <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/">
             <svg class="c-sidebar-nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer') }}"></use>
             </svg> Dashboard</a></li>
@@ -115,15 +145,7 @@
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bug') }}"></use>
                 </svg> Error 500</a></li>
           </ul>
-        </li>
-        {{-- <li class="c-sidebar-nav-item mt-auto"><a class="c-sidebar-nav-link c-sidebar-nav-link-success" href="https://coreui.io" target="_top">
-            <svg class="c-sidebar-nav-icon">
-              <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-cloud-download') }}"></use>
-            </svg> Download CoreUI</a></li>
-        <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link c-sidebar-nav-link-danger" href="https://coreui.io/pro/" target="_top">
-            <svg class="c-sidebar-nav-icon">
-              <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-layers') }}"></use>
-            </svg> Try CoreUI<strong>PRO</strong></a></li> --}}
+        </li> --}}
       </ul>
       <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
     </div>

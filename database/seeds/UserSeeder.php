@@ -14,16 +14,16 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::create([
-            'nip' => '001',
-            'username' => 'admin',
-            'nama' => 'Administrator',
-            'password' => Hash::make('qwerty'),
-            'email' => 'admin@sdn1-bedalisodo.sch.id',
+            'nip' => '196205191982011006',
+            'username' => 'pakendro',
+            'nama' => 'Endro Saptomintono, S. Pd.',
+            'password' => Hash::make('12345'),
+            'email' => 'endro@sdn1-bedalisodo.sch.id',
             'jk' => 'l',
-            'hp' => '6285850758384',
+            'hp' => '628585858585',
             'alamat' => 'SD Negeri 1 Bedalisodo',
-            'level' => 'admin',
-            'role' => 'admin'
+            'level' => 'guru',
+            'role' => 'wali'
         ]);
     }
 }

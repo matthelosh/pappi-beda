@@ -36,6 +36,7 @@
     <meta name="theme-color" content="#ffffff">
     <!-- Main styles for this application-->
     <link href="{{ asset('coreui/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics-->
     <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
     <script>
@@ -92,9 +93,7 @@
                       <button class="btn btn-link px-0" type="button">Forgot password?</button>
                     </div>
                   </div>
-                  @if(Session::get('status') == 'error')
-                    <span class="text-danger">{{ Session::get('msg') }}</span>
-                  @endif
+                  
                 </form>
               </div>
             </div>
@@ -110,16 +109,40 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> 
     
-    {{ dd(Session::all()) }}
+    {{-- {{ dd(Session::all()) }} --}}
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('coreui/vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
     <!--[if IE]><!-->
     <script src="{{ asset('coreui/vendors/@coreui/icons/js/svgxuse.min.js') }}"></script>
     <!--<![endif]-->
     <script src="{{ asset('jquery/jquery.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('bootstrap/js/bootstrap.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-
+    @if(Session::get('status') == 'error')
+       <script>
+          $(document).ready(function(){
+            toastr.options = {
+            "closeButton": true,
+            "debug": true,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "6000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+          }
+            toastr.error("{{ Session::get('msg') }}", "{{ Session::get('status') }}")
+          })
+      </script>
+    @endif
   </body>
 </html>
