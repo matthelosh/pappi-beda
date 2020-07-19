@@ -39,10 +39,19 @@ class DashController extends Controller
     {
         return view('pages.admin.dashboard', ['page_title' => 'Data Sekolah', 'menus' => $this->showMenus($request)]);
     }
-    // public function shoeMenus($request)
-    // {
-    //     $this->menus = $this->showMenus($request);
 
-    //     return $this->menus;
-    // }
+    public function rombels(Request $request)
+    {
+        return view('pages.admin.dashboard', ['page_title' => 'Data Rombel', 'menus' => $this->showMenus($request)]);
+    }
+
+    public function siswas(Request $request)
+    {
+        return view('pages.admin.dashboard', ['page_title' => 'Data Siswa', 'menus' => $this->showMenus($request)]);
+    }
+
+    public function mapels(Request $request)
+    {
+        return view('pages.admin.dashboard', ['page_title' => 'Data Mapel', 'menus' => $this->showMenus($request)]);
+    }
 }

@@ -79,6 +79,12 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-sm-6">
+                            <label for="sekolah_id">NIP</label>
+                            <select name="sekolah_id" class="form-control selSekolah" style="width:100%">
+                            
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
                             <label for="nip">NIP</label>
                             <input type="text" class="form-control" name="nip" placeholder="Cth: 198709081992011001">
                         </div>
@@ -136,14 +142,14 @@
 </div>
 {{-- End MOdal Users --}}
 
-{{-- Modal Import User --}}
+{{-- Modal Import--}}
 <div class="modal fade" id="modalImport">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
                     <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-people') }}"></use>
+                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet') }}"></use>
                     </svg>
                     Impor <span id="model"></span>
                 </h4>
@@ -168,7 +174,7 @@
         </div>
     </div>
 </div>
-{{-- End Modal Import User --}}
+{{-- End Modal Import --}}
 
 {{-- Modal Dialog Konfirmasi --}}
 <div class="modal fade" id="modalConfirm">
@@ -205,7 +211,7 @@
                 <button class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" method="post" class="form">
+                <form action="" method="post" class="form form-sekolah">
                     @csrf()
                     <div class="container">
                         <div class="row">
@@ -255,13 +261,13 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="operator_id">Operator</label>
-                                <select name="operator_id" class="form-control">
+                                <select name="operator_id" class="form-control selUsers" style="width:100%">
                                     <option value="0">PILIH OPERATOR</option>
                                 </select>
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="ks_id">Kepala Sekolah</label>
-                                <select name="ks_id" class="form-control">
+                                <select name="ks_id" class="form-control selUsers" style="width:100%">
                                     <option value="0">Pilih Kepala Sekolah</option>
                                 </select>
                             </div>
@@ -276,3 +282,398 @@
     </div>
 </div>
 {{-- END Modal Sekolah --}}
+
+{{-- Modal ROmbel --}}
+<div class="modal fade" id="modalRombel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <svg class="c-icon">
+                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-room') }}"></use>
+                    </svg>
+                    <span class="mode-form">Buat</span> Rombel
+                </h4>
+                <button class="close" data-dismiss="modal">&times</button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form" id="formRombel">
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="kode_rombel">Kode Rombel</label>
+                            <input type="text" name="kode_rombel" placeholder="Kode Rombel" class="form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="nama_rombel">Nama Rombel</label>
+                            <input type="text" name="nama_rombel" placeholder="Nama Rombel" class="form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="tingkat">Tingkat</label>
+                            <select name="tingkat" id="" class="form-control">
+                                <option value="0">Pilih Tingkat</option>
+                                <option value="1">1 (Satu)</option>
+                                <option value="2">2 (Dua)</option>
+                                <option value="3">3 (Tiga)</option>
+                                <option value="4">4 (Empat)</option>
+                                <option value="5">5 (Lima)</option>
+                                <option value="6">6 (Enam)</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="guru_id">Wali Kelas</label>
+                            <select name="guru_id" class="form-control selWali" style="width:100%"></select>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="sekolah_id">Sekolah</label>
+                            <select name="sekolah_id" class="form-control selSekolah" style="width:100%"></select>
+                        </div>
+                        <div class="form-group col-sm-12 text-right">
+                            <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Modal Manajemen ROmbel --}}
+<div class="modal fade" id="modalMnjRombel">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <svg class="c-icon">
+                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-people') }}"></use>
+                    </svg>
+                    <span class="small">Manajemen</span> Rombel
+                </h4>
+                <button class="close" data-dismiss="modal">&times</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Anggota Rombel <span class="rombel-now"></span></h4>
+                                <div class="row">
+                                    <div class="form-group col-sm-4">
+                                        <select name="rombel_now" class="selRombel" style="width:100%"></select>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <button class="btn btn-sm btn-warning btn-pindah-member">
+                                            <svg class="c-icon">
+                                                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-circle-left') }}"></use>
+                                            </svg>
+                                            Pindah
+                                        </button>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <button class="btn btn-sm btn-danger btn-keluarkan-member">
+                                            <svg class="c-icon">
+                                                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-circle-right') }}"></use>
+                                            </svg>
+                                            Keluarkan
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-members" id="table-members" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>NO</th>
+                                                <th>NISN</th>
+                                                <th>NAMA</th>
+                                                <th>
+                                                    <label for="select_members">
+                                                    <input type="checkbox" name="select_members" class="select-all">
+                                                    Pilih Semua</label>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- <tr>
+                                                <td>1</td>
+                                                <td>Bejo</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Dina</td>
+                                                <td></td>
+                                            </tr> --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Belum Masuk Rombel</h4>
+                                <div class="row">
+                                    <div class="form-group col-sm-4">
+                                        <button class="btn btn-sm btn-primary btn-masukkan-member">
+                                            <svg class="c-icon">
+                                                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-circle-left') }}"></use>
+                                            </svg>
+                                            Masukkan
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-non-members" id="table-non-members" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>NO</th>
+                                                <th>NISN</th>
+                                                <th>NAMA</th>
+                                                <th>
+                                                    <label for="select_members">
+                                                    <input type="checkbox" name="select_members" class="select-all">
+                                                    Pilih Semua</label>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- <tr>
+                                                <td>1</td>
+                                                <td>Bejo</td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Dina</td>
+                                                <td></td>
+                                            </tr> --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End Manajemen Rombel --}}
+
+{{-- Modal Siswa --}}
+<div class="modal fade" id="modalSiswa">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <svg class="c-icon">
+                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-people') }}"></use>
+                    </svg>
+                    <span class="mode-form">Buat</span> Siswa
+                </h4>
+                <button class="close" data-dismiss="modal">&times</button>
+            </div>
+            <div class="modal-body">
+                <form action="/siswas/create" method="POST" class="form form-siswa" id="form-siswa" enctype="multipart/form-data">
+                    @csrf()
+                    <div class="row">
+                        <div class="form-group col-sm-2">
+                            <label for="nis">NIS</label>
+                            <input type="text" name="nis"  class="form-control" placeholder="NIS">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="nisn">NISN</label>
+                            <input type="text" name="nisn"  class="form-control" placeholder="NISN">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="nama_siswa">Nama Siswa</label>
+                            <input type="text" name="nama_siswa"  class="form-control" placeholder="Nama Lengkap">
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="jk">JK</label>
+                            <select name="jk" class="form-control">
+                                <option value="0">Pilih</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="agama">Agama</label>
+                            <select name="agama" class="form-control">
+                                <option value="0">Pilih</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Protestan">Protestan</option>
+                                <option value="Katolik">Katolik</option>
+                                <option value="Hindu">Hindu</option>
+                                <option value="Budha">Budha</option>
+                                <option value="Konguchu">Konghuchu</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label for="alamat">Alamat</label>
+                            <textarea name="alamat" cols="30" rows="2" class="form-control" placeholder="Alamat"></textarea>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="desa">Desa/Kelurahan</label>
+                            <input type="text" name="desa" placeholder="Desa/Kelurahan" class="form-control">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="kec">Kecamatan</label>
+                            <input type="text" name="kec" placeholder="Kecamatan" class="form-control">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="kab">Kab/Kota</label>
+                            <input type="text" class="form-control" name="kab" placeholder="Kab/Kota">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="prov">Provinsi</label>
+                            <input type="text" class="form-control" name="prov" placeholder="Provinsi">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="hp">HP</label>
+                            <input type="text" class="form-control" name="hp" placeholder="No. HP">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="sekolah_id">Sekolah</label>
+                            <select name="sekolah_id" class="form-control selSekolah" style="width:100%">
+                                <option value="0">Sekolah</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="rombel_id">Rombel</label>
+                            <select name="rombel_id" class="form-control selRombel" style="width:100%">
+                                <option value="0">Rombel</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="foto">Foto Siswa</label>
+                            <input type="file" name="foto_siswa" class="form-control">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <img src="" alt="Foto Siswa" class="img img-thumbnail foto-siswa" onerror="this.onerror=null;this.src='img/favicon.png'">
+                        </div>
+                        <div class="form-group col-sm-12 text-right">
+                            <button class="btn btn-primary" type="submit">
+                                <svg class="c-icon">
+                                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-save') }}"></use>
+                                </svg>
+                                Simpan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Ortu --}}
+<div class="modal fade" id="modalOrtu">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <svg class="c-icon">
+                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-blind') }}"></use>
+                    </svg>
+                    <span class="mode-form">Buat</span> Ortu <span class="siswa"></span>
+                </h4>
+                <button class="close" data-dismiss="modal">&times</button>
+            </div>
+            <div class="modal-body">
+                <form action="/ortus/create" method="POST" class="form form-ortu" id="form-ortu">
+                    @csrf()
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="nama_ayah">Nama Ayah</label>
+                            <input type="text" name="nama_ayah"  class="form-control" placeholder="Nama Ayah">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="job_ayah">Pekerjaan Ayah</label>
+                            <input type="text" name="job_ayah"  class="form-control" placeholder="Pekerjaan Ayah">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="nama_ibu">Nama Ibu</label>
+                            <input type="text" name="nama_ibu"  class="form-control" placeholder="Nama Ibu">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="job_ibu">Pekerjaan Ibu</label>
+                            <input type="text" name="job_ibu"  class="form-control" placeholder="Pekerjaan Ibu">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="nama_wali">Nama Wali</label>
+                            <input type="text" name="nama_wali"  class="form-control" placeholder="Nama Wali">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="job_wali">Pekerjaan Wali</label>
+                            <input type="text" name="job_wali"  class="form-control" placeholder="Pekerjaan Wali">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="hub_wali">Hubungan Dengan Siswa</label>
+                            <input type="text" name="hub_wali"  class="form-control" placeholder="Hubungan Wali">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="alamat_wali">Alamat Wali</label>
+                            <textarea name="alamat_wali" cols="30" rows="5" class="form-control" placeholder="Alamat Wali"></textarea>
+                        </div>
+                        <div class="form-group col-sm-12 text-right">
+                            <button class="btn btn-primary" type="submit">
+                                <svg class="c-icon">
+                                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-save') }}"></use>
+                                </svg>
+                                Simpan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Mapel --}}
+    <div class="modal fade" id="modalMapel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <svg class="c-icon">
+                            <use xlink:href="{{ asset('coreui/vendors/@coreui/iconv/svg/free.svg#cil-layers') }}"></use>
+                        </svg>
+                        <span class="mode-form">Buat</span> Mapel
+                    </h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/mapels/create" class="form form-mapel" id="form-mapel" method="POST">
+                        @csrf()
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="kode_mapel">Kode Mapel</label>
+                                <input type="text" name="kode_mapel" placeholder="Kode Mapel" class="form-control">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="nama_mapel">Nama Mapel</label>
+                                <input type="text" name="nama_mapel" placeholder="Nama Mapel" class="form-control">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="label">Label Mapel</label>
+                                <input type="text" name="label" placeholder="cth.: MTK" class="form-control">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="tingkat">Tingkat</label>
+                                <select name="tingkat" class="form-control">
+                                    <option value="0">Pilih Tingkat</option>
+                                    <option value="all">Semua Tingkat</option>
+                                    <option value="besar">Kelas Besar</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 text-right">
+                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

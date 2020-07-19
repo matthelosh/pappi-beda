@@ -37,6 +37,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Sekolah</th>
                             <th>NIP</th>
                             <th>Nama</th>
                             <th>JK</th>
@@ -52,6 +53,7 @@
                         @foreach($users as $key => $user)
                             <tr>
                                 <td>{{ $loop->index + 1}}</td>
+                                <td>{{ $user->sekolahs->nama_sekolah }}</td>
                                 <td>{{ $user->nip }}</td>
                                 <td>{{ $user->nama }}</td>
                                 <td>{{ $user->jk }}</td>

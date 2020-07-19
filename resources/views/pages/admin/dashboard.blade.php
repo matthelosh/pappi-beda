@@ -14,6 +14,14 @@
         @case('Data Sekolah')
             @include('pages.admin.sekolahs')
         @break
-
+        @case('Data Rombel')
+            @include('pages.admin.rombels')
+        @break
+        @case('Data Siswa')
+            @include('pages.admin.siswas')
+        @break
+        @case('Data Mapel')
+            @include('pages.admin.mapels')
+        @break
     @endswitch
 @endsection

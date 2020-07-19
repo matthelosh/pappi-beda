@@ -22,7 +22,28 @@ class SekolahController extends Controller
                     $sekolahs = Sekolah::with('ks', 'operators')->get();
                     return DataTables::of($sekolahs)->addIndexColumn()->toJson();
                 break;
+                case "select":
+                    $sekolahs = Sekolah::with('ks', 'operators')->get();
+                    $datas = [];
+                    foreach($sekolahs as $sekolah)
+                    {
+                        array_push($datas, ['id' => $sekolah->npsn, 'text' => $sekolah->nama_sekolah]);
+                    }
+
+                    return response()->json(['status' => 'sukses', 'sekolahs' => $datas]);
+                break;
             }
+        } else {
+
+            try {
+                Sekolah::create($request->all());
+                return response()->json(['status' => 'sukses', 'msg' => 'Data Sekolah disimpan']);
+            } catch(\Exception $e)
+            {
+                return response()->json(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
+            }
+
+
         }
     }
 

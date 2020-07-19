@@ -20,10 +20,18 @@ class UserController extends Controller
         if ($request->query('req')) {
             switch($request->query('req'))
             {
-
+                case "select":
+                    $datas = User::where('level','<>', 'admin')->get();
+                    $users = [];
+                    foreach($datas as $user)
+                    {
+                        array_push($users, ['id' => $user->nip, 'text' => $user->nama]);
+                    }
+                    return response()->json(['status' => 'sukses', 'msg' => 'Data Semua Pengguna', 'users' => $users]);
+                break;
             }
         } else {
-            $users = User::where('level','<>', 'admin')->get();
+            $users = User::where('level','<>', 'admin')->with('sekolahs')->get();
             return response()->json(['status' => 'sukses', 'msg' => 'Data Semua Pengguna', 'users' => $users]);
         }
     }
@@ -126,7 +134,7 @@ class UserController extends Controller
      */
     public function edit(Request $request, $nip)
     {
-        $user = User::where('nip', $nip)->first();
+        $user = User::where('nip', $nip)->with('sekolahs')->first();
 
         return response()->json(['status' => 'sukses', 'user' => $user]);
     }

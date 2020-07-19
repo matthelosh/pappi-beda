@@ -4,9 +4,10 @@
             <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-menu') }}"></use>
           </svg>
         </button><a class="c-header-brand d-lg-none" href="#">
-          <svg width="118" height="46" alt="CoreUI Logo">
-            <use xlink:href="{{ asset('coreui/assets/brand/coreui.svg#full') }}"></use>
-          </svg></a>
+          {{-- <svg width="118" height="46" alt="CoreUI Logo">
+            <use xlink:href="{{ asset('img/pappi-beda.svg') }}"></use>
+          </svg></a> --}}
+          <img src="{{ asset('img/pappi-beda.svg') }}" height="46" alt="">
         <button class="c-header-toggler c-class-toggler mfs-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true">
           <svg class="c-icon c-icon-lg">
             <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-menu') }}"></use>
