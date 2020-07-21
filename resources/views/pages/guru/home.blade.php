@@ -3,6 +3,6 @@
         <svg class="c-icon">
             <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
         </svg>
-        Dashboard Guru
+        Dashboard Guru {{Auth::user()->nama}}
     </h1>
 </div>

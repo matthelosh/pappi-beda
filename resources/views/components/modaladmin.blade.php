@@ -309,7 +309,7 @@
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="tingkat">Tingkat</label>
-                            <select name="tingkat" id="" class="form-control">
+                            <select name="tingkat" class="form-control">
                                 <option value="0">Pilih Tingkat</option>
                                 <option value="1">1 (Satu)</option>
                                 <option value="2">2 (Dua)</option>
@@ -583,6 +583,8 @@
             <div class="modal-body">
                 <form action="/ortus/create" method="POST" class="form form-ortu" id="form-ortu">
                     @csrf()
+                    <input type="hidden" name="siswa_id" value>
+                    <div class="d-none hidden-input"></div>
                     <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="nama_ayah">Nama Ayah</label>
@@ -638,7 +640,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title">
                         <svg class="c-icon">
-                            <use xlink:href="{{ asset('coreui/vendors/@coreui/iconv/svg/free.svg#cil-layers') }}"></use>
+                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-layers') }}"></use>
                         </svg>
                         <span class="mode-form">Buat</span> Mapel
                     </h4>
@@ -667,6 +669,216 @@
                                     <option value="all">Semua Tingkat</option>
                                     <option value="besar">Kelas Besar</option>
                                 </select>
+                            </div>
+                            <div class="form-group col-sm-12 text-right">
+                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{-- Modal Kd --}}
+    <div class="modal fade" id="modalKd">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <svg class="c-icon">
+                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-book') }}"></use>
+                        </svg>
+                        <span class="mode-form">Buat</span> Kompetensi Dasar
+                    </h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/kds/create" class="form form-kd" id="form-kd" method="POST">
+                        @csrf()
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="ranah">Ranah KD</label>
+                                <select name="ranah" placeholder="Kode KD" class="form-control">
+                                    <option value="0">Pilih Ranah Kompetensi</option>
+                                    <option value="1">Spiritual</option>
+                                    <option value="2">Sosial</option>
+                                    <option value="3">Pengetahuan</option>
+                                    <option value="4">Keterampilan</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="kode_kd">Kode KD</label>
+                                <input type="text" name="kode_kd" placeholder="Kode KD" class="form-control">
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <label for="teks_kd">Teks KD</label>
+                                <textarea name="teks_kd"  cols="30" rows="6" class="form-control" placeholder="Teks KD"></textarea>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="mapel_id">Mapel</label>
+                                <select name="mapel_id" class="form-control selMapel" style="width:100%; height: 41px;">
+                                    <option value="0">Pilih Mapel</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="tingkat">Tingkat</label>
+                                <select name="tingkat" class="form-control">
+                                    <option value="0">Pilih Tingkat</option>
+                                    <option value="1">1 (Satu)</option>
+                                    <option value="2">2 (Dua)</option>
+                                    <option value="3">3 (Tiga)</option>
+                                    <option value="4">4 (Empat)</option>
+                                    <option value="5">5 (Lima)</option>
+                                    <option value="6">6 (Enam)</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 text-right">
+                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{{-- Modal Periode --}}
+    <div class="modal fade" id="modalPeriode">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <svg class="c-icon">
+                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-calendar') }}"></use>
+                        </svg>
+                        <span class="mode-form">Buat</span> Periode
+                    </h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/periode/create" class="form form-periode" id="form-periode" method="POST">
+                        @csrf()
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="tanggal">Piih Tanggal</label>
+                                <input class="form-control" type="date" name="tanggal" placeholder="Pilih Tanggal untuk menentukan kode periode">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="kode_periode">Kode Periode</label>
+                                <input class="form-control" type="text" name="kode_periode" placeholder="Kode Periode">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="tapel">Tahun Pelajaran</label>
+                                <input class="form-control" type="text" name="tapel" placeholder="Tahun Pelajaran">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="semester">Semester</label>
+                                <input class="form-control" type="text" name="semester" placeholder="Semester">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="label">Label</label>
+                                <input class="form-control" type="text" name="label" placeholder="Label">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="status">Status</label>
+                                <select class="form-control" name="status">
+                                    <option value="aktif" selected>Aktif</option>
+                                    <option value="nonaktif">Nonaktif</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-sm-12 text-right">
+                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{{-- Modal TanggalRapor --}}
+    <div class="modal fade" id="modalTanggalRapor">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <svg class="c-icon">
+                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-calendar') }}"></use>
+                        </svg>
+                        <span class="mode-form">Buat</span> Tanggal Rapor
+                    </h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/tanggal-rapor/create" class="form form-tanggal-rapor" id="form-tanggal-rapor" method="POST">
+                        @csrf()
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="sekolah_id">Piih Sekolah</label>
+                                <select class="form-control selSekolah" name="sekolah_id" style="width:100%">
+                                    <option value="0">Pilih Sekolah</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="periode_id">Piih Periode</label>
+                                <select class="form-control selPeriode" name="periode_id" style="width:100%">
+                                    <option value="0">Pilih Periode</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="tanggal">Piih Tanggal</label>
+                                <input class="form-control" type="date" name="tanggal" placeholder="Pilih Tanggal untuk menentukan kode periode">
+                            </div>
+                            <div class="form-group col-sm-12 text-right">
+                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{{-- Modal KKM --}}
+    <div class="modal fade" id="modalKkm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <svg class="c-icon">
+                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-sort-numeric-up') }}"></use>
+                        </svg>
+                        <span class="mode-form">Buat</span> KKM
+                    </h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/{{ Auth::user()->username }}/kkm/create" class="form form-kkm" id="form-kkm" method="POST">
+                        @csrf()
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="sekolah_id">Piih Sekolah</label>
+                                <select class="form-control selSekolah" name="sekolah_id" style="width:100%">
+                                    <option value="0">Pilih Sekolah</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="periode_id">Piih Periode</label>
+                                <select class="form-control selPeriode" name="periode_id" style="width:100%">
+                                    <option value="0">Pilih Periode</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="mapel_id">Piih Mapel</label>
+                                <select class="form-control selMapel" name="mapel_id" style="width:100%">
+                                    <option value="0">Pilih Mapel</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="kkm">KKM</label>
+                                <input type="number" min="0" max="100" class="form-control kkm" name="nilai" style="width:100%" placeholder="Min 0; Max 100">
+                                
                             </div>
                             <div class="form-group col-sm-12 text-right">
                                 <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>

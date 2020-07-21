@@ -85,11 +85,11 @@
       </div>
     </div>
 
-    @if(Auth::user()->level == 'admin')
+    {{-- @if(Auth::user()->level == 'admin') --}}
       @include('components.modaladmin')
-    @endif
+    {{-- @endif --}}
     <script src="{{ asset('jquery/jquery.js') }}"></script>
-    <script src="{{ asset('bootstrap/js/bootstrap.js') }}"></script>
+    {{-- <script src="{{ asset('bootstrap/js/bootstrap.js') }}"></script> --}}
     <script src="{{ asset('datatables/datatables.js') }}"></script>
     
     <!-- CoreUI and necessary plugins-->
@@ -100,11 +100,87 @@
     <!-- Plugins and scripts required by this view-->
     <script src="{{ asset('coreui/vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js') }}"></script>
     <script src="{{ asset('coreui/vendors/@coreui/utils/js/coreui-utils.js') }}"></script>
-    {{-- <script src="{{ asset('coreui/js/main.js') }}"></script> --}}
+    <script src="{{ asset('coreui/js/main.js') }}"></script>
     
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('select2/js/select2.min.js') }}"></script>
+     <script>
+      var headers =  {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+      $(document).on('click', '.c-sidebar-nav-dropdown-toggle', function(e) {
+        e.preventDefault();
+        $(this).parents('nav.c-sidebar').addClass('c-sidebar-show')
+      })
+
+        // Select Rombel
+    $('.selRombel').select2({
+        ajax: {
+            headers: headers,
+            url: '/rombels?req=select',
+            type: 'post',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(response) {
+                    return {
+                        results: response.rombels
+                    };
+                },
+                cache: true,
+
+        },
+    })
+    // Select Mapel
+    $('.selPeriode').select2({
+        ajax: {
+            headers: headers,
+            url: '/periode?req=select',
+            type: 'post',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(response) {
+                    return {
+                        results: response.periodes
+                    };
+                },
+                cache: true,
+
+        },
+    })
+    $('.selMapel').select2({
+        ajax: {
+            headers: headers,
+            url: '/mapels?req=select',
+            type: 'post',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(response) {
+                    return {
+                        results: response.mapels
+                    };
+                },
+                cache: true,
+
+        },
+    })
+     $('.selSekolah').select2({
+        ajax: {
+            headers: headers,
+            url: '/sekolah?req=select',
+            type: 'post',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(response) {
+                    return {
+                        results: response.sekolahs
+                    };
+                },
+                cache: true,
+
+        },
+    })
+    </script>
     
     @if(Session::get('status') == 'sukses')
       <script>
@@ -152,7 +228,21 @@
           })
       </script>
     @endif
+    @if(Auth::user()->level == 'admin')
     <script src="{{ asset('js/main.js') }}"></script>
+    @else
+      <script>
+        var rombel_id = "{{ Session::get('rombel_id') }}"
+        var role = "{{ Session::get('role') }}"
+        sessionStorage.setItem('rombel_id', rombel_id)
+        sessionStorage.setItem('role', "{{ Session::get('role') }}")
+        sessionStorage.setItem('username', "{{ Session::get('username') }}")
+      </script>
+      <script src="{{ asset('js/guru.js') }}"></script>
+      
+    @endif
+
+   
     
   </body>
 </html>

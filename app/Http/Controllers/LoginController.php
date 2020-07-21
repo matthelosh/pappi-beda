@@ -12,6 +12,13 @@ class LoginController extends Controller
 {
     public function index()
     {
+        if(Auth::check()){
+            if(Auth::user()->level == 'admin') {
+                return redirect('/dashboard');
+            } else {
+                return redirect('/'.Auth::user()->username.'/dashboard');
+            }
+        }
         return view('login');
     }
 
@@ -24,7 +31,12 @@ class LoginController extends Controller
 
         $credentials = $request->only('username', 'password');
         if(Auth::attempt($credentials)) {
-            return redirect()->intended('dashboard');
+            // dd(Auth::user());
+            if (Auth::user()->level == 'admin'){
+                return redirect()->intended('dashboard');
+            } else {
+                return redirect('/'.Auth::user()->username.'/dashboard');
+            }
         } 
 
         return Redirect::to('login')->withInput(['username' => $request->username])->with(['status' => 'error', 'msg' => 'Username dan atau Password Tidak Benar'], 403);

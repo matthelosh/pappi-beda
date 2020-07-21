@@ -54,4 +54,19 @@ class DashController extends Controller
     {
         return view('pages.admin.dashboard', ['page_title' => 'Data Mapel', 'menus' => $this->showMenus($request)]);
     }
+
+    public function kds(Request $request)
+    {
+        return view('pages.admin.dashboard', ['page_title' => 'Data Kompetensi', 'menus' => $this->showMenus($request)]);
+    }
+
+    public function periode(Request $request)
+    {
+        return view('pages.admin.dashboard', ['page_title' => 'Data Periode', 'menus' => $this->showMenus($request)]);
+    }
+
+    public function tanggalRapor(Request $request)
+    {
+        return view('pages.admin.dashboard', ['page_title' => 'Tanggal Rapor', 'menus' => $this->showMenus($request)]);
+    }
 }

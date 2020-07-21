@@ -829,6 +829,7 @@ $(document).ready(function() {
            
         })
     })
+// Edit Mapel
     $(document).on('click', '.btn-edit-mapel', function(e) {
         e.preventDefault()
         var mapel = tmapels.row($(this).parents('tr')).data()
@@ -841,24 +842,292 @@ $(document).ready(function() {
 
         $('#modalMapel').modal()
     })
-// Select2
-    // Select Rombel
-    $('.selRombel').select2({
+
+// Kd
+    var tkds = $('#table-kds').DataTable({
+        serverSide: true,
         ajax: {
             headers: headers,
-            url: '/rombels?req=select',
-            type: 'post',
-                dataType: 'json',
-                delay: 250,
-                processResults: function(response) {
-                    return {
-                        results: response.rombels
-                    };
-                },
-                cache: true,
-
+            url:'/kds?req=dt',
+            type:'post'
         },
+        columns: [
+            {"data": "DT_RowIndex"},
+            {"data": "kode_kd"},
+            {"data": "teks_kd"},
+            {"data": null, render: (data) =>{
+                return (data.mapels) ? data.mapels.label : '-'
+            }},
+            {"data": "tingkat"},
+            {"data": null, render: (data) => {
+                return `
+                <button class="btn btn-warning btn-edit-kd btn-sm" title="Edit ${data.nama_mapel} ?">
+                    <svg class="c-icon">
+                        <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                    </svg>
+                </button>
+                <button class="btn btn-danger btn-delete-kd btn-sm" title="Hapus ${data.nama_mapel} ?">
+                    <svg class="c-icon">
+                        <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                    </svg>
+                </button>
+                `
+            }}
+        ]
     })
+
+    $(document).on('click', '.btn-edit-kd', function(e) {
+        e.preventDefault()
+        var kd = tkds.row($(this).parents('tr')).data()
+        $('#modalKd .mode-form').text('Edit')
+        $('#form-kd').prop('action', '/kds/'+kd.id).prepend(`<input type="hidden" name="_method" value="put">`)
+        var kode = kd.kode_kd.split('.')
+        $('#form-kd select[name="ranah"]').val(kode[0])
+        $('#form-kd input[name="kode_kd"]').val(kd.kode_kd)
+        $('#form-kd textarea[name="teks_kd"]').val(kd.teks_kd)
+        $('#form-kd select[name="mapel_id"]').append(`<option value="${kd.mapel_id}" selected>${kd.mapels.label}</option>`)
+        $('#form-kd select[name="tingkat"]').val(kd.tingkat)
+        $('#modalKd').modal()
+
+    })
+
+    $(document).on('click', '.btn-delete-kd', function(e){
+        e.preventDefault()
+        var kd = tkds.row($(this).parents('tr')).data()
+        swal({
+            title: 'Yakin Mengapus '+kd.kode_kd+'?',
+            text: kd.teks_kd,
+            buttons: true,
+            dangerMode: true,
+            icon: 'warning'
+        }).then((lanjut) => {
+            if( lanjut ) {
+                $.ajax({
+                    headers: headers,
+                    url: '/kds/'+kd.id,
+                    type: 'delete'
+                }).done(res=>{
+                    swal('Info', res.msg, 'info')
+                    tkds.ajax.reload()
+                }).fail(err => {
+                    swal('Error', err.response.msg, 'error')
+                })
+            } else {
+                swal('Info', 'KD tidak dihapus.', 'info')
+            }
+        })
+    })
+
+    // Import
+    $(document).on('click', '.btn-import-kd', function(e) {
+        $('#modalImport #model').text('KD')
+        $('#modalImport .form-import').prop('action','/kds/import')
+        $('#modalImport').modal()
+    })
+
+// Periode
+    var tperiodes = $('#table-periode').DataTable({
+        serverSide: true,
+        ajax: {
+            headers: headers,
+            url: '/periode?req=dt',
+            type: 'post'
+        },
+        columns: [
+            {"data": "DT_RowIndex"},
+            {"data": "kode_periode"},
+            {"data": "tapel"},
+            {"data": "semester"},
+            {"data": "label"},
+            {"data": "status"},
+            {"data": null, render: (data) => {
+                var kelas = (data.status == 'aktif') ? 'btn-success' : 'btn-danger'
+                return `<button class="btn btn-toggle-active ${kelas} btn-sm">
+                <svg class="c-icon">
+                    <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-power-standby"></use>
+                </svg>
+                </button>`
+            }}
+        ]
+    })
+
+    $(document).on('click', '.btn-toggle-active', function(e) {
+        e.preventDefault()
+        var periode = tperiodes.row($(this).parents('tr')).data()
+        if(periode.status == 'nonaktif') {
+            swal({
+                title: 'Yakin Mengaktifkar Periode '+periode.kode_periode+'?',
+                text: 'Periode yang aktif sekarang akan dinonaktifkan.',
+                buttons: true,
+                dangerMode: true,
+                icon: 'warning'
+            }).then((lanjut) => {
+                if ( lanjut ) {
+                    $.ajax({
+                        headers: headers,
+                        url: '/periode/activate/'+periode.id,
+                        type: 'put'
+                    }).done(res => {
+                        swal('Info', res.msg, 'info')
+                        tperiodes.ajax.reload()
+                    }).fail(err => {
+                        swal('Error', err.response.msg, 'error')
+                    })
+                } else {
+                    swal('Info', 'Periode Saat Ini Masih Aktif', 'info')
+                }
+            })
+        } else {
+            swal({
+                title: 'Maaf! Tidak Boleh. ;)',
+                text: 'Anda harus mengaktifkan periode lain untuk menonaktifkan periode ini',
+                icon: 'warning'
+            })
+        }
+    })
+    // Buat periode
+    $(document).on('change', '#modalPeriode .form-periode input[name="tanggal"]', function(e) {
+        e.preventDefault()
+        var tanggal = $(this).val()
+        var pecah = tanggal.split('-')
+        var semester = (Number(pecah[1]) > 6 ) ? '1' : '2'
+        var label = (semester == '1') ? 'Ganjil':'Genap'
+        var tapel = (semester == '1') ? pecah[0]+'/'+(Number(pecah[0])+1) : (Number(pecah[0]) - 1) + '/' + pecah[0]
+        var kode = (semester == '1') ? pecah[0].substr(2,2)+(Number(pecah[0].substr(2,2))+1)+semester:(Number(pecah[0].substr(2,2)) - 1)+pecah[0].substr(2,2)+semester
+        // alert(kode)
+        $('.form-periode input[name="kode_periode"]').val(kode)
+        $('.form-periode input[name="tapel"]').val(tapel)
+        $('.form-periode input[name="semester"]').val(semester)
+        $('.form-periode input[name="label"]').val(label)
+    })
+//
+// Tanggal Rapor
+var ttanggalRapor = $('#table-tanggal-rapor').DataTable({
+    serverSide: true,
+    ajax: {
+        headers: headers,
+        url: '/tanggal-rapor?req=dt',
+        type: 'post'
+    },
+    columns: [
+        {"data": 'DT_RowIndex'},
+        {"data": null, render: (data) => {
+            return (data.sekolahs)?data.sekolahs.nama_sekolah: '-'
+        }},
+        {"data": null, render: (data) => {
+            return data.periodes.tapel + ' - ' + data.periodes.label
+        }},
+        {"data": "tanggal"},
+        {"data": null, render: (data) => {
+            return `
+            <button class="btn btn-warning btn-edit-tanggal-rapor btn-sm" title="Edit ${data.tanggal} ?">
+                <svg class="c-icon">
+                    <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                </svg>
+            </button>
+            <button class="btn btn-danger btn-delete-tanggal-rapor btn-sm" title="Hapus ${data.tanggal} ?">
+                <svg class="c-icon">
+                    <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                </svg>
+            </button>
+            `
+        }}
+    ]
+})
+
+$(document).on('click', '.btn-delete-tanggal-rapor', function(e) {
+    e.preventDefault()
+    var data = ttanggalRapor.row($(this).parents('tr')).data()
+
+    swal({
+        title: 'Yakin Menghapus Tangga Rapor '+data.tanggal+'?',
+        text: 'Data Akan Dihapus dari Database',
+        buttons: true,
+        dangerMode: true,
+        icon: 'warning'
+    }).then((lanjut) => {
+        if ( lanjut ) {
+            $.ajax({
+                headers: headers,
+                url: '/tanggal-rapor/' + data.id,
+                type: 'delete'
+            }).done(res => {
+                swal('Info', res.msg, 'info')
+                ttanggalRapor.ajax.reload()
+            }).fail(err => {
+                swal('Error', err.response.msg, 'error')
+            })
+        } else {
+            swal('Info', 'Tanggal Rapor Aman', 'info')
+        }
+    })
+})
+
+$(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
+    e.preventDefault()
+    var data = ttanggalRapor.row($(this).parents('tr')).data()
+    $('#modalTanggalRapor .mode-form').text('Edit')
+    $('#form-tanggal-rapor').prop('action', '/tanggal-rapor/'+data.id).prepend(`<input type="hidden" name="_method" value="put">`)
+
+    $('#form-tanggal-rapor select[name="sekolah_id"]').append(`<option value="${data.sekolah_id}" selected>${data.sekolahs.nama_sekolah}</option>`)
+    $('#form-tanggal-rapor select[name="periode_id"]').append(`<option value="${data.periode_id}" selected>${data.periodes.tapel+' - '+ data.periodes.label}</option>`)
+    $('#form-tanggal-rapor input[name="tanggal"]').val(data.tanggal)
+    $('#modalTanggalRapor').modal()
+})
+
+
+// Select2
+    
+    // Select Rombel
+    // $('.selRombel').select2({
+    //     ajax: {
+    //         headers: headers,
+    //         url: '/rombels?req=select',
+    //         type: 'post',
+    //             dataType: 'json',
+    //             delay: 250,
+    //             processResults: function(response) {
+    //                 return {
+    //                     results: response.rombels
+    //                 };
+    //             },
+    //             cache: true,
+
+    //     },
+    // })
+    // // Select Mapel
+    // $('.selPeriode').select2({
+    //     ajax: {
+    //         headers: headers,
+    //         url: '/periode?req=select',
+    //         type: 'post',
+    //             dataType: 'json',
+    //             delay: 250,
+    //             processResults: function(response) {
+    //                 return {
+    //                     results: response.periodes
+    //                 };
+    //             },
+    //             cache: true,
+
+    //     },
+    // })
+    // $('.selMapel').select2({
+    //     ajax: {
+    //         headers: headers,
+    //         url: '/mapels?req=select',
+    //         type: 'post',
+    //             dataType: 'json',
+    //             delay: 250,
+    //             processResults: function(response) {
+    //                 return {
+    //                     results: response.mapels
+    //                 };
+    //             },
+    //             cache: true,
+
+    //     },
+    // })
     // Fungsi select User
     $('.selUsers').select2({
         ajax: {
@@ -894,22 +1163,22 @@ $(document).ready(function() {
     })
 
     // Select Sekolah
-    $('.selSekolah').select2({
-        ajax: {
-            headers: headers,
-            url: '/sekolah?req=select',
-            type: 'post',
-                dataType: 'json',
-                delay: 250,
-                processResults: function(response) {
-                    return {
-                        results: response.sekolahs
-                    };
-                },
-                cache: true,
+    // $('.selSekolah').select2({
+    //     ajax: {
+    //         headers: headers,
+    //         url: '/sekolah?req=select',
+    //         type: 'post',
+    //             dataType: 'json',
+    //             delay: 250,
+    //             processResults: function(response) {
+    //                 return {
+    //                     results: response.sekolahs
+    //                 };
+    //             },
+    //             cache: true,
 
-        },
-    })
+    //     },
+    // })
     // Fungsi Cetak Tabel
     function cetakTabel(table, title) {
         var doc = `

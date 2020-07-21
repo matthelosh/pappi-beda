@@ -23,5 +23,14 @@
         @case('Data Mapel')
             @include('pages.admin.mapels')
         @break
+        @case('Data Kompetensi')
+            @include('pages.admin.kds')
+        @break
+        @case('Data Periode')
+            @include('pages.admin.periode')
+        @break
+        @case('Tanggal Rapor')
+            @include('pages.admin.tanggal-rapor')
+        @break
     @endswitch
 @endsection

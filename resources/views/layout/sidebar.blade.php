@@ -1,10 +1,10 @@
-<div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+<nav class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
       <div class="c-sidebar-brand d-lg-down-none">
         {{-- <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
           <use xlink:href="{{ asset('coreui/assets/brand/coreui.svg#full') }}"></use>
           <use xlink:href="{{ asset('img/pappi-beda.svg') }}"></use>
         </svg> --}}
-        <div class="c-side-bar-brand-full">
+        <div class="c-sidebar-brand-full">
           <img src="{{ asset('img/pappi-beda.svg') }}" alt="Logo" width="46" class="c-sidebar-brand-full">
           <span>PAPPi Beda</span>
         </div>
@@ -14,11 +14,18 @@
           <img src="{{ asset('img/pappi-beda.svg') }}" alt="Logo" width="46" class="c-sidebar-brand-full">
         </div>
       </div>
-      <ul class="c-sidebar-nav">
+      <ul class="c-sidebar-nav " role="navigation">
+            <li class="c-sidebar-nav-item d-md-none">
+              <a href="javascript:void(0)" class="c-sidebar-nav-link" style="background:#4e5054!important; color:white;">
+                <svg class="c-sidebar-nav-icon">
+                  <use xlink:href="{{ asset('/coreui/vendors/@coreui/icons/svg/free.svg#cil-arrow-circle-left') }}"></use>
+                </svg>
+                Tutup Menu
+              </a>
+            </li>
         @foreach($menus as $menu)
-          {{-- @if($menu->parent_id == 0) --}}
             <li class="c-sidebar-nav-item {{ $menu->childs()->count() ? 'c-sidebar-nav-dropdown' : '' }}">
-              <a href="{{ $menu->url }}" class="c-sidebar-nav-link {{ ($menu->childs()->count() > 0) ? 'c-sidebar-nav-dropdown-toggle': '' }}">
+              <a href="{{ ((Auth::user()->level != 'admin') ? '/'.Auth::user()->username: '') . $menu->url }}" class="c-sidebar-nav-link {{ ($menu->childs()->count() > 0) ? 'c-sidebar-nav-dropdown-toggle': '' }}">
                 @php($link = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$menu->icon )
                 <svg class="c-sidebar-nav-icon">
                   <use xlink:href="{{ asset($link) }}"></use>
@@ -30,7 +37,7 @@
                   @foreach($menu->childs as $child)
                     @if($child->role == Auth::user()->role)
                       <li class="c-sidebar-nav-item">
-                        <a href="{{ $child->url }}" class="c-sidebar-nav-link">
+                        <a href="{{((Auth::user()->level != 'admin') ? '/'.Auth::user()->username: '') . $child->url }}" class="c-sidebar-nav-link">
                           @php($link_sub = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$child->icon )
                           <svg class="c-sidebar-nav-icon">
                             <use xlink:href="{{ asset($link_sub) }}"></use>
@@ -43,8 +50,9 @@
                 </ul>
               @endif
             </li>
-          {{-- @endif --}}
         @endforeach
+
+        
         {{-- <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="/">
             <svg class="c-sidebar-nav-icon">
               <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer') }}"></use>
@@ -148,4 +156,4 @@
         </li> --}}
       </ul>
       <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
-    </div>
+    </nav>
