@@ -326,4 +326,75 @@ $(document).ready(function(){
         ]
     })
 
+
+    // Form Nilai
+    $(document).on('click', '.btn-form-nilai', function(e) {
+        var data = {
+            periode_id : $('select[name="periode_id"').val(),
+            jenis : $('select[name="jenis"').val(),
+            mapel_id : $('select[name="mapel_id"').val(),
+            aspek : $('select[name="aspek"').val(),
+            kd_id : $('select[name="kd_id"').val(),
+        }
+
+        $.ajax({
+            headers: headers,
+            url: '/'+sessionStorage.getItem('username')+'/nilais?req=view',
+            type: 'post',
+            data: data
+        }).done(res => {
+            var siswas = res.datas
+            var trs = ''
+            var no = 0
+            for(var i = 0; i < siswas.length; i++) {
+                trs += `<tr><td>${i+1}</td><td>${((siswas[i].nis)?siswas[i].nis:'-')+' / '+ siswas[i].nisn}</td><td>${siswas[i].nama_siswa}</td><td><input type="number" min="0" max="100" name="nilais[${siswas[i].nisn}]" value="${siswas[i].nilai}"></td></tr>`
+            }
+            $('.form-nilai input[name="periode_id"]').val(data.periode_id)
+            $('.form-nilai input[name="jenis"]').val(data.jenis)
+            $('.form-nilai input[name="mapel_id"]').val(data.mapel_id)
+            $('.form-nilai input[name="aspek"]').val(data.aspek)
+            $('.form-nilai input[name="kd_id"]').val(data.kd_id)
+            $('.table-form-nilai tbody').html(trs)
+        }).fail(err => {
+            swal('Error', err.resposne.msg, 'error')
+        })
+    })
+
+    $('.selSiswaKu').select2({
+        ajax: {
+        headers: headers,
+        url: '/'+localStorage.getItem('username')+'/siswaku?req=select&rombel='+sessionStorage.getItem('rombel_id'),
+        type: 'post',
+            dataType: 'json',
+            delay: 250,
+            processResults: function(response) {
+                return {
+                    results: response.siswas
+                };
+            },
+            cache: true,
+
+        },
+    })
+
+    $('.selSikap').select2()
+    $(document).on('change', '.form-jurnal select[name="aspek"]', function(){
+        var aspek = $(this).val()
+        // alert(aspek)
+        $.ajax({
+            headers: headers,
+            type: 'post',
+            dataType: 'json',
+            url: '/'+sessionStorage.getItem('username')+'/kdku?req=select&ki='+aspek,
+            success: function(res){
+                var kdOpt = ''
+                res.forEach(item => {
+                    kdOpt += `
+                        <option value="${item.id}">${item.text}</option>
+                    `
+                    $('.selSikap').html(kdOpt)
+                })
+            }
+        })
+    })
 })

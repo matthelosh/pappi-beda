@@ -39,6 +39,7 @@
     <link href="{{ asset('coreui/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
     <link href="{{ asset('select2/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 
 
@@ -180,6 +181,31 @@
 
         },
     })
+    $('.select').select2()
+    $('.selKd').select2()
+    $(document).on('change', '.selAspek', function(){
+            var mapel = $('.selMapel').val()
+            var ki = $(this).val()
+            if(mapel == '0' || ki == '0') {
+              swal('Error! Harap Memilih Mapel dan Aspen Dulu','error')
+            }
+
+            $.ajax({
+                headers: headers,
+                type: 'post',
+                dataType: 'json',
+                url: '/kds?req=select&mapel='+mapel+'&ki='+ki,
+                success: function(res){
+                    var kdOpt = ''
+                    res.forEach(item => {
+                        kdOpt += `
+                            <option value="${item.id}">${item.text}</option>
+                        `
+                        $('.selKd').html(kdOpt)
+                    })
+                }
+            })
+        })
     </script>
     
     @if(Session::get('status') == 'sukses')
@@ -237,6 +263,7 @@
         sessionStorage.setItem('rombel_id', rombel_id)
         sessionStorage.setItem('role', "{{ Session::get('role') }}")
         sessionStorage.setItem('username', "{{ Session::get('username') }}")
+        sessionStorage.setItem('periode', "{{ Session::get('periode_aktif') }}")
       </script>
       <script src="{{ asset('js/guru.js') }}"></script>
       

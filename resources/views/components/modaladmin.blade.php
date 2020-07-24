@@ -889,3 +889,68 @@
             </div>
         </div>
     </div>
+
+{{-- Modal Jurnal Siswa --}}
+    <div class="modal fade" id="modalJurnalSiswa">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        <svg class="c-icon">
+                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-notes') }}"></use>
+                        </svg>
+                        <span class="mode-form">Entri</span> Jurnal Sikap
+                    </h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/{{ Auth::user()->username }}/jurnal/create" class="form form-jurnal" id="form-jurnal" method="POST">
+                        @csrf()
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="tanggal ">Tanggal Kejadian</label>
+                                <input type="date" class="form-control" name="tanggal">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="aspek">Aspek</label>
+                                <select class="form-control" name="aspek" style="width:100%">
+                                    <option value="0">Pilih Aspek</option>
+                                    <option value="1">Spiritual</option>
+                                    <option value="2">Sosial</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="siswa_id">Siswa</label>
+                                <select class="form-control selSiswaKu" name="siswa_id" style="width:100%">
+                                    <option value="0">Pilih Siswa</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="catatan">Catatan Perilaku</label>
+                                <textarea name="catatan" cols="30" rows="3" class="form-control" placeholder="Perilaku Siswa"></textarea>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="butir_sikap">Butir Sikap</label>
+                                <select name="butir_sikap" class="form-control selSikap" style="width:100%">
+                                    <option value="0">Butir Sikap</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="nilai">Nilai</label>
+                                <select name="nilai" class="form-control">
+                                    <option value="0">Nilai Sikap</option>
+                                    <option value="A">Sangat Baik</option>
+                                    <option value="B" selected>Baik</option>
+                                    <option value="C">Cukup</option>
+                                    <option value="D">Perlu Bimbingan</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 text-right">
+                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

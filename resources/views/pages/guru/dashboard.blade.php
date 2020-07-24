@@ -1,3 +1,7 @@
+{{-- 
+Dashboard Guru
+
+ --}}
 @extends('index')
 
 @section('content')
@@ -16,6 +20,12 @@
         @break
         @case('Data KKM')
             @include('pages.guru.kkm')
+        @break
+        @case('Entri Nilai')
+            @include('pages.guru.entri-nilai')
+        @break
+        @case('Jurnal Sikap')
+            @include('pages.guru.jurnal')
         @break
     @endswitch
 @endsection

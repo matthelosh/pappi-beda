@@ -108,7 +108,7 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
     });
 
     // Kd
-    Route::group(['prefix' =>'kds', 'middleware' => ['auth', 'isAdmin']], function() {
+    Route::group(['prefix' =>'kds', 'middleware' => ['auth']], function() {
         Route::get('/', 'DashController@kds')->name('kds.page');
         Route::post('/', 'KdController@index')->name('kds.index');
         Route::post('/create', 'KdController@create')->name('kds.create');
@@ -178,5 +178,21 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::post('/', 'KkmController@index')->name('kkm.index');
             Route::post('/create', 'KkmController@create')->name('kkm.create');
         });
+
+        Route::group(['prefix' => 'nilais', 'middleware' => ['auth', 'isGuru']], function() {
+            Route::get('/entri', 'DashGuruController@entriNilai')->name('nilais.page');
+            Route::post('/entri', 'NilaiController@entri')->name('nilais.entri');
+            Route::post('/', 'NilaiController@index')->name('nilais.index');
+        });
+
+        Route::group(['prefix' => 'jurnal', 'middleware' => ['auth', 'isGuru']], function() {
+            Route::get('/', 'DashGuruController@jurnal')->name('jurnals.page');
+            Route::post('/', 'JurnalController@index')->name('jurnals.index');
+            Route::post('/create', 'JurnalController@create')->name('jurnals.create');
+            Route::get('/{id}', 'JurnalController@show')->name('jurnals.show');
+            Route::put('/{id}', 'JurnalController@update')->name('jurnals.update');
+            Route::delete('/{id}', 'JurnalController@destroy')->name('jurnals.delete');
+        });
+
 
     });
