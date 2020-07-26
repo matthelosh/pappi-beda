@@ -450,11 +450,16 @@ $(document).ready(function(){
                 a.remove()
         })
     })
+    var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : 'null';
 
+    // $(document).on('change', 'select[name="rombel_id"]', function(){
+    //     $('.selSiswaku').select2()
+    // })
     $('.selSiswaKu').select2({
+        
         ajax: {
         headers: headers,
-        url: '/'+localStorage.getItem('username')+'/siswaku?req=select&rombel='+sessionStorage.getItem('rombel_id'),
+        url: '/'+localStorage.getItem('username')+'/siswaku?req=select&rombel='+ rombel,
         type: 'post',
             dataType: 'json',
             delay: 250,
@@ -476,7 +481,7 @@ $(document).ready(function(){
             headers: headers,
             type: 'post',
             dataType: 'json',
-            url: '/'+sessionStorage.getItem('username')+'/kdku?req=select&ki='+aspek,
+            url: '/'+sessionStorage.getItem('username')+'/kdku?req=select&aspek='+aspek,
             success: function(res){
                 var kdOpt = ''
                 res.forEach(item => {

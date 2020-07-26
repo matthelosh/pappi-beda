@@ -915,8 +915,11 @@
                                 <label for="aspek">Aspek</label>
                                 <select class="form-control" name="aspek" style="width:100%">
                                     <option value="0">Pilih Aspek</option>
-                                    <option value="1">Spiritual</option>
-                                    <option value="2">Sosial</option>
+                                    @if(Auth::user()->role == 'gpai')
+                                        <option value="1">Spiritual</option>
+                                    @else
+                                        <option value="2">Sosial</option>
+                                    @endif
                                 </select>
                             </div>
                             <div class="form-group col-sm-6">
