@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
-
+use Illuminate\Support\Facades\Auth;
 class KdController extends Controller
 {
     /**
@@ -22,11 +22,14 @@ class KdController extends Controller
             switch($request->query('req'))
             {
                 case "dt":
-                    if ($request->query('rombel_id')) {
+                    if ($request->query('rombel_id') != 'all') {
                         $rombel = 'App\Rombel'::where('kode_rombel', $request->query('rombel_id'))->first();
                         $kds = Kd::where('tingkat', $rombel->tingkat)->with('mapels')->get();
 
                         // dd($kds);
+                    } elseif ($request->query('rombel_id') == 'all' && Auth::user()->role != 'wali') {
+                        $mapel = (Auth::user()->role == 'gpai') ? 'pabp': ((Auth::user()->role == 'gor') ? 'pjok' : 'big');
+                        $kds = Kd::where('mapel_id', $mapel)->with('mapels')->get(); 
                     } else {
                         $kds = Kd::with('mapels')->get();
                     }
@@ -44,29 +47,20 @@ class KdController extends Controller
 
                         return response()->json($datas);
                     } else {
-                        // if($request->session()->get('role') == 'wali') {
-                        //     $rombel = 'App\Rombel'::where('kode_rombel', request()->session()->get('rombel_id'))->first();
-                        //     $kds = Kd::where([
-                        //         ['tingkat', '=', $rombel->tingkat],
-                        //         ['mapel_id', '=', $request->query('mapel')],
-                        //         ['kode_kd', 'LIKE', $request->query('ki').'.%']
-                        //     ])->get();
-                        // } else {
-                        //     $kds = Kd::where([
-                        //         ['mapel_id', '=', $request->query('mapel')],
-                        //         ['kode_kd', 'LIKE', $request->query('ki').'.%']
-                        //     ])->get();
-                        // }
-                        // $rombel_id = ($request->session()->get('role') == 'wali') ? $request()->session()->get('rombel_id') : $request->rombel;
+                        if($request->rombel != 'all') {
+                            $rombel = 'App\Rombel'::where([
+                                ['kode_rombel','=', $request->rombel]
+                            ])->first();
+                            $kds = Kd::where([
+                                ['tingkat', '=', $rombel->tingkat],
+                                ['mapel_id', '=', $request->mapel],
+                                ['kode_kd', 'LIKE', $request->aspek.'.%']
+                            ])->get();
+                        } else {
+                            $kds = Kd::all();       
+                        }
                         
-                        $rombel = 'App\Rombel'::where([
-                                    ['kode_rombel','=', $request->rombel]
-                                ])->first();
-                        $kds = Kd::where([
-                            ['tingkat', '=', $rombel->tingkat],
-                            ['mapel_id', '=', $request->mapel],
-                            ['kode_kd', 'LIKE', $request->aspek.'.%']
-                        ])->get();
+                        
                         $datas = [];
                         foreach($kds as $kd)
                         {

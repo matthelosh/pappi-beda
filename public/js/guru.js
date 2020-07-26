@@ -224,47 +224,47 @@ $(document).ready(function(){
         ]
     })
 
-    // $(document).on('click', '.btn-edit-kd', function(e) {
-    //     e.preventDefault()
-    //     var kd = tkds.row($(this).parents('tr')).data()
-    //     $('#modalKd .mode-form').text('Edit')
-    //     $('#form-kd').prop('action', '/kds/'+kd.id).prepend(`<input type="hidden" name="_method" value="put">`)
-    //     var kode = kd.kode_kd.split('.')
-    //     $('#form-kd select[name="ranah"]').val(kode[0])
-    //     $('#form-kd input[name="kode_kd"]').val(kd.kode_kd)
-    //     $('#form-kd textarea[name="teks_kd"]').val(kd.teks_kd)
-    //     $('#form-kd select[name="mapel_id"]').append(`<option value="${kd.mapel_id}" selected>${kd.mapels.label}</option>`)
-    //     $('#form-kd select[name="tingkat"]').val(kd.tingkat)
-    //     $('#modalKd').modal()
+    $(document).on('click', '.btn-edit-kd', function(e) {
+        e.preventDefault()
+        var kd = tkds.row($(this).parents('tr')).data()
+        $('#modalKd .mode-form').text('Edit')
+        $('#form-kd').prop('action', '/kds/'+kd.id).prepend(`<input type="hidden" name="_method" value="put">`)
+        var kode = kd.kode_kd.split('.')
+        $('#form-kd select[name="ranah"]').val(kode[0])
+        $('#form-kd input[name="kode_kd"]').val(kd.kode_kd)
+        $('#form-kd textarea[name="teks_kd"]').val(kd.teks_kd)
+        $('#form-kd select[name="mapel_id"]').append(`<option value="${kd.mapel_id}" selected>${kd.mapels.label}</option>`)
+        $('#form-kd select[name="tingkat"]').val(kd.tingkat)
+        $('#modalKd').modal()
 
-    // })
+    })
 
-    // $(document).on('click', '.btn-delete-kd', function(e){
-    //     e.preventDefault()
-    //     var kd = tkds.row($(this).parents('tr')).data()
-    //     swal({
-    //         title: 'Yakin Mengapus '+kd.kode_kd+'?',
-    //         text: kd.teks_kd,
-    //         buttons: true,
-    //         dangerMode: true,
-    //         icon: 'warning'
-    //     }).then((lanjut) => {
-    //         if( lanjut ) {
-    //             $.ajax({
-    //                 headers: headers,
-    //                 url: '/kds/'+kd.id,
-    //                 type: 'delete'
-    //             }).done(res=>{
-    //                 swal('Info', res.msg, 'info')
-    //                 tkds.ajax.reload()
-    //             }).fail(err => {
-    //                 swal('Error', err.response.msg, 'error')
-    //             })
-    //         } else {
-    //             swal('Info', 'KD tidak dihapus.', 'info')
-    //         }
-    //     })
-    // })
+    $(document).on('click', '.btn-delete-kd', function(e){
+        e.preventDefault()
+        var kd = tkds.row($(this).parents('tr')).data()
+        swal({
+            title: 'Yakin Mengapus '+kd.kode_kd+'?',
+            text: kd.teks_kd,
+            buttons: true,
+            dangerMode: true,
+            icon: 'warning'
+        }).then((lanjut) => {
+            if( lanjut ) {
+                $.ajax({
+                    headers: headers,
+                    url: '/kds/'+kd.id,
+                    type: 'delete'
+                }).done(res=>{
+                    swal('Info', res.msg, 'info')
+                    tkds.ajax.reload()
+                }).fail(err => {
+                    swal('Error', err.response.msg, 'error')
+                })
+            } else {
+                swal('Info', 'KD tidak dihapus.', 'info')
+            }
+        })
+    })
 
     // Import
     $(document).on('click', '.btn-import-kd', function(e) {
@@ -450,6 +450,12 @@ $(document).ready(function(){
                 a.remove()
         })
     })
+
+
+
+
+
+
     var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : 'null';
 
     // $(document).on('change', 'select[name="rombel_id"]', function(){
