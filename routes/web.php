@@ -71,13 +71,13 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
         Route::post('/', 'SekolahController@index')->name('sekolahs.index');
     });
 
-    Route::group(['prefix' => 'rombels', 'middleware' => ['auth', 'isAdmin']], function(){
-        Route::get('/', 'DashController@rombels')->name('rombels.page');
+    Route::group(['prefix' => 'rombels', 'middleware' => ['auth']], function(){
+        Route::get('/', 'DashController@rombels')->name('rombels.page')->middleware('isAdmin');
         Route::post('/', 'RombelController@index')->name('rombels.index');
-        Route::post('/create', 'RombelController@create')->name('rombels.create');
-        Route::post('/import', 'RombelController@import')->name('rombels.import');
-        Route::post('/update', 'RombelController@update')->name('rombels.update');
-        Route::delete('/{id}', 'RombelController@delete')->name('rombels.delete');
+        Route::post('/create', 'RombelController@create')->name('rombels.create')->middleware('isAdmin');
+        Route::post('/import', 'RombelController@import')->name('rombels.import')->middleware('isAdmin');
+        Route::post('/update', 'RombelController@update')->name('rombels.update')->middleware('isAdmin');
+        Route::delete('/{id}', 'RombelController@delete')->name('rombels.delete')->middleware('isAdmin');
     });
 
     Route::group(['prefix' => 'siswas', 'middleware' => ['auth', 'isAdmin']], function() {
@@ -180,12 +180,14 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
         });
 
         Route::group(['prefix' => 'nilais', 'middleware' => ['auth', 'isGuru']], function() {
+            Route::post('/', 'NilaiController@index')->name('nilais.index');
+            Route::get('/format', 'NilaiController@unduhFormat')->name('nilais.format.unduh');
             Route::get('/entri', 'DashGuruController@entriNilai')->name('nilais.page');
             Route::post('/entri', 'NilaiController@entri')->name('nilais.entri');
-            Route::post('/', 'NilaiController@index')->name('nilais.index');
+            Route::post('/import', 'NilaiController@import')->name('nilais.import');
         });
 
-        Route::group(['prefix' => 'jurnal', 'middleware' => ['auth', 'isGuru']], function() {
+        Route::group(['prefix' => 'jurnals', 'middleware' => ['auth', 'isGuru']], function() {
             Route::get('/', 'DashGuruController@jurnal')->name('jurnals.page');
             Route::post('/', 'JurnalController@index')->name('jurnals.index');
             Route::post('/create', 'JurnalController@create')->name('jurnals.create');

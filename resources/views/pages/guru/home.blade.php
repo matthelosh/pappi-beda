@@ -9,16 +9,37 @@
             </h4>
             <div class="row">
                 <div class="col-8">
-                    <p>A: 3 siswa</p>
-                    <p>C: 5 siswa</p>
-                    <p>D: 1 siswa</p>
+                    <h4>Jumlah {{ $jurnals->count() }} Catatan</h4>
+                    @php
+                        $jmlA = 0;
+                        $jmlC = 0;
+                        $jmlD = 0;
+                        foreach($jurnals as $jurnal)
+                        {
+                            switch($jurnal->nilai)
+                            {
+                                case "A":
+                                    $jmlA +=1;
+                                break;
+                                case "C":
+                                    $jmlC +=1;
+                                break;
+                                case "D":
+                                    $jmlD +=1;
+                                break;
+                            }
+                        }
+                    @endphp
+                    <p>A: {{ $jmlA }}</p>
+                    <p>C: {{ $jmlC }}</p>
+                    <p>D: {{ $jmlD }}</p>
                 </div>
                 <div class="col-4 text-right">
-                    <a href="/#" class="btn btn-sm btn-primary btn-pill">
+                    <btn class="btn btn-sm btn-primary btn-pill" data-toggle="modal" data-target="#modalJurnalSiswa">
                         <svg class="c-icon">
                           <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
                         </svg>
-                    </a>
+                    </btn>
                 </div>
             </div>
         </div>

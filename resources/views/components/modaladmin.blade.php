@@ -904,7 +904,7 @@
                     <button class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="/{{ Auth::user()->username }}/jurnal/create" class="form form-jurnal" id="form-jurnal" method="POST">
+                    <form action="/{{ Auth::user()->username }}/jurnals/create" class="form form-jurnal" id="form-jurnal" method="POST">
                         @csrf()
                         <div class="row">
                             <div class="form-group col-sm-6">

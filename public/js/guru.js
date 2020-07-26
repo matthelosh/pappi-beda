@@ -329,19 +329,27 @@ $(document).ready(function(){
 
     // Form Nilai
     $(document).on('click', '.btn-form-nilai', function(e) {
+        if(sessionStorage.getItem('role') != 'wali' && $('select[name="rombel"]').val() =='0') {
+            swal('Perhatian', 'Pilih dulu Rombel', 'warning');
+            return false;
+        }
         var data = {
             periode_id : $('select[name="periode_id"').val(),
             jenis : $('select[name="jenis"').val(),
             mapel_id : $('select[name="mapel_id"').val(),
             aspek : $('select[name="aspek"').val(),
             kd_id : $('select[name="kd_id"').val(),
+            rombel : (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
         }
 
         $.ajax({
             headers: headers,
             url: '/'+sessionStorage.getItem('username')+'/nilais?req=view',
             type: 'post',
-            data: data
+            data: data,
+            beforeSend: function() {
+                $('.form-list').addClass('d-flex').removeClass('d-none')
+            }
         }).done(res => {
             var siswas = res.datas
             var trs = ''
@@ -354,9 +362,92 @@ $(document).ready(function(){
             $('.form-nilai input[name="mapel_id"]').val(data.mapel_id)
             $('.form-nilai input[name="aspek"]').val(data.aspek)
             $('.form-nilai input[name="kd_id"]').val(data.kd_id)
+            $('.form-list').addClass('d-none').removeClass('d-flex')
             $('.table-form-nilai tbody').html(trs)
+            $('.form-nilai button[type="submit"]').removeClass('d-none')
         }).fail(err => {
             swal('Error', err.resposne.msg, 'error')
+        })
+    })
+
+    // Jurnal Siswa
+    var tjurnals = $('#table-jurnal').DataTable({
+        serverSide: true,
+        ajax: {
+            headers: headers,
+            url: '/'+sessionStorage.getItem('username')+'/jurnals?req=dt',
+            type: 'post'
+        },
+        columns: [
+            {'data' : 'DT_RowIndex'},
+            {'data': 'tanggal'},
+            {'data': null, render: (data) => {
+                return ((data.siswas.nis) ? data.siswas.nis: '-') + ' / ' + data.siswas.nisn
+            }},
+            {'data': 'siswas.nama_siswa'},
+            
+            
+            {'data': 'catatan'},
+            {'data': 'butir_sikap'},
+            {'data': 'nilai'},
+            {'data': 'aspek'},
+            {'data': null, render: (data) => {
+                return 'Opsi'
+            }}
+        ],
+        'createdRow': (row, data, dataIndex) => {
+            var bg  = (data.nilai == 'A') ? 'bg-success' : (data.nilai == 'B') ? 'bg-info' : (data.nilai == 'C') ? 'bg-warning' : 'bg-danger'
+            $(row).addClass(bg) 
+        }
+    })
+
+    $(document).on('click', '.form-import-nilai input[name="nama_file"]', function(){
+        $('#file_nilai').trigger('click');
+    });
+
+    $('#file_nilai').on('change', function(e) {
+        var file = e.target.files[0]
+        
+        // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet = xlsx
+        // application/vnd.ms-excel = csv, xls application/vnd.ms-excel
+        // application/vnd.oasis.opendocument.spreadsheet = ods
+        if(file.type == 'application/vnd.ms-excel' || file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type =='application/vnd.oasis.opendocument.spreadsheet') {
+            $('.form-import-nilai input[name="nama_file"]').val(file.name)
+        } else {
+            swal('Error', 'File harus berjenis xls, xlsx, csv, ods', 'error')
+            $('.form-import-nilai input[name="nama_file"]').val('')
+            $(this).val(null)
+        }
+        
+    })
+
+
+    $(document).on('click', '.btn-unduh-format', function(e) {
+        e.preventDefault()
+        var data = {
+            mapel: $('select[name="mapel_id"]').val(),
+            rombel:  (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val(),
+            aspek: $('select[name="aspek"]').val()
+        }
+
+        $.ajax({
+            headers: headers,
+            url:'/'+sessionStorage.getItem('username')+'/nilais/format',
+            type:'get',
+            data: data,
+            xhrFields: { responseType: 'blob' }
+        }).done(res => {
+            console.log(res)
+            var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
+            var blob = res
+                const a = document.createElement('a')
+                var filename = 'Nilai.'+rombel+'.'+$('select[name="mapel_id"]').val()+"."+$('select[name="aspek"]').val()+'.xlsx'
+                document.body.appendChild(a)
+                a.href = window.URL.createObjectURL(blob)
+                a.download = filename
+                a.target = '_blank'
+                a.click()
+                a.remove()
         })
     })
 

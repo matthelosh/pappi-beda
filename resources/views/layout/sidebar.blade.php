@@ -24,6 +24,7 @@
               </a>
             </li>
         @foreach($menus as $menu)
+          @if(strpos($menu->role, Auth::user()->role) !== false || $menu->role == 'all')
             <li class="c-sidebar-nav-item {{ $menu->childs()->count() ? 'c-sidebar-nav-dropdown' : '' }}">
               <a href="{{ ((Auth::user()->level != 'admin') ? '/'.Auth::user()->username: '') . $menu->url }}" class="c-sidebar-nav-link {{ ($menu->childs()->count() > 0) ? 'c-sidebar-nav-dropdown-toggle': '' }}">
                 @php($link = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$menu->icon )
@@ -35,7 +36,8 @@
               @if($menu->childs()->count() > 0)
                 <ul class="c-sidebar-nav-dropdown-items">
                   @foreach($menu->childs as $child)
-                    @if($child->role == Auth::user()->role)
+                    @if(strpos($child->role, Auth::user()->role) !== false)
+                    {{-- @if($child->role == Auth::user()->role) --}}
                       <li class="c-sidebar-nav-item">
                         <a href="{{((Auth::user()->level != 'admin') ? '/'.Auth::user()->username: '') . $child->url }}" class="c-sidebar-nav-link">
                           @php($link_sub = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$child->icon )
@@ -50,6 +52,7 @@
                 </ul>
               @endif
             </li>
+          @endif  
         @endforeach
 
         

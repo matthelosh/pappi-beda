@@ -150,6 +150,7 @@
         },
     })
     $('.selMapel').select2({
+        
         ajax: {
             headers: headers,
             url: '/mapels?req=select',
@@ -187,14 +188,24 @@
             var mapel = $('.selMapel').val()
             var ki = $(this).val()
             if(mapel == '0' || ki == '0') {
-              swal('Error! Harap Memilih Mapel dan Aspen Dulu','error')
+              swal('Error!','Harap Memilih Mapel dan Aspen Dulu','error')
+            }
+            if(sessionStorage.getItem('role') != 'wali' && $('select[name="rombel"]').val() == '0') {
+              swal('Info', 'Pilih Rombel Dulu!', 'warning')
+              return false
+            }
+            var data = {
+              mapel:  $('.selMapel').val(),
+              aspek:  $(this).val(),
+              rombel: (sessionStorage.getItem('role') == 'wali') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
             }
 
             $.ajax({
                 headers: headers,
                 type: 'post',
                 dataType: 'json',
-                url: '/kds?req=select&mapel='+mapel+'&ki='+ki,
+                url: '/kds?req=select',
+                data: data,
                 success: function(res){
                     var kdOpt = ''
                     res.forEach(item => {
