@@ -274,6 +274,7 @@ $(document).ready(function(){
     })
 
 
+
     // Select2
     // $('.selSekolah').select2({
     //     ajax: {
@@ -371,11 +372,12 @@ $(document).ready(function(){
     })
 
     // Jurnal Siswa
+    var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val();
     var tjurnals = $('#table-jurnal').DataTable({
         serverSide: true,
         ajax: {
             headers: headers,
-            url: '/'+sessionStorage.getItem('username')+'/jurnals?req=dt',
+            url: '/'+sessionStorage.getItem('username')+'/jurnals?req=dt&rombel='+rombel,
             type: 'post'
         },
         columns: [
@@ -385,7 +387,7 @@ $(document).ready(function(){
                 return ((data.siswas.nis) ? data.siswas.nis: '-') + ' / ' + data.siswas.nisn
             }},
             {'data': 'siswas.nama_siswa'},
-            
+            {'data' : 'rombel_id'},
             
             {'data': 'catatan'},
             {'data': 'butir_sikap'},
@@ -400,6 +402,12 @@ $(document).ready(function(){
             $(row).addClass(bg) 
         }
     })
+
+
+    $('.jurnal_page select[name="rombel"]').on('change', function(){
+        tjurnals.ajax.url('/'+sessionStorage.getItem('username')+'/jurnals?req=dt&rombel='+$(this).val()).draw()
+    })
+
 
     $(document).on('click', '.form-import-nilai input[name="nama_file"]', function(){
         $('#file_nilai').trigger('click');
@@ -452,7 +460,31 @@ $(document).ready(function(){
     })
 
 
+// Rekap Nilai
+var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.rekap_page select[name="rombel"]').val();
+    var trekaps = $('.rekap_page #table-rekap').DataTable({
+        serverSide: true,
+        ajax: {
+            headers: headers,
+            url: '/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel,
+            type: 'post'
+        },
+        columns: [
+            {'data': 'DT_RowIndex'},
+            {'data': null, render: (data) => {
+                return ((data.siswas.nis) ? data.siswas.nis : '-') + ' / ' + data.siswas.nisn
+            }},
+            {'data': 'siswas.nama_siswa'},
+            {'data': 'nilai'},
+            {'data': null, render: (data) => {
+                return 'Opsi'
+            }}
+        ]
+    })
 
+    $('.rekap_page select[name="rombel"]').on('change', function(){
+        trekaps.ajax.url('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val()).draw()
+    })
 
 
 

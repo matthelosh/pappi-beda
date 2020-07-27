@@ -57,6 +57,11 @@ class NilaiController extends Controller
         }
     }
 
+    public function rekap(Request $request)
+    {
+        
+    }
+
     public function import(Request $request)
     {
         try {

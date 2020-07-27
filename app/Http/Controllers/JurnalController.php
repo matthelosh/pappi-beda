@@ -20,9 +20,9 @@ class JurnalController extends Controller
             switch($request->query('req'))
             {
                 case "dt":
-                    $rombel = Auth::user()->role == 'wali' ? ['rombel_id', '=',$request->session()->get('rombel_id')] : ['rombel_id','<>','!'];
+                    $rombel = ($request->query('rombel') == '0') ? ['rombel_id', '<>', '!'] : ['rombel_id', '=', $request->query('rombel')];
                     $aspek = Auth::user()->role == 'wali' ? ['aspek', '=', '2'] : ['aspek','=', '1'];
-                     $jurnals = Jurnal::where([
+                    $jurnals = Jurnal::where([
                         $rombel,
                         $aspek,
                         ['periode_id','=', $request->session()->get('periode_aktif')],
@@ -41,11 +41,12 @@ class JurnalController extends Controller
      */
     public function create(Request $request)
     {
+        $rombel = 'App\Siswa'::where('nisn', $request->siswa_id)->select('rombel_id')->first();
         try {
             Jurnal::create([
                 'tanggal' => $request->tanggal,
                 'periode_id' => $request->session()->get('periode_aktif'),
-                'rombel_id' => $request->session()->get('rombel_id'),
+                'rombel_id' => $rombel->rombel_id,
                 'butir_sikap' => $request->butir_sikap,
                 'aspek' => $request->aspek,
                 'siswa_id' => $request->siswa_id,

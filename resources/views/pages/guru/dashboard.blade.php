@@ -24,6 +24,9 @@ Dashboard Guru
         @case('Entri Nilai')
             @include('pages.guru.entri-nilai')
         @break
+        @case('Rekap Nilai')
+            @include('pages.guru.rekap-nilai')
+        @break
         @case('Jurnal Sikap')
             @include('pages.guru.jurnal')
         @break

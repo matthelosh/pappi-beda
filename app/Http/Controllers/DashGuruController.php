@@ -62,6 +62,10 @@ class DashGuruController extends Controller
     {
        return view('pages.guru.dashboard', ['page_title' => 'Entri Nilai', 'menus' => $this->showMenus($request)]);
     }
+    public function rekapNilai(Request $request)
+    {
+       return view('pages.guru.dashboard', ['page_title' => 'Rekap Nilai', 'menus' => $this->showMenus($request)]);
+    }
 
     public function jurnal(Request $request)
     {

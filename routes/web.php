@@ -183,6 +183,8 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::post('/', 'NilaiController@index')->name('nilais.index');
             Route::get('/format', 'NilaiController@unduhFormat')->name('nilais.format.unduh');
             Route::get('/entri', 'DashGuruController@entriNilai')->name('nilais.page');
+            Route::get('/rekap', 'DashGuruController@rekapNilai')->name('nilais.rekap.page');
+            Route::post('/rekap', 'NilaiController@rekap')->name('nilais.rekap.index');
             Route::post('/entri', 'NilaiController@entri')->name('nilais.entri');
             Route::post('/import', 'NilaiController@import')->name('nilais.import');
         });
