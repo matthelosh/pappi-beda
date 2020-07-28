@@ -462,25 +462,30 @@ $(document).ready(function(){
 
 // Rekap Nilai
 var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.rekap_page select[name="rombel"]').val();
-    var trekaps = $('.rekap_page #table-rekap').DataTable({
-        serverSide: true,
-        ajax: {
-            headers: headers,
+
+// Get Rekap
+    
+    $.ajax({
+        headers: headers,
             url: '/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel,
             type: 'post'
-        },
-        columns: [
-            {'data': 'DT_RowIndex'},
-            {'data': null, render: (data) => {
-                return ((data.siswas.nis) ? data.siswas.nis : '-') + ' / ' + data.siswas.nisn
-            }},
-            {'data': 'siswas.nama_siswa'},
-            {'data': 'nilai'},
-            {'data': null, render: (data) => {
-                return 'Opsi'
-            }}
-        ]
+    }).done(res => {
+        var dataRekap = []
+        var columnRekap = []
+        dataRekap = res
+        $.each(res[0],(key, value) => {
+            var item = {}
+            item.data = key,
+            item.title = key;
+            columnRekap.push(item)
+        })
+        var trekaps = $('.rekap_page #table-rekap').DataTable({
+            data: dataRekap,
+            "columns":columnRekap
+        })
     })
+
+    
 
     $('.rekap_page select[name="rombel"]').on('change', function(){
         trekaps.ajax.url('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val()).draw()

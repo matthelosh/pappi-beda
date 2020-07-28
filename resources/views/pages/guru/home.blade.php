@@ -9,30 +9,32 @@
             </h4>
             <div class="row">
                 <div class="col-8">
-                    <h4>Jumlah {{ $jurnals->count() }} Catatan</h4>
-                    @php
-                        $jmlA = 0;
-                        $jmlC = 0;
-                        $jmlD = 0;
-                        foreach($jurnals as $jurnal)
-                        {
-                            switch($jurnal->nilai)
+                    @if(Auth::user()->role !='gor' || Auth::user()->role !='gib')
+                        <h4>Jumlah {{ $jurnals->count() }} Catatan</h4>
+                        @php
+                            $jmlA = 0;
+                            $jmlC = 0;
+                            $jmlD = 0;
+                            foreach($jurnals as $jurnal)
                             {
-                                case "A":
-                                    $jmlA +=1;
-                                break;
-                                case "C":
-                                    $jmlC +=1;
-                                break;
-                                case "D":
-                                    $jmlD +=1;
-                                break;
+                                switch($jurnal->nilai)
+                                {
+                                    case "A":
+                                        $jmlA +=1;
+                                    break;
+                                    case "C":
+                                        $jmlC +=1;
+                                    break;
+                                    case "D":
+                                        $jmlD +=1;
+                                    break;
+                                }
                             }
-                        }
-                    @endphp
-                    <p>A: {{ $jmlA }}</p>
-                    <p>C: {{ $jmlC }}</p>
-                    <p>D: {{ $jmlD }}</p>
+                        @endphp
+                        <p>A: {{ $jmlA }}</p>
+                        <p>C: {{ $jmlC }}</p>
+                        <p>D: {{ $jmlD }}</p>
+                    @endif
                 </div>
                 <div class="col-4 text-right">
                     <btn class="btn btn-sm btn-primary btn-pill" data-toggle="modal" data-target="#modalJurnalSiswa">
