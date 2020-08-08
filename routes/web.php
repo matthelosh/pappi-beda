@@ -204,4 +204,18 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::get('/cetak', 'RaporController@cetak')->name('rapor.cetak');
         });
 
+        Route::group(['prefix' => 'tema', 'middleware' => ['auth']], function(){
+            Route::get('/', 'DashGuruController@tema')->name('tema.page');
+            Route::post('/', 'TemaController@index')->name('tema.index');
+        });
+
+        Route::group(['prefix' => 'subtema', 'middleware' => ['auth', 'isGuru']], function(){
+            Route::post('/', 'SubtemaController@index')->name('subtema.index');
+        });
+
+        Route::group(['prefix' => 'pemetaan', 'middleware'=>['auth', 'isGuru']], function(){
+            Route::post('/', 'PemetaanController@index')->name('pemetaan.index');
+            Route::put('/{subtema_id}/{mapel_id}', 'PemetaanController@update')->name('pemetaan.update');
+        });
+
     });

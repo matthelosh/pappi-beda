@@ -36,7 +36,7 @@
               @if($menu->childs()->count() > 0)
                 <ul class="c-sidebar-nav-dropdown-items">
                   @foreach($menu->childs as $child)
-                    @if(strpos($child->role, Auth::user()->role) !== false)
+                    @if(strpos($child->role, Auth::user()->role) !== false || $child->role == 'all')
                     {{-- @if($child->role == Auth::user()->role) --}}
                       <li class="c-sidebar-nav-item">
                         <a href="{{((Auth::user()->level != 'admin') ? '/'.Auth::user()->username: '') . $child->url }}" class="c-sidebar-nav-link">

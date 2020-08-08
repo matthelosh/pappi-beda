@@ -1145,6 +1145,22 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
 
         },
     })
+    $('.selMenu').select2({
+        ajax: {
+            headers: headers,
+            url: '/menus?req=select',
+            type: 'get',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true,
+
+        },
+    })
     $('.selWali').select2({
         ajax: {
             headers: headers,

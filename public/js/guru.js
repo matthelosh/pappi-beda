@@ -586,6 +586,126 @@ function getRekap34(url=null) {
     })
 
 
+
+
+// Tema
+    var ttemas = $('#table-tema').DataTable({
+        serverSide: true,
+        ajax: {
+            url: '/'+sessionStorage.getItem('username')+'/tema?req=dt',
+            type: 'post',
+            headers: headers
+        },
+        columns:[
+            {'data': 'DT_RowIndex'},
+            {'data': 'kode_tema'},
+            {'data': 'teks_tema'},
+            {'data': null, render: (data) => {
+                return `
+                    <button class="btn btn-warning btn-edit-tema">
+                        <i class="mdi mdi-pencil"></i>
+                        Edit
+                    </button>
+                    <button class="btn btn-info btn-subtema">
+                        <i class="mdi mdi-subdirectory-arrow-left"></i>
+                        Subtema
+                    </button>
+                `
+            }},
+        ]
+    })
+
+    $(document).on('click', '.btn-subtema', function(){
+        var tema = ttemas.row($(this).parents('tr')).data()
+        var modalSubtema = $('#modal-subtema')
+        modalSubtema.find('.modal-header .modal-title span').text(tema.kode_tema+' '+tema.teks_tema)
+
+        var tsubtema = $('.table-subtema').DataTable({
+            serverSide: true,
+            ajax: {
+                url: '/'+sessionStorage.getItem('username')+'/subtema?req=dt&tema='+tema.kode_tema,
+                type: 'post',
+                headers: headers
+            },
+            columns: [
+                {"data": "DT_RowIndex"},
+                {"data": "tema_id"},
+                {"data": "kode_subtema"},
+                {"data": "teks_subtema"},
+                {"data": null, render: (data) => {
+                    return `
+                        <button class="btn btn-success btn-tambah-kdtema">Tambah KD</button>
+                    `
+                }},
+            ]
+        })
+
+        modalSubtema.modal()
+
+        $(document).on('hide.coreui.modal', '#modal-subtema', function(e) {
+            tsubtema.destroy()
+        })
+
+        $(document).on('click', '.btn-tambah-kdtema', function(){
+            var subtema = tsubtema.row($(this).parents('tr')).data()
+            // console.log(subtema)
+            $('.row-kd .card-title #subtema').text(subtema.kode_subtema+' . '+subtema.teks_subtema)
+
+            $.ajax({
+                headers: headers,
+                url: '/'+sessionStorage.getItem('username')+'/pemetaan?subtema='+subtema.kode_subtema,
+                type:'post'
+            }).done(res=>{
+                var datas = res.datas   
+                var tr = ''
+                $.each(datas, (key,value) => {
+                    // var kds = value.split(',')
+                    tr += `<tr>
+                        <td>
+                            ${key}
+                        </td>
+                        <td>
+                            <span class="kd">${value}</span>
+                            <input  type="text" class="input-kd" value="" style="display:none;width: 60%;">
+                            <button class="btn btn-danger btn-sm float-right btn-add-kdtema" data-subtema="${subtema.kode_subtema}">
+                                <i class="mdi mdi-plus-box"></i>
+                            </button>
+                        </td>
+                    </tr>`
+                })
+
+                $('.table-kdtema tbody').html(tr)
+                
+            })
+            $('.row-kd').toggle()
+        })
+
+        $(document).on('click', '.btn-add-kdtema', function(){
+            $(this).siblings('.input-kd').val($(this).siblings('.kd').text()).toggle()
+            $(this).siblings('.kd').toggle()
+            // alert('hi')
+            $(this).siblings('.input-kd').on('blur', function(){
+                var subtema_id = $(this).data('subtema')
+                var mapel_id = $(this).parents('tr').find('td').first().text()
+                // alert(mapel_id);
+                var data = {kds: $(this).val()}
+
+                $.ajax({
+                    url: '/'+sessionStorage.getItem('username')+'/pemetaan/'+subtema_id+'/'+mapel_id,
+                    type: 'put',
+                    headers: headers,
+                    data:data
+                }).done(res=>{
+                    console.log(res)
+                }).fail(err => {
+                    console.log(err.response)
+                })
+            })
+        })
+    })
+
+    
+
     var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : 'null';
 
     // $(document).on('change', 'select[name="rombel_id"]', function(){

@@ -182,6 +182,19 @@
 
         },
     })
+    $('.selKds').select2({
+      headers: headers,
+            url: '/kds?req=select',
+            type: 'post',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(response) {
+                    return {
+                        results: response.sekolahs
+                    };
+                },
+                cache: true,
+    })
     $('.select').select2()
     $('.selKd').select2()
     $(document).on('change', '.selAspek', function(){

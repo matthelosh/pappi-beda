@@ -13,11 +13,27 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $menus = Menu::where('parent_id','=',0)->get();
+        if($request->query('req')) {
+            switch($request->query('req')) 
+            {
+                case "select":
+                    $menus = Menu::where('parent_id','=',0)->get();
+                    $datas = [];
+                    foreach($menus as $menu) {
+                        array_push($datas, ['id' => $menu->id, "text" => $menu->title]);
+                    }
+
+                    return response()->json($datas);
+                break;
+            }
+        } else {
+            $menus = Menu::where('parent_id','=',0)->get();
         $allMenus = Menu::pluck('title', 'id', 'url')->all();
         return view('pages.admin.dashboard', ['page_title' => 'Menu','menus' => compact($menus), 'allMenus' => compact($allMenus)]);
+        }
+        
     }
 
     /**

@@ -13,15 +13,15 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="parent_id" class="col-form-label">Menu Induk:</label>
-                        <select name="parent_id" class="form-control">
+                        <select name="parent_id" class="form-control selMenu" style="width:100%">
                             <option value="0">Menu Induk</option>
-                            @if(isset($datas))
+                            {{-- @if(isset($datas))
                                 @foreach($datas as $menu)
                                     @if($menu->parent_id == 0)
                                         <option value="{{ $menu->id }}">{{ $menu->title }}</option>
                                     @endif
                                 @endforeach
-                            @endif
+                            @endif --}}
                         </select>
                     </div>
                     <div class="form-group">

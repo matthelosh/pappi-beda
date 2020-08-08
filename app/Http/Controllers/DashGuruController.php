@@ -78,6 +78,11 @@ class DashGuruController extends Controller
         return view('pages.guru.dashboard', ['page_title' => 'Cetak Rapor', 'menus' => $this->showMenus($request), 'siswas' => $siswas]);
     }
 
+    public function tema(Request $request)
+    {
+        return view('pages.guru.dashboard', ['page_title' => 'Tema' , 'menus' => $this->showMenus($request)]);
+    }
+
     public function periode(Request $request)
     {
         return view('pages.admin.dashboard', ['page_title' => 'Data Periode', 'menus' => $this->showMenus($request)]);

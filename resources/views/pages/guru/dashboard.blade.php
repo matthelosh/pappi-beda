@@ -36,5 +36,8 @@ Dashboard Guru
         @case('Rapor Siswa')
             @include('pages.guru.cetak_rapor')
         @break
+        @case('Tema')
+            @include('pages.guru.tema')
+        @break
     @endswitch
 @endsection
