@@ -661,12 +661,10 @@ function getRekap34(url=null) {
                 $.each(datas, (key,value) => {
                     // var kds = value.split(',')
                     tr += `<tr>
-                        <td>
-                            ${key}
-                        </td>
+                        <td>${key}</td>
                         <td>
                             <span class="kd">${value}</span>
-                            <input  type="text" class="input-kd" value="" style="display:none;width: 60%;">
+                            <input  type="text" class="input-kd" value="" style="display:none;width: 60%;padding:5px 10px;" placeholder="Pisahkan KD dengan koma. Contoh: 3.1,4.1,3.3,4.3">
                             <button class="btn btn-danger btn-sm float-right btn-add-kdtema" data-subtema="${subtema.kode_subtema}">
                                 <i class="mdi mdi-plus-box"></i>
                             </button>
@@ -681,13 +679,13 @@ function getRekap34(url=null) {
         })
 
         $(document).on('click', '.btn-add-kdtema', function(){
-            $(this).siblings('.input-kd').val($(this).siblings('.kd').text()).toggle()
+            $(this).siblings('.input-kd').val($(this).siblings('.kd').text()).toggle().focus()
             $(this).siblings('.kd').toggle()
             // alert('hi')
             $(this).siblings('.input-kd').on('blur', function(){
-                var subtema_id = $(this).data('subtema')
+                var subtema_id = $(this).siblings('.btn-add-kdtema').data('subtema')
                 var mapel_id = $(this).parents('tr').find('td').first().text()
-                // alert(mapel_id);
+                // alert(subtema_id);
                 var data = {kds: $(this).val()}
 
                 $.ajax({
@@ -696,7 +694,10 @@ function getRekap34(url=null) {
                     headers: headers,
                     data:data
                 }).done(res=>{
-                    console.log(res)
+                    $(this).hide()
+                    $(this).siblings('.kd').toggle().text($(this).val())
+                    // console.log(res)
+                    swal('Info', res.msg, 'info')
                 }).fail(err => {
                     console.log(err.response)
                 })
