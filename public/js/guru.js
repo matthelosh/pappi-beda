@@ -13,7 +13,7 @@ $(document).ready(function(){
         serverSide: true,
         ajax: {
             headers: headers,
-            url:  '/'+sessionStorage.getItem('username')+'/siswaku?req=dt&rombel_id='+sessionStorage.getItem('rombel_id'),
+            
             type: 'post'
         },
         columns: [
@@ -462,35 +462,128 @@ $(document).ready(function(){
 
 // Rekap Nilai
 var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.rekap_page select[name="rombel"]').val();
-
+// var mapel = 
+var trekaps;
 // Get Rekap
-    
+
+getRekap34()
+
+function getRekap34(url=null) {
+    var mapel_id = (sessionStorage.getItem('role') == 'gpai') ? 'pabp' : (sessionStorage.getItem('role') == 'gor') ? 'pjok' : 'big'
+    var mapel = (sessionStorage.getItem('rombel_id') == 'all') ? '&mapel='+mapel_id: '&mapel='+$('.rekap_page select[name="mapel"]').val()
     $.ajax({
         headers: headers,
-            url: '/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel,
+            url: (url == null)?'/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel+mapel: url,
             type: 'post'
     }).done(res => {
         var dataRekap = []
         var columnRekap = []
-        dataRekap = res
-        $.each(res[0],(key, value) => {
-            var item = {}
-            item.data = key,
-            item.title = key;
-            columnRekap.push(item)
+        // dataRekap = res
+        var theads = `<thead>
+                <tr>
+                    <th rowspan="2">NO ${res.kkms[0].nilai}</th>
+                    <th rowspan="2">NIS</th>
+                    <th  rowspan="2">NISN</th>
+                    <th  rowspan="2">NAMA</th>
+                    <th colspan="3">K4</th>
+                    <th colspan="3">K3</th>
+                </tr>
+                <tr>
+                    <th>NH</th>
+                    <th>NPTS</th>
+                    <th>NPAS</th>
+                    <th>NH</th>
+                    <th>NPTS</th>
+                    <th>NPAS</th>
+                </tr>
+                </thead>
+            `
+        var tr = ''
+        res.rekap34.forEach((item, index) => {
+            tr +=`<tr>
+                <td>${index+1}</td>
+                <td>${(item.nis)?item.nis:'-'}</td>
+                <td>${item.nisn}</td>
+                <td>${item.nama_siswa}</td>
+                <td class="${(item.n4_pabp_uh < res.kkms[0].nilai || item.n4_pabp_uh == null)?'text-danger font-weight-bold':''}">${item.n4_pabp_uh}</td>
+                <td class="${(item.n4_pabp_pts < res.kkms[0].nilai || item.n4_pabp_pts == null)?'text-danger font-weight-bold':''}">${item.n4_pabp_pts}</td>
+                <td class="${(item.n4_pabp_pas < res.kkms[0].nilai || item.n4_pabp_pas == null)?'text-danger font-weight-bold':''}">${item.n4_pabp_pas}</td>
+                <td class="${(item.n3_pabp_uh < res.kkms[0].nilai || item.n3_pabp_uh == null)?'text-danger font-weight-bold':''}">${item.n3_pabp_uh}</td>
+                <td class="${(item.n3_pabp_pts < res.kkms[0].nilai || item.n3_pabp_pts == null)?'text-danger font-weight-bold':''}">${item.n3_pabp_pts}</td>
+                <td class="${(item.n3_pabp_pas < res.kkms[0].nilai || item.n3_pabp_pas == null)?'text-danger font-weight-bold':''}">${item.n3_pabp_pas}</td>
+            </tr>`
         })
-        var trekaps = $('.rekap_page #table-rekap').DataTable({
-            data: dataRekap,
-            "columns":columnRekap
+
+        // $.each(res[0],(key, value) => {
+        //     var item = {}
+        //     item.data = key,
+        //     item.title = key;
+        //     columnRekap.push(item)
+            
+            
+        // })
+        $('.rekap_page #table-rekap').html(theads + `<tbody>${tr}</tbody>`)
+        // console.log(dataRekap)
+        trekaps = $('.rekap_page #table-rekap').DataTable({
+            // data: dataRekap,
+            // "columns":columnRekap
+            "dom": "Bftip"
         })
     })
+}
 
-    
+ 
+// Cetak Rapor
+    // Rapor Home
+    var trapors = $('#table-siswa-rapor').DataTable({
+        serverSide: true,
+        ajax: {
+            headers: headers,
+            url:  '/'+sessionStorage.getItem('username')+'/siswaku?req=dt&rombel_id='+sessionStorage.getItem('rombel_id'),
+            type: 'post'
+        },
+        columns: [
+            {"data": "DT_RowIndex"},
+            {"data": "nisn"},
+            {"data": null, render: (data) => {
+                return `
+                    <img src="/img/siswas/${sessionStorage.getItem('sekolah_id')+'_'+data.nisn+'.jpg'}" onerror="this.error=null;this.src='/img/no-photo.jpg';" height="40px" class="img img-avatar" />
+                `
+            }},
+            {"data": "nama_siswa"},
+            {"data": null, render: (data) => {
+                return `
+                    <button class="btn btn-info btn-edit-rapor"><i class="mdi mdi-pencil"></i></button>
+                    <a href="/${sessionStorage.getItem('username')}/rapor/cetak?nisn=${data.nisn}&periode=${sessionStorage.getItem('periode')}" class="btn btn-primary btn-cetak-rapor" ><i class="mdi mdi-printer"></i></a>
+
+                `
+            }},
+        ]
+    })
+
+    $(document).on('click', '.btn-edit-rapor', function(){
+        var data = trapors.row($(this).parents('tr')).data();
+        $('#modalDataRapor').modal()
+        $('#modalDataRapor .modal-title #nama_siswa').text(data.nama_siswa)
+        
+
+    })
 
     $('.rekap_page select[name="rombel"]').on('change', function(){
-        trekaps.ajax.url('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val()).draw()
+        // trekaps.ajax.url('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val()).draw()
+        $('.rekap_page #table-rekap').DataTable().destroy()
+        getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val())
+    })
+    $('.rekap_page select[name="mapel"]').on('change', function(){
+        // trekaps.ajax.url('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val()).draw()
+        // $('.rekap_page #table-rekap').DataTable().destroy()
+        getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&mapel='+$(this).val())
     })
 
+    $(document).on('change', '.selSiswaKu', function(e) {
+        // alert('hi')
+        window.location.href = '/'+sessionStorage.getItem('username')+'/rapor/cetak?nisn='+$(this).val()+'&periode='+sessionStorage.getItem('periode')
+    })
 
 
     var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : 'null';
@@ -508,7 +601,7 @@ var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.get
             delay: 250,
             processResults: function(response) {
                 return {
-                    results: response.siswas
+                    results: response
                 };
             },
             cache: true,

@@ -17,7 +17,7 @@ class DashGuruController extends Controller
         $rombel = 'App\Rombel'::where('guru_id', Auth::user()->nip)->first();
         $periode = 'App\Periode'::where('status', 'aktif')->first();
         if($rombel) {
-            session(['role' => 'wali', 'rombel_id' => $rombel->kode_rombel, 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id]);
+            session(['role' => 'wali', 'rombel_id' => $rombel->kode_rombel, 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'rombel' => $rombel]);
             $jurnals = 'App\Jurnal'::where([
                 ['periode_id' ,'=', $periode->kode_periode],
                 ['rombel_id', '=', $rombel->kode_rombel]
@@ -70,6 +70,12 @@ class DashGuruController extends Controller
     public function jurnal(Request $request)
     {
         return view('pages.guru.dashboard', ['page_title' => 'Jurnal Sikap', 'menus' => $this->showMenus($request)]);
+    }
+
+    public function rapor(Request $request)
+    {
+        $siswas = 'App\Siswa'::where('rombel_id', $request->session()->get('rombel_id'))->get();
+        return view('pages.guru.dashboard', ['page_title' => 'Cetak Rapor', 'menus' => $this->showMenus($request), 'siswas' => $siswas]);
     }
 
     public function periode(Request $request)

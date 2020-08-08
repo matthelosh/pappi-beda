@@ -12,6 +12,7 @@ use Maatwebsite\Excel\HeadingRowImport;
 use App\Traits\NilaiTrait;
 use Ramsey\Uuid\Rfc4122\NilTrait;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class NilaiController extends Controller
 {
@@ -104,115 +105,103 @@ class NilaiController extends Controller
        
         $siswas = 'App\Siswa'::where([
             $rombel
-        ])->get();
+        ])
+        ->with('rombels')
+        ->get();
         foreach($siswas as $siswa)
         {
-            array_push($datas, ['NIS' => ($siswa->nis)?$siswa->nis: null, 'NISN' => $siswa->nisn, 'NAMA SISWA' => $siswa->nama_siswa, 'n1' => [], 'n2' => [], 'n3' => [], 'n4' => [] ]);
+            array_push($datas, ['NISN' => $siswa->nisn, 'NAMA SISWA' => $siswa->nama_siswa, 'KODE ROMBEL' => $siswa->rombel_id, 'NAMA ROMBEL' => $siswa->rombels->nama_rombel, 'uh' => 0, 'pts' => 0, 'pas' => 0]);
+        }
+        // dd($rombel);
+        if (Auth::user()->role != 'wali' ) {
+
+            $mapel = (Auth::user()->role == 'gpai') ? 'pabp' : (Auth::user()->role == 'gor' ? 'pjok' : 'big');
+            $nilai_pabp_3 = DB::table('nilai3s')
+                        ->select(DB::raw('nilai3s.siswa_id, 
+                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_'.$mapel.'_uh",
+                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pts",
+                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pas"
+                        '))
+                        ->groupBy('nilai3s.siswa_id')
+                        
+                        ->orderBy('nilai3s.rombel_id')
+                        ->where([
+                            ['periode_id','=', $request->session()->get('periode_aktif')],
+                            $rombel
+                        ]);
+                        // ->get();
+
+            
+            $nilai4 = DB::table('nilai4s')
+                        ->select(DB::raw('nilai4s.siswa_id, 
+                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n4_'.$mapel.'_uh",
+                        
+                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pts",
+
+                        
+                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pas"
+                        
+                        '))
+                        ->groupBy('nilai4s.siswa_id')
+                        ->where([
+                            ['periode_id','=', $request->session()->get('periode_aktif')],
+                            $rombel
+                        ]);
+        } else {
+            // $rombel = $request->query('rombel');
+            $mapel = $request->query('mapel');
+            // dd($rombel);
+            $nilai_pabp_3 = DB::table('nilai3s')
+                        ->select(DB::raw('nilai3s.siswa_id, 
+                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_'.$mapel.'_uh",
+                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pts",
+                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pas"
+                        '))
+                        ->groupBy('nilai3s.siswa_id')
+                        
+                        ->orderBy('nilai3s.rombel_id')
+                        ->where([
+                            ['periode_id','=', $request->session()->get('periode_aktif')],
+                            $rombel
+                        ]);
+                        // ->get();
+
+            
+            $nilai4 = DB::table('nilai4s')
+                        ->select(DB::raw('nilai4s.siswa_id, 
+                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n4_'.$mapel.'_uh",
+                        
+                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pts",
+
+                        
+                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pas"
+                        
+                        '))
+                        ->groupBy('nilai4s.siswa_id')
+                        ->where([
+                            ['periode_id','=', $request->session()->get('periode_aktif')],
+                            $rombel
+                        ]);
         }
 
-
-
-        $nilai3 = DB::table('nilai3s')
-                    ->select(DB::raw('nilai3s.siswa_id, 
-                    AVG(CASE WHEN nilai3s.mapel_id = "pabp" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_pabp_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ppkn" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_ppkn_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "bid" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_bid_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "mtk" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_mtk_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ipa" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_ipa_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ips" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_ips_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "sbdp" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_sbdp_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "pjok" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_pjok_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "bd" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_bd_uh",
-                    AVG(CASE WHEN nilai3s.mapel_id = "big" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_big_uh",
-                    
-                    AVG(CASE WHEN nilai3s.mapel_id = "pabp" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_pabp_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ppkn" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_ppkn_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "bid" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_bid_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "mtk" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_mtk_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ipa" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_ipa_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ips" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_ips_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "sbdp" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_sbdp_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "pjok" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_pjok_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "bd" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_bd_pts",
-                    AVG(CASE WHEN nilai3s.mapel_id = "big" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_big_pts",
-
-                    
-                    AVG(CASE WHEN nilai3s.mapel_id = "pabp" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_pabp_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ppkn" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_ppkn_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "bid" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_bid_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "mtk" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_mtk_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ipa" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_ipa_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "ips" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_ips_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "sbdp" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_sbdp_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "pjok" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_pjok_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "bd" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_bd_pas",
-                    AVG(CASE WHEN nilai3s.mapel_id = "big" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_big_pas"
-                    
-                    '))
-                    ->groupBy('nilai3s.siswa_id')
-                    ->where([
-                        ['periode_id','=', $request->session()->get('periode_aktif')],
-                        $rombel
-                    ]);
-
-        $nilai4 = DB::table('nilai4s')
-                    ->select(DB::raw('nilai4s.siswa_id, 
-                    AVG(CASE WHEN nilai4s.mapel_id = "pabp" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_pabp_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ppkn" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_ppkn_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "bid" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_bid_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "mtk" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_mtk_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ipa" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_ipa_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ips" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_ips_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "sbdp" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_sbdp_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "pjok" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_pjok_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "bd" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_bd_uh",
-                    AVG(CASE WHEN nilai4s.mapel_id = "big" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n3_big_uh",
-                    
-                    AVG(CASE WHEN nilai4s.mapel_id = "pabp" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_pabp_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ppkn" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_ppkn_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "bid" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_bid_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "mtk" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_mtk_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ipa" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_ipa_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ips" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_ips_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "sbdp" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_sbdp_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "pjok" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_pjok_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "bd" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_bd_pts",
-                    AVG(CASE WHEN nilai4s.mapel_id = "big" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n3_big_pts",
-
-                    
-                    AVG(CASE WHEN nilai4s.mapel_id = "pabp" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_pabp_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ppkn" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_ppkn_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "bid" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_bid_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "mtk" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_mtk_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ipa" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_ipa_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "ips" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_ips_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "sbdp" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_sbdp_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "pjok" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_pjok_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "bd" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_bd_pas",
-                    AVG(CASE WHEN nilai4s.mapel_id = "big" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n3_big_pas"
-                    
-                    '))
-                    ->groupBy('nilai4s.siswa_id')
-                    ->where([
-                        ['periode_id','=', $request->session()->get('periode_aktif')],
-                        $rombel
-                    ]);
-
         $rekap34 = DB::table('siswas')
-                        ->joinSub($nilai3, 'nilai3', function($join) {
+                        ->joinSub($nilai_pabp_3, 'nilai3', function($join) {
                             $join->on('siswas.nisn', '=', 'nilai3.siswa_id');
                             
                         })
-                        // ->joinSub($nilai4, 'nilai4', function ($join) {
-                        //     $join->on('siswas.nisn', '=', 'nilai4.siswa_id');
-                        //     // $join->type('left');
-                        // })
-                        ->select('siswas.nis','siswas.nisn', 'siswas.rombel_id', 'siswas.nama_siswa', 'siswas.jk', 'nilai3.*')
+                        ->leftJoinSub($nilai4, 'nilai4', function ($join) {
+                            $join->on('siswas.nisn', '=', 'nilai4.siswa_id');
+                            
+                        })
+                        ->select('siswas.nis','siswas.nisn', 'siswas.rombel_id', 'siswas.nama_siswa', 'siswas.jk', 'nilai4.*', 'nilai3.*')
                         ->get();
+        
+        $kkms = 'App\Kkm'::all();
 
 // s
+        // dd($nilai_pabp_3);
         
-        return response()->json($datas);
+        return response()->json(['rekap34' => $rekap34, 'kkms' => $kkms]);
         // return DataTables::of($rekaps)->addIndexColumn()->toJson();
     }
 

@@ -30,5 +30,11 @@ Dashboard Guru
         @case('Jurnal Sikap')
             @include('pages.guru.jurnal')
         @break
+        @case('Cetak Rapor')
+            @include('pages.guru.rapor')
+        @break
+        @case('Rapor Siswa')
+            @include('pages.guru.cetak_rapor')
+        @break
     @endswitch
 @endsection

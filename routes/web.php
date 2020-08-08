@@ -198,5 +198,10 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::delete('/{id}', 'JurnalController@destroy')->name('jurnals.delete');
         });
 
+        Route::group(['prefix' => 'rapor', 'middleware' => ['auth', 'isGuru']], function(){
+            Route::get('/', 'DashGuruController@rapor')->name('rapor.page');
+            // Route::get('/', 'DashGuruController@rapor')->name('rapor.page');
+            Route::get('/cetak', 'RaporController@cetak')->name('rapor.cetak');
+        });
 
     });

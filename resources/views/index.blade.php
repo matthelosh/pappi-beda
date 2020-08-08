@@ -275,6 +275,7 @@
         sessionStorage.setItem('role', "{{ Session::get('role') }}")
         sessionStorage.setItem('username', "{{ Session::get('username') }}")
         sessionStorage.setItem('periode', "{{ Session::get('periode_aktif') }}")
+        sessionStorage.setItem('sekolah_id', "{{ Session::get('sekolah_idcoop0w') }}")
       </script>
       <script src="{{ asset('js/guru.js') }}"></script>
       
