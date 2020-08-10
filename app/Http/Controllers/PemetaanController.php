@@ -32,7 +32,7 @@ class PemetaanController extends Controller
             $mapelsk = 'App\Mapel'::where('tingkat','!=', 'besar')->whereNotIn('kode_mapel',['pabp', 'big', 'bd'])->get();
             $mapelsb = 'App\Mapel'::whereNotIn('kode_mapel',['pabp', 'big', 'bd', 'mtk','pjok'])->get();
             $datas = [];
-            foreach(($request->session()->get('rombel')->tingkat > 4) ? $mapelsb : $mapelsk as $mapel) {
+            foreach(($request->session()->get('rombel')->tingkat > 3) ? $mapelsb : $mapelsk as $mapel) {
                 $datas[$mapel->kode_mapel] = [];
             }
             foreach($pemetaans as $item)
@@ -40,6 +40,7 @@ class PemetaanController extends Controller
                 // array_push($datas[$item->mapel_id], $item->kd_id);
                 $datas[$item->mapel_id] = $item->kd_id;
             }
+            // dd($mapelsb);
             return response()->json(['datas' => $datas]);
         }
     }
