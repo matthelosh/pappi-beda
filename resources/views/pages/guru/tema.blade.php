@@ -6,19 +6,19 @@
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-book') }}"></use>
                 </svg>
                 Data Tema
-                <button class="btn btn-import-kd btn-primary float-right mr-2">
+                <button class="btn btn-import-kd btn-primary float-right mr-2 ">
                     <svg class="c-icon">
                         <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet') }}"></use>
                     </svg>
                     Import
                 </button>
-                <button class="btn btn-new-kd btn-info float-right mr-2" data-toggle="modal" data-target="#modalKd">
+                <button class="btn btn-new-kd btn-info float-right mr-2 d-none" data-toggle="modal" data-target="#modalKd">
                     <svg class="c-icon">
                         <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
                     </svg>
                     Buat
                 </button>
-                <button class="btn  btn-success float-right mr-2 btn-print-kd">
+                <button class="btn  btn-success float-right mr-2 btn-print-kd d-none">
                     <svg class="c-icon">
                         <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
                     </svg>
@@ -30,7 +30,7 @@
                 <table class="table table-sm table-striped table-tema" id="table-tema" style="width:100%">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            {{-- <th>No</th> --}}
                             <th>KODE TEMA</th>
                             <th>TEKS TEMA</th>
                             <th>OPSI</th>

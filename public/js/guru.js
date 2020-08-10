@@ -597,7 +597,7 @@ function getRekap34(url=null) {
             headers: headers
         },
         columns:[
-            {'data': 'DT_RowIndex'},
+            // {'data': 'DT_RowIndex'},
             {'data': 'kode_tema'},
             {'data': 'teks_tema'},
             {'data': null, render: (data) => {
