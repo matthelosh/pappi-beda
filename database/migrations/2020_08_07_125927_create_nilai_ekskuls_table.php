@@ -19,7 +19,8 @@ class CreateNilaiEkskulsTable extends Migration
             $table->string('periode', 8);
             $table->string('siswa_id', 20);
             $table->string('ekskul_id', 20);
-            $table->string('ekskul_id', 20);
+            $table->decimal('nilai', 4,2);
+            $table->string('tingkat', 20);
             $table->timestamps();
         });
     }

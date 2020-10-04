@@ -3,13 +3,14 @@
         <div class="page_rapor text-center" id="rapor_pts">
             <div class="content_rapor_pts">
                 @php
-                    $semester = Session::get('semester');
+                    $semester = Session::get('periode_aktif');
                     $sem = substr($semester,4,1);
                     $sem = ($sem == '1') ? 'I (Ganjil)' : 'II (Genap)';
                     $tapel = '20'.substr($semester, 0,2).'/'.'20'.substr($semester, 2,2);
                 @endphp
+                {{-- {{ $semester }} --}}
                 <div class="kop text-center d-block" style="position:relative;">
-                    <img src="{{ asset('images/malangkab.png') }}" alt="Logo Malangkab" class="logo-kab" height="100" style="position:absolute; left: 20px;top: 10px;">
+                    <img src="{{ asset('img/malangkab.png') }}" alt="Logo Malangkab" class="logo-kab" height="100" style="position:absolute; left: 20px;top: 10px;">
                     <h4>PEMERINTAH KABUPATEN MALANG</h4>
                     <h4>DINAS PENDIDIKAN</h4>
                     <h4>KOORDINATOR WILAYAH DINAS PENDIDIKAN KECAMATAN {{ strtoupper($sekolah->kec) }}</h4>
@@ -178,7 +179,7 @@
                 
                 <h3 class="text-left" >B. Saran-saran</h3>
                 <div class="box-saran p-5" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;">
-                    {{ ($saran) ? $saran->teks_saran : '-' }}
+                    {{ $saran ? $saran->teks_saran : '-' }}
                 </div>
                 
                 <br>
@@ -191,7 +192,7 @@
                             <br>
                             <br>
                             <br>
-                            <b>Nama Orang Tua</b>
+                            <b>............................</b>
                         </td>
                         <td style="width:33.3%"></td>
                         <td style="width:33.3%">
@@ -200,7 +201,7 @@
                             <br>
                             <br>
                             <br>
-                            <b><u>{{ Auth::user()->fullname }}</u></b> <br>
+                            <b><u>{{ strtoupper(Auth::user()->nama) }}</u></b> <br>
                             NIP. {{ Auth::user()->nip }}
                         </td>
                     </tr>
@@ -211,8 +212,8 @@
                             <br>
                             <br>
                             <br>
-                            <b><u>{{ $sekolah->kepsek->nama }}</u></b> <br>
-                            NIP. {{ $sekolah->kepsek->nip }}
+                            <b><u>{{ strtoupper($sekolah->ks->nama) }}</u></b> <br>
+                            NIP. {{ $sekolah->ks->nip }}
                         </td>
                         <td style="width:33.3%"></td>
                     </tr>

@@ -157,7 +157,7 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
 
         Route::group(['prefix' => 'siswaku'], function(){
             Route::get('/', 'DashGuruController@siswaku')->name('siswaku.page');
-            Route::post('/', 'SiswaController@index')->name('siswaku.index');
+            Route::post('/', 'SiswaController@index')->name('siswaku.index'); 
             Route::post('/ortu/create', 'OrtuController@create')->name('siswaku.ortu.create');
             Route::put('/ortu/{id}', 'OrtuController@update')->name('siswaku.ortu.update');
             Route::post('/{nisn}/ortu', 'OrtuController@edit')->name('siswaku.ortu.edit');

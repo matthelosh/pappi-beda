@@ -10,10 +10,11 @@ $(document).ready(function(){
     // })
     // Siswa
     var tsiswas = $('#table-siswaku').DataTable({
+        dom: "Bftlip",
         serverSide: true,
         ajax: {
             headers: headers,
-            
+            url: '/'+sessionStorage.getItem('username')+'/siswaku?req=dt&rombel_id='+sessionStorage.getItem('rombel_id'),
             type: 'post'
         },
         columns: [
@@ -464,9 +465,19 @@ $(document).ready(function(){
 var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.rekap_page select[name="rombel"]').val();
 // var mapel = 
 var trekaps;
-// Get Rekap
 
-getRekap34()
+$('.rekap_page select[name="rombel"]').on('change', function(){
+    $('.rekap_page #table-rekap').DataTable().destroy()
+    getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val())
+    $('.alert').fadeOut()
+})
+$('.rekap_page select[name="mapel"]').on('change', function(){
+    if($.fn.DataTable.isDataTable($('.rekap_page #table-rekap'))) {
+        $('.rekap_page #table-rekap').DataTable().destroy()
+    } 
+    getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel+'&mapel='+$(this).val())
+    $('.alert').fadeOut()
+})
 
 function getRekap34(url=null) {
     var mapel_id = (sessionStorage.getItem('role') == 'gpai') ? 'pabp' : (sessionStorage.getItem('role') == 'gor') ? 'pjok' : 'big'
@@ -478,10 +489,9 @@ function getRekap34(url=null) {
     }).done(res => {
         var dataRekap = []
         var columnRekap = []
-        // dataRekap = res
         var theads = `<thead>
                 <tr>
-                    <th rowspan="2">NO ${res.kkms[0].nilai}</th>
+                    <th rowspan="2">NO</th>
                     <th rowspan="2">NIS</th>
                     <th  rowspan="2">NISN</th>
                     <th  rowspan="2">NAMA</th>
@@ -500,35 +510,27 @@ function getRekap34(url=null) {
             `
         var tr = ''
         res.rekap34.forEach((item, index) => {
+            var mpl = $('.rekap_page select[name="mapel"]').val()
+            var uh3 = 'n3_'+mpl+'_uh',pts3 = 'n3_'+mpl+'_pts',pas3 = 'n3_'+mpl+'_pas'
+            var uh4 = 'n4_'+mpl+'_uh',pts4 = 'n4_'+mpl+'_pts',pas4 = 'n4_'+mpl+'_pas'
             tr +=`<tr>
                 <td>${index+1}</td>
                 <td>${(item.nis)?item.nis:'-'}</td>
                 <td>${item.nisn}</td>
                 <td>${item.nama_siswa}</td>
-                <td class="${(item.n4_pabp_uh < res.kkms[0].nilai || item.n4_pabp_uh == null)?'text-danger font-weight-bold':''}">${item.n4_pabp_uh}</td>
-                <td class="${(item.n4_pabp_pts < res.kkms[0].nilai || item.n4_pabp_pts == null)?'text-danger font-weight-bold':''}">${item.n4_pabp_pts}</td>
-                <td class="${(item.n4_pabp_pas < res.kkms[0].nilai || item.n4_pabp_pas == null)?'text-danger font-weight-bold':''}">${item.n4_pabp_pas}</td>
-                <td class="${(item.n3_pabp_uh < res.kkms[0].nilai || item.n3_pabp_uh == null)?'text-danger font-weight-bold':''}">${item.n3_pabp_uh}</td>
-                <td class="${(item.n3_pabp_pts < res.kkms[0].nilai || item.n3_pabp_pts == null)?'text-danger font-weight-bold':''}">${item.n3_pabp_pts}</td>
-                <td class="${(item.n3_pabp_pas < res.kkms[0].nilai || item.n3_pabp_pas == null)?'text-danger font-weight-bold':''}">${item.n3_pabp_pas}</td>
+                <td class="${(item[uh4] < res.kkms[0].nilai || item[uh4] == null)?'text-danger font-weight-bold':''}">${item[uh4]}</td>
+                <td class="${(item[pts4] < res.kkms[0].nilai || item[pts4] == null)?'text-danger font-weight-bold':''}">${item[pts4]}</td>
+                <td class="${(item[pas4] < res.kkms[0].nilai || item[pas4] == null)?'text-danger font-weight-bold':''}">${item[pas4]}</td>
+                <td class="${(item[uh3] < res.kkms[0].nilai || item[uh3] == null)?'text-danger font-weight-bold':''}">${item[uh3]}</td>
+                <td class="${(item[pts3] < res.kkms[0].nilai || item[pts3] == null)?'text-danger font-weight-bold':''}">${item[pts3]}</td>
+                <td class="${(item[pas3] < res.kkms[0].nilai || item[pas3] == null)?'text-danger font-weight-bold':''}">${item[pas3]}</td>
             </tr>`
         })
-
-        // $.each(res[0],(key, value) => {
-        //     var item = {}
-        //     item.data = key,
-        //     item.title = key;
-        //     columnRekap.push(item)
             
-            
-        // })
         $('.rekap_page #table-rekap').html(theads + `<tbody>${tr}</tbody>`)
-        // console.log(dataRekap)
-        trekaps = $('.rekap_page #table-rekap').DataTable({
-            // data: dataRekap,
-            // "columns":columnRekap
-            "dom": "Bftip"
-        })
+            trekaps = $('.rekap_page #table-rekap').DataTable({
+                "dom": "Bftip"
+            }).draw()
     })
 }
 
@@ -557,35 +559,55 @@ function getRekap34(url=null) {
                     <a href="/${sessionStorage.getItem('username')}/rapor/cetak?nisn=${data.nisn}&periode=${sessionStorage.getItem('periode')}" class="btn btn-primary btn-cetak-rapor" ><i class="mdi mdi-printer"></i></a>
 
                 `
-            }},
+            }}, 
         ]
     })
 
     $(document).on('click', '.btn-edit-rapor', function(){
         var data = trapors.row($(this).parents('tr')).data();
-        $('#modalDataRapor').modal()
+        $('#modalDataRapor').modal('show')
         $('#modalDataRapor .modal-title #nama_siswa').text(data.nama_siswa)
         
 
     })
 
-    $('.rekap_page select[name="rombel"]').on('change', function(){
-        // trekaps.ajax.url('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val()).draw()
-        $('.rekap_page #table-rekap').DataTable().destroy()
-        getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val())
-    })
-    $('.rekap_page select[name="mapel"]').on('change', function(){
-        // trekaps.ajax.url('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val()).draw()
-        // $('.rekap_page #table-rekap').DataTable().destroy()
-        getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&mapel='+$(this).val())
-    })
+    
 
     $(document).on('change', '.selSiswaKu', function(e) {
         // alert('hi')
         window.location.href = '/'+sessionStorage.getItem('username')+'/rapor/cetak?nisn='+$(this).val()+'&periode='+sessionStorage.getItem('periode')
     })
 
-
+    $('#btn-print-rapor-pts').on('click', function(e) {
+        e.preventDefault();
+        cetakRapor('rapor_pts', 'Rapor PTS')
+    })
+    
+    function cetakRapor(divId, title){
+        var page = document.querySelector('#'+divId)
+        var win = window.open('', '_blank', 'location=yes,height=1400,width=1024,scrollbars=yes,status=yes')
+        var head = `<head>
+                    <title>Cetak ${title}</title>
+                    <link rel="stylesheet" href="/css/app.css" />
+                    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" />
+                    <link rel="stylesheet" href="/css/rapor.css" />
+                </head>`
+        var body = page.outerHTML
+        var html = `
+                <!doctype html>
+                <html>
+                    ${head}
+                    <body>
+                        ${body}
+                    </body>
+                </html>
+        
+        `
+        win.document.write(html)
+        setTimeout(() => {
+            win.print()
+        }, 1500)
+    }
 
 
 // Tema

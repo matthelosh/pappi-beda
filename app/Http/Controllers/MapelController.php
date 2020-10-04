@@ -44,11 +44,11 @@ class MapelController extends Controller
                         if($role == 'wali' && (Int) $rombel->tingkat < 4 ) {
                             $mapels = Mapel::where([
                                 ['tingkat', '<>', 'besar'],
-                                ['kode_mapel', '<>', ['pabp', 'pjok', 'big']],
+                                // ['kode_mapel', '<>', ['pabp', 'pjok', 'big']],
                             ])->get();
                         } elseif ($role == 'wali' && (Int) $rombel->tingkat > 3) {
                             $mapels = Mapel::where([
-                                ['kode_mapel', '<>', ['pabp', 'pjok', 'big']]
+                                // ['kode_mapel', '<>', ['pabp', 'pjok', 'big']]
                             ])->get();
                         } elseif( $role != 'wali' ) {
                             $kode = $role == 'gpai' ? 'pabp' : ($role == 'gor' ? 'pjok' : 'big');

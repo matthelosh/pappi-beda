@@ -63,6 +63,8 @@
                     </tbody> --}}
                     @if(Auth::user()->role == 'wali')
                         <div class="alert alert-danger">Pilih Mapel</div>
+                    @else
+                        <div class="alert alert-danger">Pilih Rombel</div>
                     @endif
                 </table>
             </div>

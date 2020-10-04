@@ -39,8 +39,11 @@
     <link href="{{ asset('coreui/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
     <link href="{{ asset('select2/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('jquery-ui/jquery-ui.css') }}" rel="stylesheet">
+    <link href="{{ asset('jquery-ui/jquery-ui.structure.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/rapor.css') }}" rel="stylesheet">
 
 
     <!-- Global site tag (gtag.js) - Google Analytics-->
@@ -90,6 +93,7 @@
       @include('components.modaladmin')
     {{-- @endif --}}
     <script src="{{ asset('jquery/jquery.js') }}"></script>
+    <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
     {{-- <script src="{{ asset('bootstrap/js/bootstrap.js') }}"></script> --}}
     <script src="{{ asset('datatables/datatables.js') }}"></script>
     
@@ -294,6 +298,11 @@
       
     @endif
 
+    <script>
+      $('.modal-dialog').draggable({
+        handle: '.modal-header'
+      })
+    </script>
    
     
   </body>

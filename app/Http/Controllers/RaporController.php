@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Raporpas;
 use Illuminate\Http\Request;
 use App\Traits\MenuTrait;
+use App\Traits\NilaiTrait;
 
 class RaporController extends Controller
 {
     use MenuTrait;
+    use NilaiTrait;
     /**
      * Display a listing of the resource.
      *
@@ -48,9 +50,11 @@ class RaporController extends Controller
             ['sekolah_id', '=', $sekolah->npsn],
             ['periode_id', '=', $request->session()->get('periode_aktif')]
         ])->first();
-        $pts = [];
+        $pts = $this->rpts($request);
         $pas = [];
-        return view('pages.guru.dashboard', ['page_title' => 'Rapor Siswa', 'menus' => $this->showMenus($request), 'siswa' => $siswa, 'sekolah' => $sekolah, 'tanggal_rapor' => $tanggal_rapor, 'pts' => $pts, 'pas' => $pas]);
+        $saran = '';
+        // dd($pts);
+        return view('pages.guru.dashboard', ['page_title' => 'Rapor Siswa', 'menus' => $this->showMenus($request), 'siswa' => $siswa, 'sekolah' => $sekolah, 'tanggal_rapor' => $tanggal_rapor, 'pts' => $pts, 'pas' => $pas, 'saran' => $saran]);
     }
 
     /**
