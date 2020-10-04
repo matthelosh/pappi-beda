@@ -1,0 +1,136 @@
+.page_rapor {
+    position: relative;
+    width: 8.27in;
+    height: 11.69in;
+    border: 1px solid #999;
+    margin: 20px auto;
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.page_rapor#rapor_pas, .page_rapor#rapor_pts {
+    height: auto;
+    min-height: 11.69in;
+}
+table#table-biodata tr dt{
+    text-align: left!important;
+    font-size: 12pt;
+}
+.page_rapor .content_biodata {
+    margin: 50px auto;
+    width: 75%;
+}
+
+.page_rapor .content_biodata .ttd-kepsek,
+.page_rapor .content_biodata table tr td {
+    font-size: 12pt;
+}
+
+
+.page_rapor#rapor_pas #table-profil-siswa tr td {
+    text-align:left;
+}
+
+
+
+.page_rapor .content_cover {
+    margin: 10% auto 20px auto;
+    width: 60%;
+    text-align:center;
+}
+
+.page_rapor .content_cover .teks-bawah {
+    position: absolute;
+    left:0;
+    right: 0;
+    bottom: 50px;
+}
+.page_rapor .judul {
+    margin-top: 20px;
+}
+.page_rapor .nama_siswa {
+    margin-top: 100px;
+   
+}
+.page_rapor .nama_siswa p {
+    font-size: 14pt;
+}
+.page_rapor .nama_siswa p.nama, p.nis {
+    padding: 20px;
+    border: 1px solid #000;
+}
+.page_rapor .content_biodata .teks-bawah {
+    margin-top: 200px;
+}
+.page_rapor h2, h4 {
+    font-weight: bolder!important;
+ }
+ #rapor_pts .kop {
+     border-bottom: 1px solid black;
+ }
+ #rapor_pts .kop::after{
+    content: '';
+    border-bottom: 3px solid black;
+    /* position: relative; */
+    height: 100%;
+    background-color: pink;
+    display: block;
+    transform: translateY(5px);
+ }
+ #rapor_pts .kop h4,
+ #rapor_pts .kop h2,
+ #rapor_pts .kop p {
+     margin:0!important;
+ }
+
+ @media print {
+    @page {
+        size: 8.27in 11.69in;
+    }
+
+    html,body{
+        background: #fff;
+    }
+    .page_rapor {
+        width: 100%;
+        height: 100%;
+        padding-bottom:0;
+        background:#fff;
+        border: none;
+    }
+    .page_rapor .teks-bawah {
+       margin-top: 350px;
+       margin-bottom: 50px;
+    }
+
+    .page_rapor .content_biodata .ttd-kepsek,
+    .page_rapor .content_biodata table tr td {
+        font-size: 2em;
+        color: black;
+    }
+
+    .page_rapor #table-biodata-bawah tr td .foto {
+        width: 3cm;
+        height: 4cm;
+    }
+
+    .page_rapor #table-profil-siswa tr td {
+        font-size: 1.2em;
+    }
+
+    
+    .page_rapor#rapor_pas #table34 tr td {
+        font-size: 1.2em;
+    }
+
+    .table-ttd-rapor tr td {
+        font-size: 12pt;
+    }
+    .page_rapor .content_cover .teks-bawah {
+        position: relative;
+        margin-bottom: 100px;
+    }
+ }
