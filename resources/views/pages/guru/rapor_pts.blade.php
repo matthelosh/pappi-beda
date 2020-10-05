@@ -72,6 +72,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                    
                         {{-- <tr>
                             <td rowspan="2">1</td>
                             <td rowspan="2" class="text-left p-2">Pendidikan Agama dan Budi Pekerti</td>
