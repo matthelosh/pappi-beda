@@ -96,7 +96,7 @@
     <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
     {{-- <script src="{{ asset('bootstrap/js/bootstrap.js') }}"></script> --}}
     <script src="{{ asset('datatables/datatables.js') }}"></script>
-    
+
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('coreui/vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
     <!--[if IE]><!-->
@@ -106,7 +106,7 @@
     <script src="{{ asset('coreui/vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js') }}"></script>
     <script src="{{ asset('coreui/vendors/@coreui/utils/js/coreui-utils.js') }}"></script>
     <script src="{{ asset('coreui/js/main.js') }}"></script>
-    
+
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('select2/js/select2.min.js') }}"></script>
@@ -154,7 +154,7 @@
         },
     })
     $('.selMapel').select2({
-        
+
         ajax: {
             headers: headers,
             url: '/mapels?req=select',
@@ -235,7 +235,7 @@
             })
         })
     </script>
-    
+
     @if(Session::get('status') == 'sukses')
       <script>
           $(document).ready(function(){
@@ -295,7 +295,7 @@
         sessionStorage.setItem('sekolah_id', "{{ Session::get('sekolah_idcoop0w') }}")
       </script>
       <script src="{{ asset('js/guru.js') }}"></script>
-      
+
     @endif
 
     <script>
@@ -303,7 +303,7 @@
         handle: '.modal-header'
       })
     </script>
-   
-    
+
+
   </body>
 </html>

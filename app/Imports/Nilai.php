@@ -31,30 +31,34 @@ class Nilai implements ToCollection, WithHeadingRow
     public function collection(Collection $rows)
     {
         $keys = $this->headings[0][0];
+
         // dd($this->periode);
         // dd(array_slice($keys[0],2,1));
         // $d = array_slice($this->headings[0], 0,2);
-        $kds = array_merge(array_diff_key($keys, ['0', '1']));
+        $kds = array_merge(array_diff_key(array_filter($keys), ['0', '1']));
+        // dd($kds);
         $nilai = ($this->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4';
         foreach($kds as $kd)
         {
-            if('App\Kd'::where([['mapel_id', '=', $this->mapel],['tingkat','=',$this->tingkat],['kode_kd','=',str_replace("_",".",$kd)]])->count() > 0 ) {
-                foreach($rows as $row)
-                {
-                    $nilai::create([
-                        'sekolah_id' => Auth::user()->sekolah_id,
-                        'periode_id' => $this->periode,
-                        'jenis' => strtolower($this->jenis),
-                        'mapel_id' => $this->mapel,
-                        'kd_id' =>str_replace("_",".",$kd),
-                        'tingkat' => $this->tingkat,
-                        'rombel_id' => $this->rombel,
-                        'siswa_id' => $row['nisn'],
-                        'nilai' => ($row[$kd] != '' || $row[$kd] != null) ? $row[$kd] : 0
-                    ]);
+            if($kd != "") {
+                if('App\Kd'::where([['mapel_id', '=', $this->mapel],['tingkat','=',$this->tingkat],['kode_kd','=',str_replace("_",".",$kd)]])->count() > 0 ) {
+                    foreach($rows as $row)
+                    {
+                        $nilai::create([
+                            'sekolah_id' => Auth::user()->sekolah_id,
+                            'periode_id' => $this->periode,
+                            'jenis' => strtolower($this->jenis),
+                            'mapel_id' => $this->mapel,
+                            'kd_id' =>str_replace("_",".",$kd),
+                            'tingkat' => $this->tingkat,
+                            'rombel_id' => $this->rombel,
+                            'siswa_id' => $row['nisn'],
+                            'nilai' => ($row[$kd] != '' || $row[$kd] != null) ? $row[$kd] : 0
+                        ]);
+                    }
+                } else {
+                    throw new Exception("Maaf! Impor Nilai Gagal. KD ".str_replace("_",".",$kd)." tidak ada untuk mapel ".$this->mapel." di kelas ".$this->tingkat .". Mohon cek kembali file excel Anda.", 11);
                 }
-            } else {
-                throw new Exception("Maaf! Impor Nilai Gagal. KD ".str_replace("_",".",$kd)." tidak ada untuk mapel ".$this->mapel." di kelas ".$this->tingkat .". Mohon cek kembali file excel Anda.", 11);
             }
         }
         // $s=array_reduce($keys, function($i, $keys) {

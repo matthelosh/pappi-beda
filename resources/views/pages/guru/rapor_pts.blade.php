@@ -65,14 +65,14 @@
                             <th rowspan="2" class="p-2" >KKM</th>
                             <th colspan="12" class="p-2" style="width:50%">NILAI KOMPETENSI DASAR</th>
                         </tr>
-                            
+
                         <tr>
                             <th class="p-2" colspan="6" style="width:25%">PENILAIAN HARIAN</th>
                             <th class="p-2" colspan="6" style="width:25%">PENILAIAN TENGAH SEMESTER</th>
                         </tr>
                     </thead>
                     <tbody>
-                    
+
                         {{-- <tr>
                             <td rowspan="2">1</td>
                             <td rowspan="2" class="text-left p-2">Pendidikan Agama dan Budi Pekerti</td>
@@ -114,7 +114,7 @@
                                         </td>
                                     @endfor
 
-                                    
+
                                     @php($pts_keys = array_keys($pt['nilais']['pts']))
                                     {{-- <td>{{ dd($uh_keys[]) }}</td> --}}
                                     @for ($i = 0; $i < 6; $i++)
@@ -139,7 +139,7 @@
                                     @for ($i = 0; $i < 6; $i++)
                                         <td>
                                             @if(isset($uh_keys[$i]))
-                                                <span class="{{ ($pt['nilais']['uh'][$uh_keys[$i]]['nilai'] < $kkm) ? 'text-danger': '' }}">{{ $pt['nilais']['uh'][$uh_keys[$i]]['nilai'] }}</span>
+                                            {{ ($pt['nilais']['uh'][$uh_keys[$i]]->nilai ?? '-' ) }}
                                             @else
                                                 -
                                             @endif
@@ -150,7 +150,7 @@
                                     @for ($i = 0; $i < 6; $i++)
                                         <td>
                                             @if(isset($pts_keys[$i]))
-                                                <span class="{{ ($pt['nilais']['pts'][$pts_keys[$i]]['nilai'] < $kkm) ? 'text-danger': '' }}">{{ $pt['nilais']['pts'][$pts_keys[$i]]['nilai'] }}</span>
+                                                {{ ($pt['nilais']['pts'][$pts_keys[$i]]->nilai ?? '-' ) }}
                                             @else
                                                 -
                                             @endif
@@ -177,12 +177,12 @@
                     </tbody>
                 </table>
                 <br>
-                
+
                 <h3 class="text-left" >B. Saran-saran</h3>
                 <div class="box-saran p-5" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;">
                     {{ $saran ? $saran->teks_saran : '-' }}
                 </div>
-                
+
                 <br>
                 <br>
                 <table class="table-ttd-rapor" width="100%">
@@ -244,10 +244,10 @@
                             Cetak
                         </button>
                     </div>
-                    
+
                 </div>
             </div>
-            
+
         </div>
     </div>
 

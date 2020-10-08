@@ -41,7 +41,7 @@ class NilaiController extends Controller
                         {
                             array_push($datas, ['nisn' => $siswa->nisn, 'nama_siswa' => $siswa->nama_siswa, 'nilai' => 0, 'id_nilai' => null]);
                         }
-                   
+
                     if($nilais->count() > 0) {
                         for($i=0;$i < count($datas); $i++)
                            {
@@ -95,14 +95,14 @@ class NilaiController extends Controller
         //         "n3_big_uh"=> null,
         //     ];
         // }
-        /** 
+        /**
          *  nis , nama siswa, rombel, mapel
          *                            3.1,3.2,3,3,3.4 | 4.1, 4.2, 4.3, 4.4
          * 1, 'A', 'i', 'pabp', 80,90,80,70
          */
         $datas = [];
         $rombel = ($request->query('rombel') == '0') ? ['rombel_id', '<>','0'] : ['rombel_id', '=', $request->query('rombel')];
-       
+
         $siswas = 'App\Siswa'::where([
             $rombel
         ])
@@ -117,13 +117,13 @@ class NilaiController extends Controller
 
             $mapel = (Auth::user()->role == 'gpai') ? 'pabp' : (Auth::user()->role == 'gor' ? 'pjok' : 'big');
             $nilai_pabp_3 = DB::table('nilai3s')
-                        ->select(DB::raw('nilai3s.siswa_id, 
+                        ->select(DB::raw('nilai3s.siswa_id,
                         AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_'.$mapel.'_uh",
                         AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pts",
                         AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pas"
                         '))
                         ->groupBy('nilai3s.siswa_id')
-                        
+
                         ->orderBy('nilai3s.rombel_id')
                         ->where([
                             ['periode_id','=', $request->session()->get('periode_aktif')],
@@ -131,16 +131,16 @@ class NilaiController extends Controller
                         ]);
                         // ->get();
 
-            
+
             $nilai4 = DB::table('nilai4s')
-                        ->select(DB::raw('nilai4s.siswa_id, 
+                        ->select(DB::raw('nilai4s.siswa_id,
                         AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n4_'.$mapel.'_uh",
-                        
+
                         AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pts",
 
-                        
+
                         AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pas"
-                        
+
                         '))
                         ->groupBy('nilai4s.siswa_id')
                         ->where([
@@ -152,13 +152,13 @@ class NilaiController extends Controller
             $mapel = $request->query('mapel');
             // dd($rombel);
             $nilai_pabp_3 = DB::table('nilai3s')
-                        ->select(DB::raw('nilai3s.siswa_id, 
+                        ->select(DB::raw('nilai3s.siswa_id,
                         AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_'.$mapel.'_uh",
                         AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pts",
                         AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pas"
                         '))
                         ->groupBy('nilai3s.siswa_id')
-                        
+
                         ->orderBy('nilai3s.rombel_id')
                         ->where([
                             ['periode_id','=', $request->session()->get('periode_aktif')],
@@ -166,16 +166,16 @@ class NilaiController extends Controller
                         ]);
                         // ->get();
 
-            
+
             $nilai4 = DB::table('nilai4s')
-                        ->select(DB::raw('nilai4s.siswa_id, 
+                        ->select(DB::raw('nilai4s.siswa_id,
                         AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n4_'.$mapel.'_uh",
-                        
+
                         AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pts",
 
-                        
+
                         AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pas"
-                        
+
                         '))
                         ->groupBy('nilai4s.siswa_id')
                         ->where([
@@ -187,20 +187,20 @@ class NilaiController extends Controller
         $rekap34 = DB::table('siswas')
                         ->joinSub($nilai_pabp_3, 'nilai3', function($join) {
                             $join->on('siswas.nisn', '=', 'nilai3.siswa_id');
-                            
+
                         })
                         ->leftJoinSub($nilai4, 'nilai4', function ($join) {
                             $join->on('siswas.nisn', '=', 'nilai4.siswa_id');
-                            
+
                         })
                         ->select('siswas.nis','siswas.nisn', 'siswas.rombel_id', 'siswas.nama_siswa', 'siswas.jk', 'nilai4.*', 'nilai3.*')
                         ->get();
-        
+
         $kkms = 'App\Kkm'::all();
 
 // s
         // dd($nilai_pabp_3);
-        
+
         return response()->json(['rekap34' => $rekap34, 'kkms' => $kkms]);
         // return DataTables::of($rekaps)->addIndexColumn()->toJson();
     }
@@ -214,15 +214,16 @@ class NilaiController extends Controller
             $pecah = explode('.', $nama);
             $rombel = 'App\Rombel'::where('kode_rombel', $pecah[1])->first();
             $headings = (new HeadingRowImport)->toArray($file);
+            // dd($headings);
             Excel::import(new ImportNilai($headings, $pecah[1], $rombel->tingkat, $request->session()->get('periode_aktif'),$pecah[2],$pecah[3]), $file);
 
             return back()->with(['status' => 'sukses', 'msg' => 'Nilai dimpor']);
         } catch(\Exception $e)
         {
             return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
-        
+
         }
-        
+
     }
 
     public function entri(Request $request)
@@ -248,7 +249,7 @@ class NilaiController extends Controller
                     'siswa_id' => $nisn,
                     'nilai' => $nil
                 ]);
-                
+
             }
             return redirect('/'.$request->session()->get('username').'/nilais/entri')->with(['status' => 'sukses', 'msg' => 'Nilai disimpan']);
         } catch(\Exception $e)
@@ -267,6 +268,6 @@ class NilaiController extends Controller
         $file =  Excel::download(new ExportFormatNilai($mapel, $rombel, $aspek), 'FormatNilai.xlsx');
 
         return $file;
-        // return (new ExportFormatNilai($mapel, $rombel, $aspek))->download('invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX); 
+        // return (new ExportFormatNilai($mapel, $rombel, $aspek))->download('invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 }

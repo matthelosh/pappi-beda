@@ -44,7 +44,7 @@ $(document).ready(function(){
                 //         <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
                 //     </svg>
                 // </button>
-                    
+
             }}
         ]
     })
@@ -86,7 +86,7 @@ $(document).ready(function(){
         })
 
         $('#modalSiswa').modal()
-        
+
     })
 
     // Hapus Siswa
@@ -119,7 +119,7 @@ $(document).ready(function(){
     //       });
 
     // })
-    
+
     // Modal Ortu
     $(document).on('click', '.btn-ortu', function(e) {
         e.preventDefault()
@@ -310,7 +310,7 @@ $(document).ready(function(){
 
     //     },
     // })\
-    
+
 // KKM
     var tkkm = $('#table-kkm').DataTable({
         serverSide: true,
@@ -389,7 +389,7 @@ $(document).ready(function(){
             }},
             {'data': 'siswas.nama_siswa'},
             {'data' : 'rombel_id'},
-            
+
             {'data': 'catatan'},
             {'data': 'butir_sikap'},
             {'data': 'nilai'},
@@ -400,7 +400,7 @@ $(document).ready(function(){
         ],
         'createdRow': (row, data, dataIndex) => {
             var bg  = (data.nilai == 'A') ? 'bg-success' : (data.nilai == 'B') ? 'bg-info' : (data.nilai == 'C') ? 'bg-warning' : 'bg-danger'
-            $(row).addClass(bg) 
+            $(row).addClass(bg)
         }
     })
 
@@ -416,18 +416,18 @@ $(document).ready(function(){
 
     $('#file_nilai').on('change', function(e) {
         var file = e.target.files[0]
-        
+
         // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet = xlsx
         // application/vnd.ms-excel = csv, xls application/vnd.ms-excel
         // application/vnd.oasis.opendocument.spreadsheet = ods
-        if(file.type == 'application/vnd.ms-excel' || file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type =='application/vnd.oasis.opendocument.spreadsheet') {
+        // if(file.type == 'application/vnd.ms-excel' || file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type =='application/vnd.oasis.opendocument.spreadsheet') {
             $('.form-import-nilai input[name="nama_file"]').val(file.name)
-        } else {
-            swal('Error', 'File harus berjenis xls, xlsx, csv, ods', 'error')
-            $('.form-import-nilai input[name="nama_file"]').val('')
-            $(this).val(null)
-        }
-        
+        // } else {
+        //     swal('Error', 'File harus berjenis xls, xlsx, csv, ods', 'error')
+        //     $('.form-import-nilai input[name="nama_file"]').val('')
+        //     $(this).val(null)
+        // }
+
     })
 
 
@@ -463,7 +463,7 @@ $(document).ready(function(){
 
 // Rekap Nilai
 var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.rekap_page select[name="rombel"]').val();
-// var mapel = 
+// var mapel =
 var trekaps;
 
 $('.rekap_page select[name="rombel"]').on('change', function(){
@@ -474,7 +474,7 @@ $('.rekap_page select[name="rombel"]').on('change', function(){
 $('.rekap_page select[name="mapel"]').on('change', function(){
     if($.fn.DataTable.isDataTable($('.rekap_page #table-rekap'))) {
         $('.rekap_page #table-rekap').DataTable().destroy()
-    } 
+    }
     getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel+'&mapel='+$(this).val())
     $('.alert').fadeOut()
 })
@@ -526,7 +526,7 @@ function getRekap34(url=null) {
                 <td class="${(item[pas3] < res.kkms[0].nilai || item[pas3] == null)?'text-danger font-weight-bold':''}">${item[pas3]}</td>
             </tr>`
         })
-            
+
         $('.rekap_page #table-rekap').html(theads + `<tbody>${tr}</tbody>`)
             trekaps = $('.rekap_page #table-rekap').DataTable({
                 "dom": "Bftip"
@@ -534,7 +534,7 @@ function getRekap34(url=null) {
     })
 }
 
- 
+
 // Cetak Rapor
     // Rapor Home
     var trapors = $('#table-siswa-rapor').DataTable({
@@ -559,7 +559,7 @@ function getRekap34(url=null) {
                     <a href="/${sessionStorage.getItem('username')}/rapor/cetak?nisn=${data.nisn}&periode=${sessionStorage.getItem('periode')}" class="btn btn-primary btn-cetak-rapor" ><i class="mdi mdi-printer"></i></a>
 
                 `
-            }}, 
+            }},
         ]
     })
 
@@ -567,11 +567,11 @@ function getRekap34(url=null) {
         var data = trapors.row($(this).parents('tr')).data();
         $('#modalDataRapor').modal('show')
         $('#modalDataRapor .modal-title #nama_siswa').text(data.nama_siswa)
-        
+
 
     })
 
-    
+
 
     $(document).on('change', '.selSiswaKu', function(e) {
         // alert('hi')
@@ -582,7 +582,7 @@ function getRekap34(url=null) {
         e.preventDefault();
         cetakRapor('rapor_pts', 'Rapor PTS')
     })
-    
+
     function cetakRapor(divId, title){
         var page = document.querySelector('#'+divId)
         var win = window.open('', '_blank', 'location=yes,height=1400,width=1024,scrollbars=yes,status=yes')
@@ -601,7 +601,7 @@ function getRekap34(url=null) {
                         ${body}
                     </body>
                 </html>
-        
+
         `
         win.document.write(html)
         setTimeout(() => {
@@ -678,7 +678,7 @@ function getRekap34(url=null) {
                 url: '/'+sessionStorage.getItem('username')+'/pemetaan?subtema='+subtema.kode_subtema,
                 type:'post'
             }).done(res=>{
-                var datas = res.datas   
+                var datas = res.datas
                 var tr = ''
                 $.each(datas, (key,value) => {
                     // var kds = value.split(',')
@@ -695,7 +695,7 @@ function getRekap34(url=null) {
                 })
 
                 $('.table-kdtema tbody').html(tr)
-                
+
             })
             $('.row-kd').toggle()
         })
@@ -727,7 +727,7 @@ function getRekap34(url=null) {
         })
     })
 
-    
+
 
     var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : 'null';
 
@@ -735,7 +735,7 @@ function getRekap34(url=null) {
     //     $('.selSiswaku').select2()
     // })
     $('.selSiswaKu').select2({
-        
+
         ajax: {
         headers: headers,
         url: '/'+localStorage.getItem('username')+'/siswaku?req=select&rombel='+ rombel,

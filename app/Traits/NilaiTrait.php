@@ -61,10 +61,10 @@ trait NilaiTrait
             $max3 = (isset($datas[$mapel->kode_mapel]['k3']['rt'])) ? max($datas[$mapel->kode_mapel]['k3']['rt']) : null;
         }
 
-        
+
 
         dd($datas);
-        
+
         return [];
     }
 
@@ -83,17 +83,18 @@ trait NilaiTrait
         foreach($mapels as $mapel)
         {
             $datas[$mapel->kode_mapel]['nama_mapel'] = $mapel->nama_mapel;
-
+            $datas[$mapel->kode_mapel]['nilais']['uh'] = [];
+            $datas[$mapel->kode_mapel]['nilais']['pts'] = [];
             $kds  = 'App\Prosem'::where([
                 ['semester','=', $semester_id],
                 ['tingkat','=', $rombel->tingkat],
                 ['mapel_id','=',$mapel->kode_mapel],
-                
+
             ])
             // ->whereIn('tema_id',[$rombel->tingkat.'-1',$rombel->tingkat.'-2'])
             // ->groupBy('kd_id')
             ->get();
-            
+
             foreach($kds as $kd)
             {
                 // $kdd = explode(',',$kd->kd_id);
@@ -117,8 +118,8 @@ trait NilaiTrait
 
         }
         // dd($datas);
-        return $datas;    
+        return $datas;
     }
-    
-    
+
+
 }
