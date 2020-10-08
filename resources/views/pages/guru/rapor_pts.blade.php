@@ -64,11 +64,14 @@
                             <th rowspan="2" class="p-2" >Muatan Pelajaran</th>
                             <th rowspan="2" class="p-2" >KKM</th>
                             <th colspan="12" class="p-2" style="width:50%">NILAI KOMPETENSI DASAR</th>
+                            <th colspan="2">RERATA</th>
                         </tr>
 
                         <tr>
                             <th class="p-2" colspan="6" style="width:25%">PENILAIAN HARIAN</th>
                             <th class="p-2" colspan="6" style="width:25%">PENILAIAN TENGAH SEMESTER</th>
+                            <th>UH</th>
+                            <th>UTS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,7 +99,7 @@
                             <tr>
                                 <td rowspan="2">{{ $loop->index+1 }}</td>
                                 <td rowspan="2" class="text-left p-2">{{ $pt['nama_mapel'] }}</td>
-                                <td rowspan="2">{{ $kkm = 70 }}</td>
+                                <td rowspan="2">{{ $pt['kkm']->nilai}}</td>
                                 @if(isset($pt['nilais']))
                                     {{-- @foreach ($pt['nilais']['uh'] as $k => $uh)
                                         <td>{{ $k }}</td>

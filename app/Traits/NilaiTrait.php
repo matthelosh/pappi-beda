@@ -6,6 +6,7 @@ use App\Nilai1;
 use App\Nilai2;
 use App\Nilai3;
 use App\Nilai4;
+use App\Kkm;
 use Illuminate\Support\Facades\DB;
 
 trait NilaiTrait
@@ -82,7 +83,14 @@ trait NilaiTrait
         $tematik = ($rombel->tingkat > 3) ? ['ppkn','bid','ipa','ips','sbdp'] : ['ppkn','bid','mtk','sbdp','pjok'];
         foreach($mapels as $mapel)
         {
+
             $datas[$mapel->kode_mapel]['nama_mapel'] = $mapel->nama_mapel;
+            $datas[$mapel->kode_mapel]['kkm'] = Kkm::where([
+                ['periode_id','=',$periode],
+                ['mapel_id','=', $mapel->kode_mapel],
+                ['rombel_id','=',$rombel->kode_rombel]
+            ])->select('nilai')
+            ->first();
             $datas[$mapel->kode_mapel]['nilais']['uh'] = [];
             $datas[$mapel->kode_mapel]['nilais']['pts'] = [];
             $kds  = 'App\Prosem'::where([
