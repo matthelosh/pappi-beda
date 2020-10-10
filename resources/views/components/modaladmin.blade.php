@@ -13,7 +13,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="parent_id" class="col-form-label">Menu Induk:</label>
-                        <select name="parent_id" class="form-control selMenu" style="width:100%"> 
+                        <select name="parent_id" class="form-control selMenu" style="width:100%">
                             <option value="0">Menu Induk</option>
                             {{-- @if(isset($datas))
                                 @foreach($datas as $menu)
@@ -25,7 +25,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        
+
                         <label for="title" class="col-form-label">Label:</label>
                         <input type="text" class="form-control" name="title" placeholder="Label Menu">
                         @error('title')
@@ -49,7 +49,7 @@
                             <option value="guru">Guru Mapel</option>
                         </select>
                     </div>
-                
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -81,7 +81,7 @@
                         <div class="form-group col-sm-6">
                             <label for="sekolah_id">NIP</label>
                             <select name="sekolah_id" class="form-control selSekolah" style="width:100%">
-                            
+
                             </select>
                         </div>
                         <div class="form-group col-sm-6">
@@ -376,7 +376,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="table-responsive">
                                     <table class="table table-members" id="table-members" style="width:100%">
                                         <thead>
@@ -742,7 +742,7 @@
             </div>
         </div>
     </div>
-    
+
 {{-- Modal Periode --}}
     <div class="modal fade" id="modalPeriode">
         <div class="modal-dialog">
@@ -878,7 +878,7 @@
                             <div class="form-group col-sm-6">
                                 <label for="kkm">KKM</label>
                                 <input type="number" min="0" max="100" class="form-control kkm" name="nilai" style="width:100%" placeholder="Min 0; Max 100">
-                                
+
                             </div>
                             <div class="form-group col-sm-12 text-right">
                                 <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
@@ -957,116 +957,117 @@
             </div>
         </div>
     </div>
-
-<div class="modal fade" id="modalDataRapor">
-  <div class="modal-dialog modal-xl" >
-    <div class="modal-content" style="width:100%">
-      <div class="modal-header">
-        <h4 class="modal-title">Data Rapor <span id="nama_siswa"></span></h4>
-        <button class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form action="" id="form-saran">
-          <h3>Saran</h3>
-          <hr>
-          @csrf()
-          <input type="hidden" value="{{ Session::get('periode_aktif') }}" name="semester">
-          <input type="hidden" value="{{ Session::get('rombel')->kode_rombel }}" name="rombel">
-          <input type="hidden" value="0" name="siswa_id">
-          <div class="container">
-          <div class="row-fluid">
-            <div class="form-group col-as-12">
-              <label for="saran">Saran</label>
-              <textarea name="saran" id="saran" cols="30" rows="5" class="form-control"></textarea>
-            </div>
-            </div>
-          </div>
-        </form>
-        <hr>
-        <form action="" class="form form-detil-siswa">
-          <h3>Detil Siswa</h3>
-          <hr>
-          @csrf()
-          <div class="container">
-            <div class="row">
-              <div class="form-group col-sm-2">
-                <label for="tb">Tinggi Badan</label>
-                <input type="text" name="tb" class="form-control">
-              </div>
-              <div class="form-group col-sm-2">
-                <label for="tb">Berat Badan</label>
-                <input type="text" name="bb" class="form-control">
-              </div>
-              <div class="form-group col-sm-4">
-                <label for="pendengaran">Pendengaran</label>
-                <input type="text" name="pendengaran" class="form-control">
-              </div>
-              <div class="form-group col-sm-4">
-                <label for="penglihatan">Pengelihatan</label>
-                <input type="text" name="penglihatan" class="form-control">
-              </div>
-              <div class="form-group col-sm-4">
-                <label for="gigi">Gigi</label>
-                <input type="text" name="gigi" class="form-control">
-              </div>
-              <div class="form-group col-sm-4">
-                <label for="fisik_lain">Fisik Lainnya</label>
-                <input type="text" name="fisik_lain" class="form-control">
-              </div>
-            </div>
-          </div>
-        </form>
-        <hr>
-        <h3>Prestasi <button class="btn btn-more-prestasi btn-circle btn-secondary btn-sm">&plus;</button></h3>
-        <hr>
-
-        <form action="" class="form form-inline form-prestasi">
-          @csrf()
-          <div class="container container-row">
-          </div>
-          
-        </form>
-        <hr>
-        <h3>Ketidak-hadiran</h3>
-          <hr>
-        <form action="" class="form form-inline form-absensi">
-          
-          @csrf()
-          <div class="container">
-            <div class="row">
-              <div class="form-group col-sm-3">
-                <label for="sakit" class="">Sakit:</label>
-                <div class="input-group mx-2">
-                  <input type="text" class="form-control" name="sakit">
-                </div>
-              </div>
-              <div class="form-group col-sm-3">
-                <label for="izin" class="">Izin:</label>
-                <div class="input-group mx-2">
-                  <input type="text" class="form-control" name="izin">
-                </div>
-              </div>
-              <div class="form-group col-sm-3">
-                <label for="alpa" class="">Alpa:</label>
-                <div class="input-group mx-2">
-                  <input type="text" class="form-control" name="alpa">
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <div class="row">
-          <div class="form-group col-sm-12 text-center">
-          <div class="btn-group">
-              <button class="btn btn-danger" data-dismiss="modal">Batal</button>
-              <button class="btn btn-primary btn-simpan-detil">Simpan</button>
-            </div>
-          </div>
+@if(Auth::user()->role != 'admin')
+    <div class="modal fade" id="modalDataRapor">
+    <div class="modal-dialog modal-xl" >
+        <div class="modal-content" style="width:100%">
+        <div class="modal-header">
+            <h4 class="modal-title">Data Rapor <span id="nama_siswa"></span></h4>
+            <button class="close" data-dismiss="modal">&times;</button>
         </div>
-      </div>
+        <div class="modal-body">
+            <form action="" id="form-saran">
+            <h3>Saran</h3>
+            <hr>
+            @csrf()
+            <input type="hidden" value="{{ Session::get('periode_aktif') }}" name="semester">
+            <input type="hidden" value="{{ Session::get('rombel')->kode_rombel }}" name="rombel">
+            <input type="hidden" value="0" name="siswa_id">
+            <div class="container">
+            <div class="row-fluid">
+                <div class="form-group col-as-12">
+                <label for="saran">Saran</label>
+                <textarea name="saran" id="saran" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                </div>
+            </div>
+            </form>
+            <hr>
+            <form action="" class="form form-detil-siswa">
+            <h3>Detil Siswa</h3>
+            <hr>
+            @csrf()
+            <div class="container">
+                <div class="row">
+                <div class="form-group col-sm-2">
+                    <label for="tb">Tinggi Badan</label>
+                    <input type="text" name="tb" class="form-control">
+                </div>
+                <div class="form-group col-sm-2">
+                    <label for="tb">Berat Badan</label>
+                    <input type="text" name="bb" class="form-control">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="pendengaran">Pendengaran</label>
+                    <input type="text" name="pendengaran" class="form-control">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="penglihatan">Pengelihatan</label>
+                    <input type="text" name="penglihatan" class="form-control">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="gigi">Gigi</label>
+                    <input type="text" name="gigi" class="form-control">
+                </div>
+                <div class="form-group col-sm-4">
+                    <label for="fisik_lain">Fisik Lainnya</label>
+                    <input type="text" name="fisik_lain" class="form-control">
+                </div>
+                </div>
+            </div>
+            </form>
+            <hr>
+            <h3>Prestasi <button class="btn btn-more-prestasi btn-circle btn-secondary btn-sm">&plus;</button></h3>
+            <hr>
+
+            <form action="" class="form form-inline form-prestasi">
+            @csrf()
+            <div class="container container-row">
+            </div>
+
+            </form>
+            <hr>
+            <h3>Ketidak-hadiran</h3>
+            <hr>
+            <form action="" class="form form-inline form-absensi">
+
+            @csrf()
+            <div class="container">
+                <div class="row">
+                <div class="form-group col-sm-3">
+                    <label for="sakit" class="">Sakit:</label>
+                    <div class="input-group mx-2">
+                    <input type="text" class="form-control" name="sakit">
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <label for="izin" class="">Izin:</label>
+                    <div class="input-group mx-2">
+                    <input type="text" class="form-control" name="izin">
+                    </div>
+                </div>
+                <div class="form-group col-sm-3">
+                    <label for="alpa" class="">Alpa:</label>
+                    <div class="input-group mx-2">
+                    <input type="text" class="form-control" name="alpa">
+                    </div>
+                </div>
+
+                </div>
+            </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+            <div class="form-group col-sm-12 text-center">
+            <div class="btn-group">
+                <button class="btn btn-danger" data-dismiss="modal">Batal</button>
+                <button class="btn btn-primary btn-simpan-detil">Simpan</button>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
     </div>
-  </div>
-</div>
+    </div>
+@endif

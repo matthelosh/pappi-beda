@@ -102,7 +102,7 @@ trait NilaiTrait
             // ->whereIn('tema_id',[$rombel->tingkat.'-1',$rombel->tingkat.'-2'])
             // ->groupBy('kd_id')
             ->get();
-
+            $kdz = [];
             foreach($kds as $kd)
             {
                 // $kdd = explode(',',$kd->kd_id);
@@ -114,6 +114,7 @@ trait NilaiTrait
                     ['kd_id','=',$kd->kd_id],
                     ['mapel_id','=',$mapel->kode_mapel]
                 ])->select('nilai')->first();
+
                 $datas[$mapel->kode_mapel]['nilais']['pts'][$kd->kd_id] = 'App\Nilai3'::where([
                     ['periode_id','=', $periode],
                     ['siswa_id','=', $nisn],
@@ -122,7 +123,12 @@ trait NilaiTrait
                     ['kd_id','=',$kd->kd_id],
                     ['mapel_id','=',$mapel->kode_mapel]
                 ])->select('nilai')->first();
+
+                array_push($kdz, $kd->kd_id);
             }
+
+
+
 
         }
         // dd($datas);

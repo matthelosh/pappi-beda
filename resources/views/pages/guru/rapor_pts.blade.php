@@ -135,6 +135,32 @@
                                         <td>-</td>
                                     @endfor
                                 @endif
+
+                                    @php($uh_keys = array_keys($pt['nilais']['uh']))
+                                    @php($nhs =0)
+                                    @for ($i = 0; $i < 6; $i++)
+                                            @if(isset($uh_keys[$i]))
+                                             @php($nhs += $pt['nilais']['uh'][$uh_keys[$i]]['nilai'] ?? 0)
+                                            @endif
+
+                                    @endfor
+                                    @php($nhs = ($nhs > 0 ? number_format((float)$nhs/count($uh_keys), 2,',','') : 0))
+                                <td rowspan="2" class="{{ ($nhs < $pt['kkm']->nilai ? 'text-danger': '')  }}">
+                                    {{ $nhs }}
+                                </td>
+
+                                    @php($pts_keys = array_keys($pt['nilais']['pts']))
+                                    @php($npts =0)
+                                    @for ($i = 0; $i < 6; $i++)
+                                            @if(isset($pts_keys[$i]))
+                                             @php($npts += $pt['nilais']['pts'][$uh_keys[$i]]['nilai'] ?? 0)
+                                            @endif
+
+                                    @endfor
+                                    @php( $npts = ($npts > 0 ? number_format((float)$npts/count($pts_keys), 2,',','') : 0))
+                                <td rowspan="2" class="{{ ($npts < $pt['kkm']->nilai ? 'text-danger': '')  }}">
+                                    {{ $npts }}
+                                </td>
                             </tr>
                             <tr>
                                 @if(isset($pt['nilais']))
