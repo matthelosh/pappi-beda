@@ -3,7 +3,7 @@ $(document).ready(function() {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
     // swal("Halo")
-    // Add Menu MOdal 
+    // Add Menu MOdal
     $('.btn-add-menu').on('click', function(e) {
         e.preventDefault()
         $('#menuModal').modal({'show': true})
@@ -23,7 +23,7 @@ $(document).ready(function() {
             $('#menuModal').hide({'backdrop': false, 'focus': false})
             hideModal()
             toastr.success(res.msg)
-            
+
         }).fail(err => {
             $('#menuModal').hide({'backdrop': false, 'focus': false})
             hideModal()
@@ -53,7 +53,7 @@ $(document).ready(function() {
         var user = tusers.row($(this).parents('tr')).data()
         $.ajax({
             headers: headers,
-            url: '/users/'+user[2],
+            url: '/users/'+user[3],
             type: 'get'
         }).done(res => {
             var user = res.user
@@ -70,7 +70,7 @@ $(document).ready(function() {
             $('.form-user textarea[name="alamat"]').val(user.alamat)
             $('#modalUser').modal()
         })
-        
+
     })
 
     $(document).on('click', '.btn-reset-all', function(){
@@ -117,7 +117,7 @@ $(document).ready(function() {
               swal("Data tidak dihapus");
             }
           });
-        
+
     })
 
     // Reset Password User
@@ -173,7 +173,7 @@ $(document).ready(function() {
                 swal('Info', 'Sandi Pengguna tidak jadi direset', 'info');
             }
         })
-        
+
     })
     // Print Users
     $(document).on('click', '.btn-print-users', function(e) {
@@ -361,7 +361,7 @@ $(document).ready(function() {
         $('#modalMnjRombel').modal()
         $('#modalMnjRombel select[name="rombel_now"]').append(`<option value="${rombel.kode_rombel}" selected>${rombel.nama_rombel}</option>`)
 
-        
+
 
         var tmembers = $('#modalMnjRombel #table-members').DataTable({
             select: 'multi',
@@ -398,7 +398,7 @@ $(document).ready(function() {
             } else {
                 $(this).closest('table').DataTable().rows().deselect()
             }
-            
+
         })
 
         // Keluarkan Siswa
@@ -484,10 +484,10 @@ $(document).ready(function() {
                     swal('Info', 'Siswa tidak dikeluarkan', 'info')
                 }
             })
-            
+
         })
 
-        
+
         // Masukkan Siswa
         $(document).on('click', '.btn-masukkan-member', function(e) {
             e.preventDefault()
@@ -550,7 +550,7 @@ $(document).ready(function() {
 
         $('#modalRombel').modal()
 
-        
+
     })
 // Hapus Rombel
     $(document).on('click', '.btn-delete-rombel', function(e) {
@@ -688,7 +688,7 @@ $(document).ready(function() {
         })
 
         $('#modalSiswa').modal()
-        
+
     })
 
     // Hapus Siswa
@@ -721,7 +721,7 @@ $(document).ready(function() {
           });
 
     })
-    
+
     // Modal Ortu
     $(document).on('click', '.btn-ortu', function(e) {
         e.preventDefault()
@@ -737,7 +737,7 @@ $(document).ready(function() {
                 $('#modalOrtu .siswa').text(siswa.nama_siswa)
                 $('#form-ortu').prop({
                     'action': '/ortus/'+ortu.id,
-                    
+
                 }).prepend(`<input type="hidden" name="id" value="${ortu.id}"><input type="hidden" name="_method" value="put">`)
                 $('#form-ortu input[name="nama_ayah"]').val(ortu.nama_ayah)
                 $('#form-ortu input[name="job_ayah"]').val(ortu.job_ayah)
@@ -752,7 +752,7 @@ $(document).ready(function() {
                 $('#modalOrtu .siswa').text(siswa.nama_siswa)
                 $('#form-ortu').prop({
                     'action': '/ortus/create',
-                    
+
                 })
             }
             $('#form-ortu').prepend(`<input type="hidden" name="siswa_id" value="${siswa.nisn}">`)
@@ -826,7 +826,7 @@ $(document).ready(function() {
             } else {
                 swal('Info', 'Data Mapel tidak dihapus')
             }
-           
+
         })
     })
 // Edit Mapel
@@ -1077,7 +1077,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
 
 
 // Select2
-    
+
     // Select Rombel
     // $('.selRombel').select2({
     //     ajax: {
@@ -1210,7 +1210,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
                         .text-center {
                             text-align:center
                         }
-                            
+
                     </style>
                 </head>
                 <body>

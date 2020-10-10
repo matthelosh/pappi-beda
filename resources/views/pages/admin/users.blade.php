@@ -38,6 +38,7 @@
                         <tr>
                             <th>No</th>
                             <th>Sekolah</th>
+                            <th>Foto</th>
                             <th>NIP</th>
                             <th>Nama</th>
                             <th>JK</th>
@@ -54,6 +55,7 @@
                             <tr>
                                 <td>{{ $loop->index + 1}}</td>
                                 <td>{{ $user->sekolahs->nama_sekolah }}</td>
+                                <td><img class="img img-circle rounded" src="{{ asset('img/users/'.$user->nip.'.jpg') }}" alt="Foto User" height="50px"></td>
                                 <td>{{ $user->nip }}</td>
                                 <td>{{ $user->nama }}</td>
                                 <td>{{ $user->jk }}</td>

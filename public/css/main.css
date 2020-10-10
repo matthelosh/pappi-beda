@@ -20,7 +20,7 @@ tr.selected {
     outline-color: #999;
 }
 
-.c-sidebar .c-sidebar-nav-link.c-active, 
+.c-sidebar .c-sidebar-nav-link.c-active,
 .c-sidebar .c-active.c-sidebar-nav-dropdown-toggle {
 
     background: #45a29e!important;
@@ -66,4 +66,7 @@ tr.selected {
     position: relative;
     top: 0.26rem;
     margin-right: 0.5rem;
+}
+.table th, .table td  {
+    padding: 3px!important;
 }
