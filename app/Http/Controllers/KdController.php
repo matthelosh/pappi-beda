@@ -29,7 +29,7 @@ class KdController extends Controller
                         // dd($kds);
                     } elseif ($request->query('rombel_id') == 'all' && Auth::user()->role != 'wali') {
                         $mapel = (Auth::user()->role == 'gpai') ? 'pabp': ((Auth::user()->role == 'gor') ? 'pjok' : 'big');
-                        $kds = Kd::where('mapel_id', $mapel)->with('mapels')->get(); 
+                        $kds = Kd::where('mapel_id', $mapel)->with('mapels')->get();
                     } else {
                         $kds = Kd::with('mapels')->get();
                     }
@@ -57,10 +57,10 @@ class KdController extends Controller
                                 ['kode_kd', 'LIKE', $request->aspek.'.%']
                             ])->get();
                         } else {
-                            $kds = Kd::all();       
+                            $kds = Kd::all();
                         }
-                        
-                        
+
+
                         $datas = [];
                         foreach($kds as $kd)
                         {
@@ -95,7 +95,7 @@ class KdController extends Controller
                     $kode_kd = $request->ranah.'.'. ((Int) $last_kode + 1);
                 }
             }
-            
+
             Kd::create([
                 'kode_kd' => ($request->kode_kd) ? $request->kode_kd : $kode_kd,
                 'teks_kd' => $request->teks_kd,

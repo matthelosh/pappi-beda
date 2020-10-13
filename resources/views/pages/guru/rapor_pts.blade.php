@@ -63,13 +63,13 @@
                             <th rowspan="2" class="p-2">No</th>
                             <th rowspan="2" class="p-2" >Muatan Pelajaran</th>
                             <th rowspan="2" class="p-2" >KKM</th>
-                            <th colspan="12" class="p-2" style="width:50%">NILAI KOMPETENSI DASAR</th>
+                            <th colspan="10" class="p-2" style="width:50%">NILAI KOMPETENSI DASAR</th>
                             <th colspan="2">RERATA</th>
                         </tr>
 
                         <tr>
-                            <th class="p-2" colspan="6" style="width:25%">PENILAIAN HARIAN</th>
-                            <th class="p-2" colspan="6" style="width:25%">PENILAIAN TENGAH SEMESTER</th>
+                            <th class="p-2" colspan="5" style="width:25%">PENILAIAN HARIAN</th>
+                            <th class="p-2" colspan="5" style="width:25%">PENILAIAN TENGAH SEMESTER</th>
                             <th>UH</th>
                             <th>UTS</th>
                         </tr>
@@ -106,7 +106,7 @@
                                     @endforeach --}}
                                     @php($uh_keys = array_keys($pt['nilais']['uh']))
                                     {{-- <td>{{ dd($uh_keys[]) }}</td> --}}
-                                    @for ($i = 0; $i < 6; $i++)
+                                    @for ($i = 0; $i < 5; $i++)
                                         <td style="font-weight:600">
                                             @if(isset($uh_keys[$i]))
                                                 {{ $uh_keys[$i] }}
@@ -120,7 +120,7 @@
 
                                     @php($pts_keys = array_keys($pt['nilais']['pts']))
                                     {{-- <td>{{ dd($uh_keys[]) }}</td> --}}
-                                    @for ($i = 0; $i < 6; $i++)
+                                    @for ($i = 0; $i < 5; $i++)
                                         <td style="font-weight:600">
                                             @if(isset($pts_keys[$i]))
                                                 {{ $pts_keys[$i] }}
@@ -138,7 +138,7 @@
 
                                     @php($uh_keys = array_keys($pt['nilais']['uh']))
                                     @php($nhs =0)
-                                    @for ($i = 0; $i < 6; $i++)
+                                    @for ($i = 0; $i < 5; $i++)
                                             @if(isset($uh_keys[$i]))
                                              @php($nhs += $pt['nilais']['uh'][$uh_keys[$i]]['nilai'] ?? 0)
                                             @endif
@@ -151,7 +151,7 @@
 
                                     @php($pts_keys = array_keys($pt['nilais']['pts']))
                                     @php($npts =0)
-                                    @for ($i = 0; $i < 6; $i++)
+                                    @for ($i = 0; $i < 5; $i++)
                                             @if(isset($pts_keys[$i]))
                                              @php($npts += $pt['nilais']['pts'][$uh_keys[$i]]['nilai'] ?? 0)
                                             @endif
@@ -165,7 +165,7 @@
                             <tr>
                                 @if(isset($pt['nilais']))
                                     @php($uh_keys = array_keys($pt['nilais']['uh']))
-                                    @for ($i = 0; $i < 6; $i++)
+                                    @for ($i = 0; $i < 5; $i++)
                                         <td>
                                             @if(isset($uh_keys[$i]))
                                             {{ ($pt['nilais']['uh'][$uh_keys[$i]]->nilai ?? '-' ) }}
@@ -176,7 +176,7 @@
                                         </td>
                                     @endfor
                                     @php($pts_keys = array_keys($pt['nilais']['pts']))
-                                    @for ($i = 0; $i < 6; $i++)
+                                    @for ($i = 0; $i < 5; $i++)
                                         <td>
                                             @if(isset($pts_keys[$i]))
                                                 {{ ($pt['nilais']['pts'][$pts_keys[$i]]->nilai ?? '-' ) }}

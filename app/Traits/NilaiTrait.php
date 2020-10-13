@@ -97,6 +97,7 @@ trait NilaiTrait
                 ['semester','=', $semester_id],
                 ['tingkat','=', $rombel->tingkat],
                 ['mapel_id','=',$mapel->kode_mapel],
+                ['ket','LIKE','ts%']
 
             ])
             // ->whereIn('tema_id',[$rombel->tingkat.'-1',$rombel->tingkat.'-2'])
