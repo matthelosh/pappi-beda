@@ -1,7 +1,9 @@
 tr.selected {
     background: rgb(227, 243, 238)!important;
 }
-
+li.side-child {
+    padding-left: 20px;
+}
 /* .modal {
     position: relative!important;
 }

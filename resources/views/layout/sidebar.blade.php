@@ -38,7 +38,7 @@
                   @foreach($menu->childs as $child)
                     @if(strpos($child->role, Auth::user()->role) !== false || $child->role == 'all')
                     {{-- @if($child->role == Auth::user()->role) --}}
-                      <li class="c-sidebar-nav-item">
+                      <li class="c-sidebar-nav-item side-child">
                         <a href="{{((Auth::user()->level != 'admin') ? '/'.Auth::user()->username: '') . $child->url }}" class="c-sidebar-nav-link">
                           @php($link_sub = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$child->icon )
                           <svg class="c-sidebar-nav-icon">
