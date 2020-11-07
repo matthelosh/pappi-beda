@@ -415,13 +415,56 @@ $(document).ready(function() {
                 title: 'Yakin Keluarkan siswa?',
                 text: namas,
                 icon: 'warning',
-                buttons: true,
-                dangerMode: true
-            }).then((lanjut) => {
-                if (lanjut) {
-                    $.ajax({
+                // buttons: true,
+                // dangerMode: true
+                buttons: {
+                    cancel: "Batal",
+                    keluar: {
+                        text: "Keluarkan",
+                        value: "keluar"
+                    },
+                    lulus: {
+                        text: "Lulus",
+                        value: "lulus"
+                    }
+                }
+            }).then((value) => {
+                switch(value)
+                {
+                    case "keluar":
+                        keluarkanSiswa("keluar")
+                        break;
+                    case "lulus":
+                        keluarkanSiswa("lulus")
+                        break;
+                    default:
+                        swal('Info', 'Siswa tidak dikeluarkan', 'info')
+                        break;
+
+
+                }
+                // if (lanjut) {
+                //     $.ajax({
+                //         headers: headers,
+                //         url: '/siswas/out',
+                //         type:'post',
+                //         data: {'ids': ids}
+                //     }).done(res => {
+                //         swal('Info', res.msg, 'info')
+                //         $('#modalMnjRombel .select-all').prop('checked', false)
+                //         tmembers.ajax.reload()
+                //         tnonmembers.draw()
+                //     }).fail(err=>{
+                //         swal('Error', err.response.msg, 'error')
+                //     })
+                // } else {
+                //     swal('Info', 'Siswa tidak dikeluarkan', 'info')
+                // }
+            })
+            function keluarkanSiswa(ket) {
+                $.ajax({
                         headers: headers,
-                        url: '/siswas/out',
+                        url: '/siswas/out?ket='+ket,
                         type:'post',
                         data: {'ids': ids}
                     }).done(res => {
@@ -432,11 +475,10 @@ $(document).ready(function() {
                     }).fail(err=>{
                         swal('Error', err.response.msg, 'error')
                     })
-                } else {
-                    swal('Info', 'Siswa tidak dikeluarkan', 'info')
-                }
-            })
+            }
         })
+
+        
 
         // Pindah Rombel
         $(document).on('click', '.btn-pindah-member', function(e) {

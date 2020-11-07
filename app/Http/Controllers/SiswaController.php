@@ -89,10 +89,11 @@ class SiswaController extends Controller
     public function out(Request $request)
     {
         $ids = $request->ids;
+        $ket = ($request->query('ket') == 'keluar') ? '0' : 'lulus';
         try {
             foreach($ids as $id)
             {
-                Siswa::findOrFail($id)->update(['rombel_id' => '0']);
+                Siswa::findOrFail($id)->update(['rombel_id' => $ket]);
             }
             return response()->json(['status' => 'sukses', 'msg' => 'Siswa dikeluarkan']);
         } catch(\Exception $e)

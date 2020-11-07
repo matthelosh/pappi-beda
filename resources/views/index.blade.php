@@ -298,11 +298,11 @@
 
     @endif
 
-    <script>
+    {{-- <script>
       $('.modal-dialog').draggable({
         handle: '.modal-header'
       })
-    </script>
+    </script> --}}
 
 
   </body>
