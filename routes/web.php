@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +40,7 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
 
 // Route Admin
     Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function() {
+        // dd($request->session->all());
         Route::get('/', 'DashController@index')->name('dashboard');
     });
 
@@ -187,6 +190,7 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::post('/rekap', 'NilaiController@rekap')->name('nilais.rekap.index');
             Route::post('/entri', 'NilaiController@entri')->name('nilais.entri');
             Route::post('/import', 'NilaiController@import')->name('nilais.import');
+            Route::put('/update', 'NilaiController@update')->name('nilais.update');
         });
 
         Route::group(['prefix' => 'jurnals', 'middleware' => ['auth', 'isGuru']], function() {

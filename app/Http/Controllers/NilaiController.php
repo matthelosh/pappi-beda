@@ -23,6 +23,7 @@ class NilaiController extends Controller
             switch($request->query('req'))
             {
                 case "view":
+                    $status_form = 'create';
                     $input = $request->all();
                     $rombel = $request->rombel;
                     // dd($request->all());
@@ -53,10 +54,11 @@ class NilaiController extends Controller
                                    }
                                }
                            }
+                        $status_form = 'update';
                     }
-
+                    // dd($datas);
                     // dd($nilais);
-                    return response()->json(['status' => 'sukses', 'datas' => $datas, 'msg' => 'Data Siswa']);
+                    return response()->json(['status' => 'sukses', 'datas' => $datas, 'status_form' => $status_form, 'msg' => 'Data Nilai Siswa']);
                 break;
             }
         }
@@ -269,5 +271,14 @@ class NilaiController extends Controller
 
         return $file;
         // return (new ExportFormatNilai($mapel, $rombel, $aspek))->download('invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+    }
+
+    public function update(Request $request)
+    {
+        // dd($request->all());
+        $nilai = ($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4';
+        $nilai::find($request->id_nilai)
+                ->update(['nilai' => $request->nilai]);
+        return response()->json(['status'=> 'sukses', 'msg' => 'Nilai diperbarui']);
     }
 }

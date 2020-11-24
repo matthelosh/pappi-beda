@@ -119,9 +119,9 @@
                                                 <th>No</th>
                                                 <th>NIS / NISN</th>
                                                 <th>NAMA</th>
-                                                <th>INPUT</th>
+                                                <th>NILAI</th>
                                             </tr>
-                                        </thead>
+                                        </thead> 
                                         <tbody>
                                             <div class="form-list d-none justify-content-center align-items-center bg-info text-white" style="width: 100%; height: 105px;">
                                                 <div class="text-center"><i class="mdi mdi-reload mdi-spin mdi-48px"></i><br>Tunggu Sebentar ..</div>

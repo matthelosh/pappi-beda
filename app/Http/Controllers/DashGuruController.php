@@ -14,6 +14,7 @@ class DashGuruController extends Controller
     private $menus;
     public function dashboard(Request $request)
     {
+        // $sekolah = 'App\Sekolah'::where('nisn', Auth::user)
         $rombel = 'App\Rombel'::where('guru_id', Auth::user()->nip)->first();
         $periode = 'App\Periode'::where('status', 'aktif')->first();
         if($rombel) {
@@ -32,7 +33,7 @@ class DashGuruController extends Controller
             session(['role' => Auth::user()->role, 'rombel_id' => 'all', 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id]);
         }
 
-       
+    //    dd($request->session->all());
         return view('pages.guru.dashboard', ['page_title' => 'Dashboard', 'menus' => $this->showMenus($request), 'jurnals' => $jurnals]);
     }
 

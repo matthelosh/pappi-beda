@@ -357,18 +357,62 @@ $(document).ready(function(){
             var trs = ''
             var no = 0
             for(var i = 0; i < siswas.length; i++) {
-                trs += `<tr><td>${i+1}</td><td>${((siswas[i].nis)?siswas[i].nis:'-')+' / '+ siswas[i].nisn}</td><td>${siswas[i].nama_siswa}</td><td><input type="number" min="0" max="100" name="nilais[${siswas[i].nisn}]" value="${siswas[i].nilai}"></td></tr>`
+                trs += `<tr><td>${i+1}</td><td class="nama">${siswas[i].nisn}</td><td>${siswas[i].nama_siswa}</td><td>
+                <input type="hidden" name="id_nilais[${siswas[i].nisn}]" value="${siswas[i].id_nilai}]" />
+                <input type="number" min="0" max="100" name="nilais[${siswas[i].nisn}]" value="${siswas[i].nilai}" ${(res.status_form == 'update') ? 'disabled':'' } class="input_nilai">
+                <span class="d-none id_nilai">${siswas[i].id_nilai}</span>
+                </td></tr>`
             }
             $('.form-nilai input[name="periode_id"]').val(data.periode_id)
             $('.form-nilai input[name="jenis"]').val(data.jenis)
             $('.form-nilai input[name="mapel_id"]').val(data.mapel_id)
             $('.form-nilai input[name="aspek"]').val(data.aspek)
             $('.form-nilai input[name="kd_id"]').val(data.kd_id)
+            $('.form-nilai').append(`<input type="hidden" name="status_form" value="${res.status_form}" />`)
             $('.form-list').addClass('d-none').removeClass('d-flex')
             $('.table-form-nilai tbody').html(trs)
-            $('.form-nilai button[type="submit"]').removeClass('d-none')
+            if(res.status_form == 'create') {
+                $('.form-nilai button[type="submit"]').removeClass('d-none')
+            } else {
+                $('.form-nilai button[type="submit"]').addClass('d-none')
+            }
         }).fail(err => {
             swal('Error', err.resposne.msg, 'error')
+        })
+    })
+
+    $(document).on('dblclick','.input_nilai', function(){
+        
+        var id_nilai = $(this).siblings('.id_nilai').text()
+        // alert(id_nilai)
+        var aspek = $('select[name="aspek"]').val()
+        var baris = $(this).parents('tr')
+        var nisn = baris.find('td').eq(1).text()
+        var nama = baris.find('td').eq(2).text()
+        // $('#modalEditNilai #').text(nama)
+        $('#modalEditNilai .nama_siswa').text(nama)
+        $('#modalEditNilai .formEditNilai input[name="nisn"]').val(nisn)
+        $('#modalEditNilai .formEditNilai input[name="aspek"]').val(aspek)
+        $('#modalEditNilai .formEditNilai input[name="id_nilai"]').val(id_nilai)
+
+        $('#modalEditNilai').modal()
+       
+    })
+
+    $(document).on('submit', '#modalEditNilai .formEditNilai', function(e) {
+        e.preventDefault()
+        var data = $(this).serialize()
+        var nisn = $('#modalEditNilai .formEditNilai input[name="nisn"]').val()
+        $.ajax({
+            headers: headers,
+            url: '/'+sessionStorage.getItem('username')+'/nilais/update',
+            data: data,
+            type: 'post',
+            success: function(res) {
+                // $('.btn-form-nilai').trigger('close')
+                $('input[name="nilais['+nisn+']"').val($('#modalEditNilai .formEditNilai input[name="nilai"]').val())
+                $('#modalEditNilai').modal('hide')
+            }
         })
     })
 
