@@ -1060,6 +1060,7 @@ var ttanggalRapor = $('#table-tanggal-rapor').DataTable({
             return data.periodes.tapel + ' - ' + data.periodes.label
         }},
         {"data": "tanggal"},
+        {"data": "jenis_rapor"},
         {"data": null, render: (data) => {
             return `
             <button class="btn btn-warning btn-edit-tanggal-rapor btn-sm" title="Edit ${data.tanggal} ?">
@@ -1113,6 +1114,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
 
     $('#form-tanggal-rapor select[name="sekolah_id"]').append(`<option value="${data.sekolah_id}" selected>${data.sekolahs.nama_sekolah}</option>`)
     $('#form-tanggal-rapor select[name="periode_id"]').append(`<option value="${data.periode_id}" selected>${data.periodes.tapel+' - '+ data.periodes.label}</option>`)
+    $('#form-tanggal-rapor select[name="jenis_rapor"]').val(data.jenis_rapor)
     $('#form-tanggal-rapor input[name="tanggal"]').val(data.tanggal)
     $('#modalTanggalRapor').modal()
 })

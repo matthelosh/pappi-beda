@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TanggalRapor extends Model
 {
-    protected $fillable = ['sekolah_id', 'periode_id', 'tanggal'];
+    protected $fillable = ['sekolah_id', 'periode_id', 'jenis_rapor', 'tanggal'];
 
     public function sekolahs()
     {

@@ -33,6 +33,7 @@
                             <th>No</th>
                             <th>SEKOLAH</th>
                             <th>KODE PERIODE</th>
+                            <th>JENIS RAPOR</th>
                             <th>TANGGAL RAPOR</th>
                             <th>OPSI</th>
                         </tr>

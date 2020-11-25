@@ -81,6 +81,10 @@ trait NilaiTrait
         $semester_id = substr($periode,4,1);
         $kdds = [];
         $tematik = ($rombel->tingkat > 3) ? ['ppkn','bid','ipa','ips','sbdp'] : ['ppkn','bid','mtk','sbdp','pjok'];
+
+        
+
+        // $datas['tgl'] = $tgl_rapor->tanggal;
         foreach($mapels as $mapel)
         {
 
@@ -132,6 +136,7 @@ trait NilaiTrait
 
 
         }
+        // $datas['tgl'] = $tgl_rapor->tanggal;
         // dd($datas);
         return $datas;
     }

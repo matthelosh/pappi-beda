@@ -39,7 +39,8 @@ class TanggalRaporController extends Controller
             TanggalRapor::create([
                 'sekolah_id' => $request->sekolah_id,
                 'periode_id' => $request->periode_id,
-                'tanggal' => $request->tanggal
+                'tanggal' => $request->tanggal,
+                'jenis_rapor' => $request->jenis_rapor
             ]);
             return redirect('/tanggal-rapor')->with(['status' => 'sukses', 'msg' => 'Tanggal Rapor disimpan']);
         } catch(\Exception $e)

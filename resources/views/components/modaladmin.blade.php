@@ -831,6 +831,14 @@
                                 <label for="tanggal">Piih Tanggal</label>
                                 <input class="form-control" type="date" name="tanggal" placeholder="Pilih Tanggal untuk menentukan kode periode">
                             </div>
+                            <div class="form-group col-sm-6">
+                                <label for="jenis_rapor">Jenis Rapor</label>
+                                <select name="jenis_rapor" class="form-control">
+                                    <option value="0">Pilih Jenis Rapor</option>
+                                    <option value="pts">PTS</option>
+                                    <option value="pas">PAS</option>
+                                </select>
+                            </div>
                             <div class="form-group col-sm-12 text-right">
                                 <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
                             </div>

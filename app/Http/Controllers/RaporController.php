@@ -51,10 +51,15 @@ class RaporController extends Controller
             ['periode_id', '=', $request->session()->get('periode_aktif')]
         ])->first();
         $pts = $this->rpts($request);
+        $tgl_pts = 'App\TanggalRapor'::where([
+            ['periode_id','=', $request->session()->get('periode_aktif')],
+            ['sekolah_id','=', $request->session()->get('sekolah_id')],
+            ['jenis_rapor','=','pts']
+        ])->first();
         $pas = [];
         $saran = '';
         // dd($pts);
-        return view('pages.guru.dashboard', ['page_title' => 'Rapor Siswa', 'menus' => $this->showMenus($request), 'siswa' => $siswa, 'sekolah' => $sekolah, 'tanggal_rapor' => $tanggal_rapor, 'pts' => $pts, 'pas' => $pas, 'saran' => $saran]);
+        return view('pages.guru.dashboard', ['page_title' => 'Rapor Siswa', 'menus' => $this->showMenus($request), 'siswa' => $siswa, 'sekolah' => $sekolah, 'tanggal_rapor' => $tanggal_rapor, 'pts' => $pts, 'pas' => $pas, 'saran' => $saran, 'tgl_pts' => $tgl_pts->tanggal]);
     }
 
     /**
