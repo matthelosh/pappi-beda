@@ -57,7 +57,7 @@
                 @include('pages.guru.rapor_pts')
             </div>
             <div class="tab-pane container-fluid" id="rapor-pas">
-                {{-- @include('pages.guru.rapor_pas') --}}
+                @include('pages.guru.rapor_pas')
             </div>
         </div>
     </div>

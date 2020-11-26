@@ -8,6 +8,7 @@ use App\Nilai3;
 use App\Nilai4;
 use App\Kkm;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Array_;
 
 trait NilaiTrait
 {
@@ -64,7 +65,7 @@ trait NilaiTrait
 
 
 
-        dd($datas);
+        // dd($datas);
 
         return [];
     }
@@ -141,5 +142,35 @@ trait NilaiTrait
         return $datas;
     }
 
+    public function saran($request)
+    {
+        $datas = [];
+        $nisn = $request->query('nisn');
+        $periode = $request->session()->get('periode_aktif');
+        // $sarans = 
+        $datas['pts'] = 'App\Saran'::where([
+            ['periode_id','=',$periode],
+            ['siswa_id','=', $nisn],
+            ['jenis_rapor','=','pts']
+        ])->select('teks','id')->first();
+        $datas['pas'] = 'App\Saran'::where([
+            ['periode_id','=',$periode],
+            ['siswa_id','=', $nisn],
+            ['jenis_rapor','=','pas']
+        ])->select('teks','id')->first();
+        // dd($datas);
+        return $datas;
+    }
 
+    public function sikap($request)
+    {
+        $datas = ['k1'=>null,'k2' => null];
+
+        return $datas;
+    }
+
+    public function ekskul($request)
+    {
+        return Array();
+    }
 }

@@ -611,6 +611,7 @@ function getRekap34(url=null) {
         var data = trapors.row($(this).parents('tr')).data();
         $('#modalDataRapor').modal('show')
         $('#modalDataRapor .modal-title #nama_siswa').text(data.nama_siswa)
+        $('#modalDataRapor #form-saran input[name="id_siswa"]').val(data.nisn)
 
 
     })
@@ -815,5 +816,40 @@ function getRekap34(url=null) {
                 })
             }
         })
+    })
+
+
+    // Saran Rapor
+
+    $(document).on('dblclick', '.box-saran', function(){
+        var url = new URL(window.location.href)
+        var nisn = url.searchParams.get('nisn')
+        // alert(nisn)
+
+        $('#modalSaran .form-saran textarea').val($(this).text()).focus()
+        $('#modalSaran .form-saran input[name="jenis_rapor"]').val($(this).data('jenis'))
+        $('#modalSaran .form-saran input[name="siswa_id"]').val(nisn)
+        $('#modalSaran .form-saran input[name="saran_id"]').val($(this).data('id'))
+        $('#modalSaran').modal()
+    })
+    $(document).on('submit', '#modalSaran .form-saran', function(e) {
+        e.preventDefault()
+        var data = $(this).serialize()
+        // console.log(data)
+        $.ajax({
+            url: '/'+sessionStorage.getItem('username')+'/rapor/data/saran',
+            type:'POST',
+            data:data,
+            headers: headers,
+            success: function(res) {
+                // swal('Info', res.msg, 'info')
+                // $('.box-saran').text($('#modalSaran .form-saran textarea').val())
+                // $('#modalSaran').modal('hide')
+                location.reload()
+            }
+        })
+
+
+        
     })
 })

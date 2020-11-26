@@ -206,6 +206,7 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::get('/', 'DashGuruController@rapor')->name('rapor.page');
             // Route::get('/', 'DashGuruController@rapor')->name('rapor.page');
             Route::get('/cetak', 'RaporController@cetak')->name('rapor.cetak');
+            Route::post('/data/saran', 'RaporController@createSaran')->name('rapor.create.saran');
         });
 
         Route::group(['prefix' => 'tema', 'middleware' => ['auth']], function(){

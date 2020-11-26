@@ -34,7 +34,7 @@
                     <tr>
                         <td class="text-left">NISN/NIS</td>
                         <td class="text-left">:</td>
-                        <td class="text-left">{{ $siswa->nisn }}/{{ $siswa->nis }}</td>
+                        <td class="text-left"><span class="nisn">{{ $siswa->nisn }}</span>/{{ $siswa->nis }}</td>
                         <td></td>
                         <td class="text-left">Semester</td>
                         <td>:</td>
@@ -208,8 +208,8 @@
                 <br>
 
                 <h3 class="text-left" >B. Saran-saran</h3>
-                <div class="box-saran p-5" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;">
-                    {{ $saran ? $saran->teks_saran : '-' }}
+                <div class="box-saran p-5" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;" data-jenis="pts" data-id="{{ ($sarans['pts'] !=null) ? $sarans['pts']->id : null }}"> 
+                    {{ ($sarans['pts'] != null) ? $sarans['pts']->teks : '-' }}
                 </div>
 
                 <br>

@@ -45,7 +45,7 @@ class RaporController extends Controller
     public function cetak(Request $request)
     {
         $siswa = 'App\Siswa'::where('nisn', $request->query('nisn'))->first();
-        $sekolah = 'App\Sekolah'::where('npsn', $request->session()->get('sekolah_id'))->first();
+        $sekolah = 'App\Sekolah'::where('npsn', $request->session()->get('sekolah_id'))->with('ks')->first();
         $tanggal_rapor = 'App\TanggalRapor'::where([
             ['sekolah_id', '=', $sekolah->npsn],
             ['periode_id', '=', $request->session()->get('periode_aktif')]
@@ -56,10 +56,27 @@ class RaporController extends Controller
             ['sekolah_id','=', $request->session()->get('sekolah_id')],
             ['jenis_rapor','=','pts']
         ])->first();
-        $pas = [];
-        $saran = '';
+        $pas = $this->rpas($request);
+        $sarans = $this->saran($request);
+        $ekskuls = $this->ekskul($request);
         // dd($pts);
-        return view('pages.guru.dashboard', ['page_title' => 'Rapor Siswa', 'menus' => $this->showMenus($request), 'siswa' => $siswa, 'sekolah' => $sekolah, 'tanggal_rapor' => $tanggal_rapor, 'pts' => $pts, 'pas' => $pas, 'saran' => $saran, 'tgl_pts' => $tgl_pts->tanggal]);
+        $sikaps = $this->sikap($request);
+        return view('pages.guru.dashboard', [
+            'page_title' => 'Rapor Siswa', 
+            'menus' => $this->showMenus($request), 
+            'siswa' => $siswa, 
+            'sekolah' => $sekolah, 
+            'tanggal_rapor' => $tanggal_rapor, 
+            'pts' => $pts, 
+            'pas' => $pas, 
+            'sarans' => $sarans, 
+            'tgl_pts' => $tgl_pts->tanggal, 
+            'sikaps' => $sikaps, 
+            'ekskuls' => $ekskuls,
+            'detil' => [],
+            'prestasis' => [],
+            'absensi' => []
+        ]);
     }
 
     /**
@@ -105,5 +122,28 @@ class RaporController extends Controller
     public function destroy(Raporpas $raporpas)
     {
         //
+    }
+
+
+    // Data Rapor
+        // saran
+
+    public function createSaran(Request $request)
+    {
+        $saran = 'App\Saran';
+        $saran::updateOrCreate([
+            'periode_id' => $request->semester,
+            'jenis_rapor' => $request->jenis_rapor,
+            'siswa_id' => $request->siswa_id,
+            'sekolah_id' => $request->session()->get('sekolah_id')
+            ],
+            ['teks' => $request->teks_saran]
+        );
+    
+
+        return response()->json([
+            'status' => 'sukses',
+            'msg' => 'Saran disimpan'
+        ]);
     }
 }

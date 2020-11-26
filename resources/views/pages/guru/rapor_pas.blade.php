@@ -106,7 +106,7 @@
                     </thead>
                     <tbody>
                         {{-- {{ dd($nilais) }} --}}
-                        @foreach($nilais as $k=>$nilai)
+                        @foreach($pas as $k=>$nilai)
                             @php
                                 $na_k3 = (isset($nilai['k3']['na'])) ? round($nilai['k3']['na']) : null;
                                 $na_k4 = (isset($nilai['k4']['na'])) ? round($nilai['k4']['na']) : null;
@@ -196,7 +196,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($ekstras as $ekstra)
+                        @foreach($ekskuls as $ekstra)
                             <tr>
                                 <td>{{ ($loop->index + 1) }}</td>
                                 <td class="text-left p-2">{{ $ekstra['nama_ekskul'] }}</td>
@@ -209,8 +209,8 @@
                 </table>
                 <br>
                 <h3 class="text-left" >D. Saran-saran</h3>
-                <div class="box-saran p-5" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;">
-                    {{ ($saran) ? $saran->teks_saran : '-' }}
+                <div class="box-saran p-5" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;" data-jenis="pas" data-id="{{ ($sarans['pas'] != null) ? $sarans['pas']->id : null }}">
+                    {{ ($sarans['pas'] != null) ? $sarans['pas']->teks : '-' }}
                 </div>
                 <br>
                 <h3 class="text-left">E. Tinggi dan Berat Badan</h3>
@@ -402,8 +402,8 @@
                             <br>
                             <br>
                             <br>
-                            <b><u>{{ $sekolah->kepsek->nama }}</u></b> <br>
-                            NIP. {{ $sekolah->kepsek->nip }}
+                            <b><u>{{ $sekolah->ks->nama }}</u></b> <br>
+                            NIP. {{ $sekolah->ks->nip }}
                         </td>
                         <td style="width:33.3%"></td>
                     </tr>
