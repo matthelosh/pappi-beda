@@ -417,7 +417,7 @@ $(document).ready(function(){
     })
 
     // Jurnal Siswa
-    var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val();
+    var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.jurnal_page select[name="rombel"]').val();
     var tjurnals = $('#table-jurnal').DataTable({
         serverSide: true,
         ajax: {
@@ -774,11 +774,11 @@ function getRekap34(url=null) {
 
 
 
-    var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : 'null';
+    var rombel = (sessionStorage.getItem('rombel_id') == 'all') ? $('.jurnal_page select[name="rombel"]').val() : sessionStorage.getItem('rombel_id');
 
-    // $(document).on('change', 'select[name="rombel_id"]', function(){
-    //     $('.selSiswaku').select2()
-    // })
+    $(document).on('change', 'select[name="rombel_id"]', function(){
+        $('.selSiswaku').select2()
+    })
     $('.selSiswaKu').select2({
 
         ajax: {

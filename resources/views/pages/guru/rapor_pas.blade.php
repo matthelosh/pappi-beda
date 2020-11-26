@@ -5,7 +5,7 @@
                 <h2 class="text-center">PROFIL DAN RAPOR PESERTA DIDIK </h2>
                 <hr>
                 @php
-                    $semester = Session::get('semester');
+                    $semester = Session::get('periode_aktif');
                     $sem = substr($semester,4,1);
                     $sem = ($sem == '1') ? 'I (Ganjil)' : 'II (Genap)';
                     $tapel = '20'.substr($semester, 0,2).'/'.'20'.substr($semester, 2,2);

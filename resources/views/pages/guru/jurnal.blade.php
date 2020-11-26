@@ -27,12 +27,12 @@
             </h4>
             <hr>
             <div class="row">
-                @if(Auth::user()->role != 'wali' || Auth::user()->role != 'admin')
+                @if(Auth::user()->role != 'wali')
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="rombel">Rombel</label>
                             <select name="rombel" class="form-control selRombel">
-                                <option value="0">Pilih Rombel</option>
+                                <option value="{{ Session::get('rombel')->kode_rombel }}">{{ Session::get('rombel')->nama_rombel }}</option>
                             </select>
                         </div>
                     </div>

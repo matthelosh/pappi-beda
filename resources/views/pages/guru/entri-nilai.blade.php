@@ -69,6 +69,11 @@
                         <label for="aspek">Aspek</label>
                         <select name="aspek" style="width:100%" class="select selAspek">
                             <option value="0">Aspek</option>
+                            @if(Auth::user()->role == 'gpai')
+                                <option value="1">K1</option>
+                            @elseif(Auth::user()->role == 'wali')
+                                <option value="2">K2</option>
+                            @endif
                             <option value="3">K3</option>
                             <option value="4">K4</option>
                         </select>
