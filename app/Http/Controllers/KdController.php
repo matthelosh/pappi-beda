@@ -42,7 +42,7 @@ class KdController extends Controller
                         $datas = [];
                         foreach($kds as $kd)
                         {
-                            array_push($datas, ['id' => $kd->teks, 'text' => $kd->teks]);
+                            array_push($datas, ['id' => $kd->kode_kd, 'text' => $kd->teks]);
                         }
 
                         return response()->json($datas);

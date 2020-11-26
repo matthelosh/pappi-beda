@@ -329,6 +329,20 @@ $(document).ready(function(){
     })
 
 
+    // Pilihan Aspek Form Entri Nilai
+    $('.card-entri-nilai').on('select2:select', '.selMapel', function(e){
+        var mapel = e.params.data.id
+        var options = `
+            <option value="0">Aspek Nilai</option>
+            ${(mapel == 'pabp') ? '<option value="1">Spiritual (K1)</option>' : (mapel == 'ppkn') ? '<option value="2">Sosial (K2)</option>':''}
+            <option value="3">Pengetahuan (K3)</option>
+            <option value="4">Keterampilan (K4)</option>
+        `
+        $('.card-entri-nilai select[name="aspek"]').html(options)
+    })
+
+
+
     // Form Nilai
     $(document).on('click', '.btn-form-nilai', function(e) {
         if(sessionStorage.getItem('role') != 'wali' && $('select[name="rombel"]').val() =='0') {
@@ -339,8 +353,8 @@ $(document).ready(function(){
             periode_id : $('select[name="periode_id"').val(),
             jenis : $('select[name="jenis"').val(),
             mapel_id : $('select[name="mapel_id"').val(),
-            aspek : $('select[name="aspek"').val(),
-            kd_id : $('select[name="kd_id"').val(),
+            aspek : $('.selAspek').select2().val(),
+            kd_id : $('select[name="kd_id"]').val(),
             rombel : (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
         }
 

@@ -1,5 +1,5 @@
 <div class="col-sm-12">
-    <div class="card">
+    <div class="card card-entri-nilai">
         <div class="card-header">
              <h4 class="card-title">
                 <svg class="c-icon">
@@ -64,22 +64,22 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-6 col-md-1">
+                <div class="col-6 col-md-2">
                     <div class="form-group">
                         <label for="aspek">Aspek</label>
                         <select name="aspek" style="width:100%" class="select selAspek">
                             <option value="0">Aspek</option>
-                            @if(Auth::user()->role == 'gpai')
+                            {{-- @if(Auth::user()->role == 'gpai')
                                 <option value="1">K1</option>
                             @elseif(Auth::user()->role == 'wali')
                                 <option value="2">K2</option>
                             @endif
                             <option value="3">K3</option>
-                            <option value="4">K4</option>
+                            <option value="4">K4</option> --}}
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-6">
+                <div class="col-sm-12 col-md-5">
                     <div class="form-group">
                         <label for="kd_id">Kompetensi Dasar</label>
                         <select name="kd_id" style="width:100%" class="selKd">

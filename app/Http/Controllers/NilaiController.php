@@ -27,7 +27,22 @@ class NilaiController extends Controller
                     $input = $request->all();
                     $rombel = $request->rombel;
                     // dd($request->all());
-                    $nilai = ($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4';
+                    $nilai = '';
+                    switch($request->aspek)
+                    {
+                        case "1":
+                            $nilai = 'App\Nilai1';
+                        break;
+                        case "2":
+                            $nilai = 'App\Nilai2';
+                        break;
+                        case "3":
+                            $nilai = 'App\Nilai3';
+                        break;
+                        case "4":
+                            $nilai = 'App\Nilai4';
+                        break;
+                    }
                     $nilais = $nilai::where([
                         ['sekolah_id','=',$request->session()->get('sekolah_id')],
                         ['periode_id','=',$request->periode_id],
@@ -40,7 +55,7 @@ class NilaiController extends Controller
                     $datas = [];
                     foreach($siswas as $siswa)
                         {
-                            array_push($datas, ['nisn' => $siswa->nisn, 'nama_siswa' => $siswa->nama_siswa, 'nilai' => 0, 'id_nilai' => null]);
+                            array_push($datas, ['nisn' => $siswa->nisn, 'nama_siswa' => $siswa->nama_siswa, 'nilai' => ($request->aspek == '1' || $request->aspek == '2') ? 80: 0, 'id_nilai' => null]);
                         }
 
                     if($nilais->count() > 0) {
@@ -232,7 +247,7 @@ class NilaiController extends Controller
     {
         try {
             $rombel = $request->session()->get('rombel_id');
-            $nilai = ($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4';
+            $nilai = (($request->aspek == '1') ? 'App\Nilai1' : (($request->aspek == '2') ? 'App\Nilai2': (($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4')));
             $mapel = $request->mapel_id;
             $kd = $request->kd_id;
             $periode = ($request->periode_id) ? $request->periode_id : $request->session()->get('periode_aktif');

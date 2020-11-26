@@ -12,7 +12,7 @@ class Nilai2 extends Model
         'rombel_id',
         'mapel_id',
         'jenis',
-        'butir_sikap',
+        'kd_id',
         'siswa_id',
         'nilai'
     ];

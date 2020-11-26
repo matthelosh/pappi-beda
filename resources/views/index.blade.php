@@ -201,9 +201,10 @@
     })
     $('.select').select2()
     $('.selKd').select2()
-    $(document).on('change', '.selAspek', function(){
+    $(document).on('select2:select', '.selAspek', function(e){
             var mapel = $('.selMapel').val()
-            var ki = $(this).val()
+            var ki = e.params.data.id
+            // alert(ki)  
             if(mapel == '0' || ki == '0') {
               swal('Error!','Harap Memilih Mapel dan Aspen Dulu','error')
             }
@@ -213,7 +214,7 @@
             }
             var data = {
               mapel:  $('.selMapel').val(),
-              aspek:  $(this).val(),
+              aspek:  ki,
               rombel: (sessionStorage.getItem('role') == 'wali') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
             }
 
