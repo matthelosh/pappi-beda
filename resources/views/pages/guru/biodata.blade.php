@@ -128,7 +128,7 @@
                                 </div>
                             </td>
                             <td style="width:50%; text-align: left;">
-                                {{ $sekolah->kab }},  {{  $tanggal_rapor }} <br>
+                                {{ $sekolah->kab }},  {{  date_format(date_create($tanggal_rapor['pas']), "d F Y") }} <br>
                                 Kepala Sekolah, <br>
 
                                 <br>

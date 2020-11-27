@@ -56,6 +56,11 @@ class RaporController extends Controller
             ['sekolah_id','=', $request->session()->get('sekolah_id')],
             ['jenis_rapor','=','pts']
         ])->first();
+        $tgl_pas = 'App\TanggalRapor'::where([
+            ['periode_id','=', $request->session()->get('periode_aktif')],
+            ['sekolah_id','=', $request->session()->get('sekolah_id')],
+            ['jenis_rapor','=','pas']
+        ])->first();
         $pas = $this->rpas($request);
         $sarans = $this->saran($request);
         $ekskuls = $this->ekskul($request);
@@ -66,7 +71,10 @@ class RaporController extends Controller
             'menus' => $this->showMenus($request), 
             'siswa' => $siswa, 
             'sekolah' => $sekolah, 
-            'tanggal_rapor' => $tanggal_rapor, 
+            'tanggal_rapor' => [
+                'pts' => $tgl_pts->tanggal,
+                'pas' => ($tgl_pas) ? $tgl_pas->tanggal : date('Y-m-d')
+            ], 
             'pts' => $pts, 
             'pas' => $pas, 
             'sarans' => $sarans, 

@@ -395,6 +395,24 @@ $(document).ready(function(){
         })
     })
 
+    // Submit Nilai
+
+    $(document).on('submit', '.form-nilai', function(e) {
+        e.preventDefault()
+        alert('hi')
+        var data = $(this).serialize()
+        $.ajax({
+            headers: headers,
+            url: '/'+sessionStorage.getItem('username')+'/nilais/entri',
+            type:'post',
+            data: data,
+            success: function(res) {
+                swal('Info', res.msg, 'info')
+                $('.btn-form-nilai').trigger('click')
+            }
+        })
+    })
+
     $(document).on('dblclick','.input_nilai', function(){
         
         var id_nilai = $(this).siblings('.id_nilai').text()
@@ -424,6 +442,8 @@ $(document).ready(function(){
             type: 'post',
             success: function(res) {
                 // $('.btn-form-nilai').trigger('close')
+                // console.log(res)
+                swal('Info', res.msg, 'info')
                 $('input[name="nilais['+nisn+']"').val($('#modalEditNilai .formEditNilai input[name="nilai"]').val())
                 $('#modalEditNilai').modal('hide')
             }

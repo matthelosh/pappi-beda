@@ -268,7 +268,8 @@ class NilaiController extends Controller
                 ]);
 
             }
-            return redirect('/'.$request->session()->get('username').'/nilais/entri')->with(['status' => 'sukses', 'msg' => 'Nilai disimpan']);
+            // return redirect('/'.$request->session()->get('username').'/nilais/entri')->with(['status' => 'sukses', 'msg' => 'Nilai disimpan']);
+            return response()->json(['status' => 'sukses', 'msg' => 'Nilai Tersimpan']);
         } catch(\Exception $e)
         {
             return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
@@ -291,7 +292,8 @@ class NilaiController extends Controller
     public function update(Request $request)
     {
         // dd($request->all());
-        $nilai = ($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4';
+        $nilai = (($request->aspek == '1') ? 'App\Nilai1' : (($request->aspek == '2') ? 'App\Nilai2': (($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4')));;
+        // $nilai = ($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4';
         $nilai::find($request->id_nilai)
                 ->update(['nilai' => $request->nilai]);
         return response()->json(['status'=> 'sukses', 'msg' => 'Nilai diperbarui']);

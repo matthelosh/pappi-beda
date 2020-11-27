@@ -21,12 +21,12 @@
                     Buat
                 </button> --}}
             </h4>    
-            <button class="btn  btn-success float-right mr-2 btn-print-mapelku">
+            {{-- <button class="btn  btn-success float-right mr-2 btn-print-mapelku">
                 <svg class="c-icon">
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
                 </svg>
                 Cetak
-            </button>
+            </button> --}}
             @if(Auth::user()->role != 'wali')
                 <div class="form-group float-right mr-2">
                     <select name="rombel" class="form-control selRombel" style="width:200px;">
@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <label for="periode_id">Periode</label>
                         <select name="periode_id" style="width:100%" class="selPeriode">
-                            <option value="0">Pilih Periode</option>
+                            <option value="{{ Session::get('periode_aktif') }}">{{ '20'.substr(Session::get('periode_aktif'),0,2).'/20'.substr(Session::get('periode_aktif'),2,2).'-'.(substr(Session::get('periode_aktif'),4,1) == '1' ) ? 'Ganjil' : 'Genap'  }}</option>
                         </select>
                     </div>
                 </div>
