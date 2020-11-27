@@ -110,7 +110,7 @@
                             @php
                                 $na_k3 = (isset($nilai['k3']['na'])) ? round($nilai['k3']['na']) : null;
                                 $na_k4 = (isset($nilai['k4']['na'])) ? round($nilai['k4']['na']) : null;
-                                $kkm=70;
+                                $kkm=$nilai['kkm']->nilai;
                             @endphp
                             <tr>
                                 <td class="text-center p-2">{{ ($loop->index +1) }}</td>
@@ -120,13 +120,13 @@
                                 <td class="{{ ($na_k3 < $kkm) ? 'text-red' : '' }}">
                                     {{ ($na_k3 != null)? $na_k3 : '-' }}
                                 </td>
-                                <td class="{{ ($na_k3 < 75) ? 'text-danger': ''}}">
+                                <td class="{{ ($na_k3 < $kkm) ? 'text-danger': ''}}">
                                     @if($na_k3 != null)
                                         @if($na_k3 >= 90)
                                             A
                                         @elseif($na_k3 >= 80)
                                             B
-                                        @elseif($na_k3 >= 70)
+                                        @elseif($na_k3 >= $kkm)
                                             C
                                         @else
                                             D
@@ -196,11 +196,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($ekskuls as $ekstra)
+                        @foreach($ekskuls as $k=>$ekstra)
                             <tr>
                                 <td>{{ ($loop->index + 1) }}</td>
-                                <td class="text-left p-2">{{ $ekstra['nama_ekskul'] }}</td>
-                                <td class="text-left p-2">{{ ($ekstra['ket']) ?? '-' }}</td>
+                                <td class="text-left p-2" data-id="{{ $k }}">{{ $ekstra['nama_ekskul'] }}</td>
+                                <td class="text-left p-2 ket-ekskul" data-id="{{ $ekstra['id_nilai'] }}">{{ ($ekstra['ket']) ?? '-' }}</td>
                             </tr>
 
                         @endforeach
@@ -338,7 +338,7 @@
                     </tbody>
                 </table>
                 <br>
-                <h3 class="text-left">F. Kondisi Kesehatan</h3>
+                <h3 class="text-left">H. Ketidakhadiran</h3>
                 <div style="position:relative; display:block; width: 100%;margin-bottom:150px;">
                     <table id="table-kehadiran" border="1" style="border-collapse:collapse;display:block; width:40%; position: absolute; left:0; ">
                         <tbody>
@@ -440,4 +440,26 @@
         </div>
     </div>
 
+</div>
+
+
+<div class="modal" id="modalNilaiEkskul">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Nilai Ekskul <span class="nama_ekskul"></span></h4>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-nilai-ekskul">
+                    @csrf()
+                    <input type="hidden" name="nisn">
+                    <input type="hidden" name="periode_id">
+                    <input type="hidden" name="rombel_id">
+                    <input type="hidden" name="ekskul_id">
+                    <textarea name="keterangan" cols="30" rows="10" class="form-control"></textarea>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

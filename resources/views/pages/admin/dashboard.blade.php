@@ -32,5 +32,8 @@
         @case('Tanggal Rapor')
             @include('pages.admin.tanggal-rapor')
         @break
+        @case('Ekstrakurikuler')
+            @include('pages.admin.ekskul')
+        @break
     @endswitch
 @endsection

@@ -69,4 +69,9 @@ class DashController extends Controller
     {
         return view('pages.admin.dashboard', ['page_title' => 'Tanggal Rapor', 'menus' => $this->showMenus($request)]);
     }
+
+    public function ekskul(Request $request)
+    {
+        return view('pages.admin.dashboard', ['page_title' => 'Ekstrakurikuler', 'menus' => $this->showMenus($request)]);
+    }
 }

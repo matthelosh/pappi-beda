@@ -36,4 +36,9 @@ class Siswa extends Model
     {
         return $this->hasOne('App\Ortu', 'siswa_id', 'nisn');
     }
+
+    public function ekskuls()
+    {
+        return $this->hasMany('App\Ekskul', 'siswa_id', 'nisn');
+    }
 }

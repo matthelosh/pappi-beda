@@ -688,6 +688,10 @@ function getRekap34(url=null) {
         }, 1500)
     }
 
+    // Ekskul
+        $('#table-ekstra td.ket-ekskul').on('dblclick', function(e) {
+            $('#modalNilaiEkskul').modal()
+        })
 
 // Tema
     var ttemas = $('#table-tema').DataTable({

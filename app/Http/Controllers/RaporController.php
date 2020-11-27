@@ -72,7 +72,7 @@ class RaporController extends Controller
             'siswa' => $siswa, 
             'sekolah' => $sekolah, 
             'tanggal_rapor' => [
-                'pts' => $tgl_pts->tanggal,
+                'pts' => ($tgl_pts) ?  $tgl_pts->tanggal : date('Y-m-d'),
                 'pas' => ($tgl_pas) ? $tgl_pas->tanggal : date('Y-m-d')
             ], 
             'pts' => $pts, 

@@ -110,6 +110,10 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
         Route::delete('/{id}', 'MapelController@destroy')->name('mapels.delete');
     });
 
+    // Ekskul Admin
+    Route::group(['prefix' => 'ekskul', 'middleware' => ['auth', 'isAdmin']], function() {
+        Route::get('/', 'DashController@ekskul')->name('ekskul.page');
+    });
     // Kd
     Route::group(['prefix' =>'kds', 'middleware' => ['auth']], function() {
         Route::get('/', 'DashController@kds')->name('kds.page');
