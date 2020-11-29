@@ -41,4 +41,24 @@ class Siswa extends Model
     {
         return $this->hasMany('App\Ekskul', 'siswa_id', 'nisn');
     }
+
+    public function fisiks()
+    {
+        return $this->hasMany('App\FisikSiswa','siswa_id','nisn');
+    }
+
+    public function kesehatans()
+    {
+        return $this->hasMany('App\KesehatanSiswa','siswa_id','nisn');
+    }
+
+    public function prestasis()
+    {
+        return $this->hasMany('App\Kesenian','siswa_id','nisn');
+    }
+
+    public function absens()
+    {
+        return $this->hasMany('App\Absensi','siswa_id','nisn');
+    }
 }

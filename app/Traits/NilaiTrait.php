@@ -426,17 +426,90 @@ trait NilaiTrait
                 ['sekolah_id','=',$request->session()->get('sekolah_id')],
                 ['periode','=',$request->session()->get('periode_aktif')],
                 ['siswa_id','=',$request->query('nisn')],
-                ['tingkat','=',$request->session()->get('rombel')->tingkat],
+                ['tingkat','=',$request->session()->get('rombel')->kode_rombel],
                 ['ekskul_id','=', $eks->kode_ekskul]
             ])
             ->first();
             
             $datas[$eks->kode_ekskul]['ket'] = $n_eks ? $n_eks->keterangan : null;
             $datas[$eks->kode_ekskul]['id_nilai'] = $n_eks ? $n_eks->id : null;
+            $datas[$eks->kode_ekskul]['ekskul_id'] = $n_eks ? $n_eks->ekskul_id : null;
 
         }
 
         // dd($datas);
         return $datas;
+    }
+
+    public function fisik($request)
+    {
+        $rombel = $request->session()->get('rombel');
+        $nisn = $request->query('nisn');
+        $periode = $request->session()->get('periode_aktif');
+        $tapel = substr($periode,0,4);
+        $datas = [];
+        $datas['tb']['1'] = 'App\FisikSiswa'::select('tb','id')
+                            ->where([
+                                ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                                ['rombel_id','=',$rombel->kode_rombel],
+                                ['siswa_id','=',$nisn],
+                                ['periode','=', $tapel.'1']
+                            ])->first();
+        $datas['tb']['2'] = 'App\FisikSiswa'::select('tb','id')
+                            ->where([
+                                ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                                ['rombel_id','=',$rombel->kode_rombel],
+                                ['siswa_id','=',$nisn],
+                                ['periode','=', $tapel.'2']
+                            ])->first();
+        $datas['bb']['1'] = 'App\FisikSiswa'::select('bb','id')
+                            ->where([
+                                ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                                ['rombel_id','=',$rombel->kode_rombel],
+                                ['siswa_id','=',$nisn],
+                                ['periode','=', $tapel.'1']
+                            ])->first();
+        $datas['bb']['2'] = 'App\FisikSiswa'::select('bb','id')
+                            ->where([
+                                ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                                ['rombel_id','=',$rombel->kode_rombel],
+                                ['siswa_id','=',$nisn],
+                                ['periode','=', $tapel.'2']
+                            ])->first();
+
+        // dd($datas);
+        return $datas;
+    }
+
+    public function dataRapor($request)
+    {
+        // $datas = [];
+        $rombel = $request->session()->get('rombel');
+        $nisn = $request->query('nisn');
+        $periode = $request->session()->get('periode_aktif');
+        $tapel = substr($periode,0,4);
+        $datas = [];
+        $where = [
+            ['periode','=',$periode],
+            ['rombel_id','=',$rombel->kode_rombel],
+            ['sekolah_id','=',$request->session()->get('sekolah_id')],
+            ['siswa_id','=',$nisn]
+        ];
+
+        $datas['kesehatan'] = 'App\KesehatanSiswa'::where($where)->first();
+
+        $datas['prestasis'] = 'App\Prestasi'::where($where)->first();
+
+        $datas['absensi'] = 'App\Absensi'::where($where)->first();
+        // dd($datas);
+        return $datas;
+    }
+
+    public function prestasis($request)
+    {
+        $rombel = $request->session()->get('rombel');
+        $nisn = $request->query('nisn');
+        $periode = $request->session()->get('periode_aktif');
+        $tapel = substr($periode,0,4);
     }
 }

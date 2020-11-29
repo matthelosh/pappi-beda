@@ -2,7 +2,7 @@ $(document).ready(function() {
     var headers =  {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-    // swal("Halo")
+    // Swal.fire("Halo")
     // Add Menu MOdal
     $('.btn-add-menu').on('click', function(e) {
         e.preventDefault()
@@ -93,28 +93,30 @@ $(document).ready(function() {
     $(document).on('click', '.btn-delete-user', function(e) {
         e.preventDefault()
         var user = tusers.row($(this).parents('tr')).data()
-        swal({
-            title: "Yakin Menghapus "+user[2]+"?",
-            text: "Pengguna  akan hilang dari database",
+        var img = user[2]
+        Swal.fire({
+            title: "Yakin Menghapus "+user[4]+"?",
+            html: img,
             icon: "warning",
-            buttons: true,
+            
             dangerMode: true,
+            showCancelButton : true,
           })
           .then((hapus) => {
-            if (hapus) {
+            if (hapus.value) {
               $.ajax({
                   headers: headers,
                   type:'post',
-                  url: '/users/'+user[1],
+                  url: '/users/'+user[3],
                   data: {'_method': 'delete'}
               }).done(res => {
-                  swal('Info', res.msg, 'info')
-                  window.reload()
+                  Swal.fire('Info', res.msg, 'info')
+                  window.location.reload()
               }).fail(err => {
-                  swal('Error', err.response.msg, 'error')
+                  Swal.fire('Error', err.response.msg, 'error')
               })
             } else {
-              swal("Data tidak dihapus");
+              Swal.fire("Data tidak dihapus");
             }
           });
 
@@ -124,26 +126,27 @@ $(document).ready(function() {
     $(document).on('click', '.btn-reset-password', function(e) {
         e.preventDefault()
         var user = tusers.row($(this).parents('tr')).data()
-        swal({
-            title: 'Yakin Menyetel Ulang Sandi '+user[2]+'?',
+        Swal.fire({
+            title: 'Yakin Menyetel Ulang Sandi '+user[4]+'?',
+            html: user[2],
             text: 'Sandi Pengguna akan diganti Sandi Asal',
             icon: 'warning',
-            buttons: true,
+            showCancelButton : true,
             dangerMode: true
         }).then((lanjut) => {
             if(lanjut) {
                 $.ajax({
                     headers: headers,
-                    url: '/users/reset/'+user[1],
+                    url: '/users/reset/'+user[3],
                     type: 'post',
                     data: {'_method': 'put'}
                 }).done( res => {
-                    swal('Info', res.msg, 'success')
+                    Swal.fire('Info', res.msg, 'success')
                 }).fail(err => {
-                    swal('Error', err.response.msg, 'error')
+                    Swal.fire('Error', err.response.msg, 'error')
                 })
             } else {
-                swal('Info', 'Sandi Pengguna tidak jadi direset', 'info');
+                Swal.fire('Info', 'Sandi Pengguna tidak jadi direset', 'info');
             }
         })
     })
@@ -151,11 +154,11 @@ $(document).ready(function() {
     // Reset Password All User
     $(document).on('click','.btn-reset-all', function(e) {
         e.preventDefault();
-        swal({
+        Swal.fire({
             title: 'Yakin Menyetel Ulang Sandi Semua Pengguna?',
             text: 'Sandi Pengguna akan diganti Sandi Asal',
             icon: 'warning',
-            buttons: true,
+            showCancelButton : true,
             dangerMode: true
         }).then((lanjut) => {
             if(lanjut) {
@@ -165,12 +168,12 @@ $(document).ready(function() {
                     type: 'post',
                     data: {'_method': 'put'}
                 }).done( res => {
-                    swal('Info', res.msg, 'success')
+                    Swal.fire('Info', res.msg, 'success')
                 }).fail(err => {
-                    swal('Error', err.response.msg, 'error')
+                    Swal.fire('Error', err.response.msg, 'error')
                 })
             } else {
-                swal('Info', 'Sandi Pengguna tidak jadi direset', 'info');
+                Swal.fire('Info', 'Sandi Pengguna tidak jadi direset', 'info');
             }
         })
 
@@ -305,9 +308,9 @@ $(document).ready(function() {
             data: data
         }).done(res => {
             tsekolahs.ajax.reload()
-            swal('Info', res.msg, 'info')
+            Swal.fire('Info', res.msg, 'info')
         }).fail(err => {
-            // swal('Error', err.response.msg, 'error')
+            // Swal.fire('Error', err.response.msg, 'error')
             console.log(err)
         })
     })
@@ -411,11 +414,11 @@ $(document).ready(function() {
                 ids.push(siswa.id)
                 namas += siswa.nama_siswa+', '
             })
-            swal({
+            Swal.fire({
                 title: 'Yakin Keluarkan siswa?',
                 text: namas,
                 icon: 'warning',
-                // buttons: true,
+                // showCancelButton : true,,
                 // dangerMode: true
                 buttons: {
                     cancel: "Batal",
@@ -438,7 +441,7 @@ $(document).ready(function() {
                         keluarkanSiswa("lulus")
                         break;
                     default:
-                        swal('Info', 'Siswa tidak dikeluarkan', 'info')
+                        Swal.fire('Info', 'Siswa tidak dikeluarkan', 'info')
                         break;
 
 
@@ -450,15 +453,15 @@ $(document).ready(function() {
                 //         type:'post',
                 //         data: {'ids': ids}
                 //     }).done(res => {
-                //         swal('Info', res.msg, 'info')
+                //         Swal.fire('Info', res.msg, 'info')
                 //         $('#modalMnjRombel .select-all').prop('checked', false)
                 //         tmembers.ajax.reload()
                 //         tnonmembers.draw()
                 //     }).fail(err=>{
-                //         swal('Error', err.response.msg, 'error')
+                //         Swal.fire('Error', err.response.msg, 'error')
                 //     })
                 // } else {
-                //     swal('Info', 'Siswa tidak dikeluarkan', 'info')
+                //     Swal.fire('Info', 'Siswa tidak dikeluarkan', 'info')
                 // }
             })
             function keluarkanSiswa(ket) {
@@ -468,12 +471,12 @@ $(document).ready(function() {
                         type:'post',
                         data: {'ids': ids}
                     }).done(res => {
-                        swal('Info', res.msg, 'info')
+                        Swal.fire('Info', res.msg, 'info')
                         $('#modalMnjRombel .select-all').prop('checked', false)
                         tmembers.ajax.reload()
                         tnonmembers.draw()
                     }).fail(err=>{
-                        swal('Error', err.response.msg, 'error')
+                        Swal.fire('Error', err.response.msg, 'error')
                     })
             }
         })
@@ -494,18 +497,18 @@ $(document).ready(function() {
             })
 
             if (rombel_asal == rombel_tujuan) {
-                swal('Error', 'Rombel Tujuan Tidak boleh sama dengan rombel asal', 'error')
+                Swal.fire('Error', 'Rombel Tujuan Tidak boleh sama dengan rombel asal', 'error')
                 return false
             } else if(ids.length < 1) {
-                swal('Error', 'Belum ada Siswa Yang Dipilih', 'error')
+                Swal.fire('Error', 'Belum ada Siswa Yang Dipilih', 'error')
                 return false
             }
 
-            swal({
+            Swal.fire({
                 title: 'Yakin Pindahkan siswa ke rombel '+rombel_tujuan+'?',
                 text: namas,
                 icon: 'warning',
-                buttons: true,
+                showCancelButton : true,
                 dangerMode: true
             }).then((lanjut) => {
                 if (lanjut) {
@@ -515,15 +518,15 @@ $(document).ready(function() {
                         type:'post',
                         data: {'ids': ids, tujuan: rombel_tujuan}
                     }).done(res => {
-                        swal('Info', res.msg, 'info')
+                        Swal.fire('Info', res.msg, 'info')
                         $('#modalMnjRombel .select-all').prop('checked', false)
                         tmembers.draw()
                         tnonmembers.ajax.reload()
                     }).fail(err=>{
-                        swal('Error', err.response.msg, 'error')
+                        Swal.fire('Error', err.response.msg, 'error')
                     })
                 } else {
-                    swal('Info', 'Siswa tidak dikeluarkan', 'info')
+                    Swal.fire('Info', 'Siswa tidak dikeluarkan', 'info')
                 }
             })
 
@@ -541,11 +544,11 @@ $(document).ready(function() {
                 ids.push(siswa.id)
                 namas += siswa.nama_siswa+', '
             })
-            swal({
+            Swal.fire({
                 title: 'Yakin Masukkan siswa?',
                 text: namas,
                 icon: 'warning',
-                buttons: true,
+                showCancelButton : true,
                 dangerMode: true
             }).then((lanjut) => {
                 if (lanjut) {
@@ -555,15 +558,15 @@ $(document).ready(function() {
                         type:'post',
                         data: {'ids': ids, 'rombel_id': rombel_id}
                     }).done(res => {
-                        swal('Info', res.msg, 'info')
+                        Swal.fire('Info', res.msg, 'info')
                         $('#modalMnjRombel .select-all').prop('checked', false)
                         tmembers.draw()
                         tnonmembers.ajax.reload()
                     }).fail(err=>{
-                        swal('Error', err.response.msg, 'error')
+                        Swal.fire('Error', err.response.msg, 'error')
                     })
                 } else {
-                    swal('Info', 'Siswa Tidak dimasukkan', 'info')
+                    Swal.fire('Info', 'Siswa Tidak dimasukkan', 'info')
                 }
             })
         })
@@ -598,28 +601,28 @@ $(document).ready(function() {
     $(document).on('click', '.btn-delete-rombel', function(e) {
         e.preventDefault()
         var rombel = trombels.row($(this).parents('tr')).data()
-        swal({
+        Swal.fire({
             title: "Yakin Menghapus Rombel "+rombel.nama_rombel+"?",
             text: "Rombel  akan hilang dari database",
             icon: "warning",
-            buttons: true,
+            showCancelButton : true,
             dangerMode: true,
           })
           .then((hapus) => {
-            if (hapus) {
+            if (hapus.value) {
               $.ajax({
                   headers: headers,
                   type:'post',
                   url: '/rombels/'+rombel.id,
                   data: {'_method': 'delete'}
               }).done(res => {
-                  swal('Info', res.msg, 'info')
+                  Swal.fire('Info', res.msg, 'info')
                   trombels.ajax.reload()
               }).fail(err => {
-                  swal('Error', err.response.msg, 'error')
+                  Swal.fire('Error', err.response.msg, 'error')
               })
             } else {
-              swal("Data tidak dihapus");
+              Swal.fire("Data tidak dihapus");
             }
           });
     })
@@ -635,10 +638,10 @@ $(document).ready(function() {
             type: 'post',
             data: data
         }).done(res => {
-            swal('Info', res.msg, 'info')
+            Swal.fire('Info', res.msg, 'info')
             trombels.ajax.reload()
         }).fail(err => {
-            swal('Error', err.response.msg, 'error')
+            Swal.fire('Error', err.response.msg, 'error')
         })
     })
 
@@ -737,28 +740,28 @@ $(document).ready(function() {
     $(document).on('click', '.btn-delete-siswa', function(e) {
         e.preventDefault();
         var siswa = tsiswas.row($(this).parents('tr')).data()
-        swal({
+        Swal.fire({
             title: "Yakin Menghapus Siswa "+siswa.nama_siswa+"?",
             text: "Siswa  akan dihapus dari database",
             icon: "warning",
-            buttons: true,
+            showCancelButton : true,
             dangerMode: true,
           })
           .then((hapus) => {
-            if (hapus) {
+            if (hapus.value) {
               $.ajax({
                   headers: headers,
                   type:'post',
                   url: '/siswas/'+siswa.id,
                   data: {'_method': 'delete'}
               }).done(res => {
-                  swal('Info', res.msg, 'info')
+                  Swal.fire('Info', res.msg, 'info')
                   tsiswas.ajax.reload()
               }).fail(err => {
-                  swal('Error', err.response.msg, 'error')
+                  Swal.fire('Error', err.response.msg, 'error')
               })
             } else {
-              swal("Data Siswa Aman");
+              Swal.fire("Data Siswa Aman");
             }
           });
 
@@ -800,7 +803,7 @@ $(document).ready(function() {
             $('#form-ortu').prepend(`<input type="hidden" name="siswa_id" value="${siswa.nisn}">`)
             $('#modalOrtu').modal()
         }).fail(err => {
-            swal('Error', err.response.msg, 'error')
+            Swal.fire('Error', err.response.msg, 'error')
         })
     })
 
@@ -847,10 +850,10 @@ $(document).ready(function() {
         e.preventDefault()
         var mapel = tmapels.row($(this).parents('tr')).data()
 
-        swal({
+        Swal.fire({
             title: 'Yakin Menghapus '+mapel.nama_mapel+'?',
             text: 'Mapel '+mapel.nama_mapel+'akan dihapus dari database',
-            buttons: true,
+            showCancelButton : true,
             dangerMode: true,
             icon: 'warning'
         }).then((lanjut) => {
@@ -860,13 +863,13 @@ $(document).ready(function() {
                     url: '/mapels/'+mapel.id,
                     type: 'delete'
                 }).done(res=>{
-                    swal('Info', res.msg, 'info')
+                    Swal.fire('Info', res.msg, 'info')
                     tmapels.ajax.reload()
                 }).fail(err=>{
-                    swal('Error', err.response.msg, 'error')
+                    Swal.fire('Error', err.response.msg, 'error')
                 })
             } else {
-                swal('Info', 'Data Mapel tidak dihapus')
+                Swal.fire('Info', 'Data Mapel tidak dihapus')
             }
 
         })
@@ -936,10 +939,10 @@ $(document).ready(function() {
     $(document).on('click', '.btn-delete-kd', function(e){
         e.preventDefault()
         var kd = tkds.row($(this).parents('tr')).data()
-        swal({
+        Swal.fire({
             title: 'Yakin Mengapus '+kd.kode_kd+'?',
             text: kd.teks_kd,
-            buttons: true,
+            showCancelButton : true,
             dangerMode: true,
             icon: 'warning'
         }).then((lanjut) => {
@@ -949,13 +952,13 @@ $(document).ready(function() {
                     url: '/kds/'+kd.id,
                     type: 'delete'
                 }).done(res=>{
-                    swal('Info', res.msg, 'info')
+                    Swal.fire('Info', res.msg, 'info')
                     tkds.ajax.reload()
                 }).fail(err => {
-                    swal('Error', err.response.msg, 'error')
+                    Swal.fire('Error', err.response.msg, 'error')
                 })
             } else {
-                swal('Info', 'KD tidak dihapus.', 'info')
+                Swal.fire('Info', 'KD tidak dihapus.', 'info')
             }
         })
     })
@@ -997,10 +1000,10 @@ $(document).ready(function() {
         e.preventDefault()
         var periode = tperiodes.row($(this).parents('tr')).data()
         if(periode.status == 'nonaktif') {
-            swal({
+            Swal.fire({
                 title: 'Yakin Mengaktifkar Periode '+periode.kode_periode+'?',
                 text: 'Periode yang aktif sekarang akan dinonaktifkan.',
-                buttons: true,
+                showCancelButton : true,
                 dangerMode: true,
                 icon: 'warning'
             }).then((lanjut) => {
@@ -1010,17 +1013,17 @@ $(document).ready(function() {
                         url: '/periode/activate/'+periode.id,
                         type: 'put'
                     }).done(res => {
-                        swal('Info', res.msg, 'info')
+                        Swal.fire('Info', res.msg, 'info')
                         tperiodes.ajax.reload()
                     }).fail(err => {
-                        swal('Error', err.response.msg, 'error')
+                        Swal.fire('Error', err.response.msg, 'error')
                     })
                 } else {
-                    swal('Info', 'Periode Saat Ini Masih Aktif', 'info')
+                    Swal.fire('Info', 'Periode Saat Ini Masih Aktif', 'info')
                 }
             })
         } else {
-            swal({
+            Swal.fire({
                 title: 'Maaf! Tidak Boleh. ;)',
                 text: 'Anda harus mengaktifkan periode lain untuk menonaktifkan periode ini',
                 icon: 'warning'
@@ -1082,10 +1085,10 @@ $(document).on('click', '.btn-delete-tanggal-rapor', function(e) {
     e.preventDefault()
     var data = ttanggalRapor.row($(this).parents('tr')).data()
 
-    swal({
+    Swal.fire({
         title: 'Yakin Menghapus Tangga Rapor '+data.tanggal+'?',
         text: 'Data Akan Dihapus dari Database',
-        buttons: true,
+        showCancelButton : true,
         dangerMode: true,
         icon: 'warning'
     }).then((lanjut) => {
@@ -1095,13 +1098,13 @@ $(document).on('click', '.btn-delete-tanggal-rapor', function(e) {
                 url: '/tanggal-rapor/' + data.id,
                 type: 'delete'
             }).done(res => {
-                swal('Info', res.msg, 'info')
+                Swal.fire('Info', res.msg, 'info')
                 ttanggalRapor.ajax.reload()
             }).fail(err => {
-                swal('Error', err.response.msg, 'error')
+                Swal.fire('Error', err.response.msg, 'error')
             })
         } else {
-            swal('Info', 'Tanggal Rapor Aman', 'info')
+            Swal.fire('Info', 'Tanggal Rapor Aman', 'info')
         }
     })
 })

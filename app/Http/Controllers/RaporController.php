@@ -81,9 +81,11 @@ class RaporController extends Controller
             'tgl_pts' => $tgl_pts->tanggal, 
             'sikaps' => $sikaps, 
             'ekskuls' => $ekskuls,
-            'detil' => [],
+            'fisik' => $this->fisik($request),
             'prestasis' => [],
-            'absensi' => []
+            'absensi' => [],
+            'detil'=>[],
+            'data_rapor' => $this->dataRapor($request)
         ]);
     }
 
@@ -153,5 +155,106 @@ class RaporController extends Controller
             'status' => 'sukses',
             'msg' => 'Saran disimpan'
         ]);
+    }
+
+    public function saveFisik(Request $request)
+    {
+        $fisik = 'App\FisikSiswa';
+
+        try {
+            $fisik::updateOrCreate(
+                [
+                    // 'id' => $request->id_fisik,
+                    'sekolah_id' => $request->session()->get('sekolah_id'),
+                    'rombel_id' => $request->session()->get('rombel')->kode_rombel,
+                    'tingkat' => $request->session()->get('rombel')->tingkat,
+                    'periode' => $request->periode,
+                    'siswa_id' => $request->siswa_id
+                ],
+                [
+                    'tb' => $request->tb,
+                    'bb' => $request->bb
+                ]
+            );
+            return response()->json(['status' => 'sukses','msg' => 'Data Fisik Siswa Disimpan.']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'gagal', 'msg' => $e->getCode().':'.$e->getMessage()]);
+        }
+    }
+
+    public function saveKesehatan(Request $request)
+    {
+        $kesehatan = 'App\KesehatanSiswa';
+
+        try {
+            $kesehatan::updateOrCreate(
+                [
+                    'sekolah_id' => $request->session()->get('sekolah_id'),
+                    'rombel_id' => $request->session()->get('rombel')->kode_rombel,
+                    'tingkat' => $request->session()->get('rombel')->tingkat,
+                    'periode' => $request->session()->get('periode_aktif'),
+                    'siswa_id' => $request->nisn
+                ],
+                [
+                    'pendengaran' => $request->pendengaran,
+                    'penglihatan' => $request->penglihatan,
+                    'gigi' => $request->gigi,
+                    'lain' => $request->lain
+                ]
+            );
+
+            return response()->json(['status'=>'sukses','msg' => 'Data Kesehatan Disimpan.', 'icon' => 'info']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'gagal','msg' => $e->getCode().':'.$e->getMessage(), 'icon' => 'error']);
+        }
+    }
+    public function savePrestasi(Request $request)
+    {
+        $prestasi = 'App\Prestasi';
+
+        try {
+            $prestasi::updateOrCreate(
+                [
+                    'sekolah_id' => $request->session()->get('sekolah_id'),
+                    'rombel_id' => $request->session()->get('rombel')->kode_rombel,
+                    'tingkat' => $request->session()->get('rombel')->tingkat,
+                    'periode' => $request->session()->get('periode_aktif'),
+                    'siswa_id' => $request->siswa_id
+                ],
+                [
+                    'kesenian' => $request->kesenian,
+                    'olahraga' => $request->olahraga
+                ]
+            );
+
+            return response()->json(['status'=>'sukses','msg' => 'Data Prestasi Disimpan.', 'icon' => 'info']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'gagal','msg' => $e->getCode().':'.$e->getMessage(), 'icon' => 'error']);
+        }
+    }
+    public function saveAbsensi(Request $request)
+    {
+        $absensi = 'App\Absensi';
+
+        try {
+            $absensi::updateOrCreate(
+                [
+                    'sekolah_id' => $request->session()->get('sekolah_id'),
+                    'rombel_id' => $request->session()->get('rombel')->kode_rombel,
+                    'tingkat' => $request->session()->get('rombel')->tingkat,
+                    'periode' => $request->session()->get('periode_aktif'),
+                    'siswa_id' => $request->siswa_id
+                ],
+                [
+                    'ijin' => $request->ijin,
+                    'sakit' => $request->sakit,
+                    'alpa' => $request->alpa
+                ]
+            );
+
+            return response()->json(['status'=>'sukses','msg' => 'Data Prestasi Disimpan.', 'icon' => 'info']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'gagal','msg' => $e->getCode().':'.$e->getMessage(), 'icon' => 'error']);
+        }
     }
 }

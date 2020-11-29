@@ -108,7 +108,7 @@
     <script src="{{ asset('coreui/js/main.js') }}"></script>
 
     <script src="{{ asset('js/toastr.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('select2/js/select2.min.js') }}"></script>
      <script>
       var headers =  {

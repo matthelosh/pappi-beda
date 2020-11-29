@@ -1,4 +1,5 @@
 <div class="card col-sm-12">
+    
     <div class="card-header">
         <div class="row">
             <div class="col-sm-8">
@@ -18,8 +19,10 @@
         
         
     </div>
-    <div class="card-body">
-        <ul class="nav nav-tabs">
+    <div class="card-body rapor-tabs">
+
+        
+        <ul class="nav nav-tabs tabs-rapor">
             <li class="nav-item">
                 <a href="#cover" data-toggle="tab" class="nav-link">
                     <i class="mdi mdi-book"></i>
@@ -45,7 +48,7 @@
                 </a>
             </li>
         </ul>
-
+       
         <div class="tab-content">
             <div class="tab-pane container-fluid" id="cover">
                @include('pages.guru.cover')
@@ -60,5 +63,32 @@
                 @include('pages.guru.rapor_pas')
             </div>
         </div>
+
+        <ul class="nav nav-tabs tabs-rapor">
+            <li class="nav-item">
+                <a href="#cover" data-toggle="tab" class="nav-link">
+                    <i class="mdi mdi-book"></i>
+                    Sampul
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#biodata" data-toggle="tab" class="nav-link">
+                    <i class="mdi mdi-account-box"></i>
+                    Biodata
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#rapor-pts" data-toggle="tab" class="nav-link active">
+                    <i class="mdi mdi-book-open-page-variant"></i>
+                    Rapor PTS
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#rapor-pas" data-toggle="tab" class="nav-link ">
+                    <i class="mdi mdi-book-open-page-variant"></i>
+                    Rapor PAS
+                </a>
+            </li>
+        </ul>
     </div>
 </div>

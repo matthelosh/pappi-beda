@@ -14,7 +14,7 @@
                     <tr>
                         <td>Nama Peserta Didik</td>
                         <td>:</td>
-                        <td>{{ $siswa->nama_siswa }}</td>
+                        <td class="nama_siswa">{{ $siswa->nama_siswa }}</td>
                         <td></td>
                         <td>Kelas</td>
                         <td>:</td>
@@ -87,7 +87,7 @@
                 </table>
                 <br>
                 <h3 class="text-left">B. Pengetahuan dan Keterampilan</h3>
-                <table id="table34" border="1" width="100%" style="border-collapse:collapse;">
+                <table id="table34" border="1" width="100%" style="border-collapse:collapse;" class="table">
                     <thead>
                         <tr>
                             <th rowspan="2" class="p-2">No</th>
@@ -200,7 +200,7 @@
                             <tr>
                                 <td>{{ ($loop->index + 1) }}</td>
                                 <td class="text-left p-2" data-id="{{ $k }}">{{ $ekstra['nama_ekskul'] }}</td>
-                                <td class="text-left p-2 ket-ekskul" data-id="{{ $ekstra['id_nilai'] }}">{{ ($ekstra['ket']) ?? '-' }}</td>
+                                <td class="text-left p-2 ket-ekskul eks-{{ $k }}" data-id="{{ $ekstra['id_nilai'] }}" data-kode="{{ $k }}">{{ ($ekstra['ket']) ?? '-' }}</td>
                             </tr>
 
                         @endforeach
@@ -209,7 +209,7 @@
                 </table>
                 <br>
                 <h3 class="text-left" >D. Saran-saran</h3>
-                <div class="box-saran p-5" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;" data-jenis="pas" data-id="{{ ($sarans['pas'] != null) ? $sarans['pas']->id : null }}">
+                <div class="box-saran p-5 saran-pas" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;" data-jenis="pas" data-id="{{ ($sarans['pas'] != null) ? $sarans['pas']->id : null }}">
                     {{ ($sarans['pas'] != null) ? $sarans['pas']->teks : '-' }}
                 </div>
                 <br>
@@ -230,44 +230,28 @@
                         <tr>
                             <td>1</td>
                             <td class="text-left p-2">Tinggi Badan</td>
-                            <td class="text-left p-2">
-                                @if(substr(Session::get('semester'), 4,1) == '1')
-                                    {{ ($detil) ? $detil->tb: '-' }}
-                                @else
-                                    -
-                                @endif
+                            <td class="text-center p-2 td-fisik tb-1" data-id="{{ $fisik['tb']['1']->id ?? '0' }}" data-sem="1" data-fisik="tb" data-tapel="{{ substr(Session::get('periode_aktif'), 0,4) }}">
+                                {{ $fisik['tb']['1']->tb ?? '-' }} cm
                             </td>
-                            <td class="text-left p-2">
-                                @if(substr(Session::get('semester'), 4,1) == '2')
-                                    {{($detil) ? $detil->tb : '-' }}
-                                @else
-                                    -
-                                @endif
+                            <td class="text-center p-2 td-fisik tb-2" data-id="{{ $fisik['tb']['2']->id ?? '0' }}" data-sem="2" data-fisik="tb" data-tapel="{{ substr(Session::get('periode_aktif'), 0,4) }}">
+                                {{ $fisik['tb']['2']->tb ?? '-' }} cm
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td class="text-left p-2">Berat Badan</td>
-                            <td class="text-left p-2">
-                                @if(substr(Session::get('semester'), 4,1) == '1')
-                                    {{ ($detil) ? $detil->bb : '-' }}
-                                @else
-                                    -
-                                @endif
+                            <td class="text-center p-2 td-fisik bb-1"  data-id="{{ $fisik['bb']['1']->id ?? '0' }}" data-sem="1" data-fisik="bb" data-tapel="{{ substr(Session::get('periode_aktif'), 0,4) }}">
+                                {{ $fisik['bb']['1']->bb ?? '-' }} kg
                             </td>
-                            <td class="text-left p-2">
-                                @if(substr(Session::get('semester'), 4,1) == '2')
-                                    {{ ($detil) ? $detil->bb : '-' }}
-                                @else
-                                    -
-                                @endif
+                            <td class="text-center p-2 td-fisik bb-2" data-id="{{ $fisik['bb']['2']->id ?? '0' }}" data-sem="2" data-fisik="bb" data-tapel="{{ substr(Session::get('periode_aktif'), 0,4) }}">
+                                {{ $fisik['bb']['2']->bb ?? '-' }} kg
                             </td>
                         </tr>
                     </tbody>
                 </table>
                 <br>
                 <h3 class="text-left">F. Kondisi Kesehatan</h3>
-                <table id="table-kesehatan" border="1" width="100%" style="border-collapse:collapse;">
+                <table id="table-kesehatan" border="1" width="100%" style="border-collapse:collapse;" data-id="{{ ($data_rapor['kesehatan']) ? $data_rapor['kesehatan']->id : 0 }}">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -279,28 +263,28 @@
                         <tr>
                             <td>1</td>
                             <td class="text-left p-2">Pendengaran</td>
-                            <td class="text-left p-2">{{ ($detil) ? $detil->pendengaran : '-' }}</td>
+                            <td class="text-left p-2 sht sht-dengar">{{ ($data_rapor['kesehatan']) ? $data_rapor['kesehatan']->pendengaran : '-' }}</td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td class="text-left p-2">Penglihatan</td>
-                            <td class="text-left p-2">{{ ($detil) ? $detil->penglihatan : '-' }}</td>
+                            <td class="text-left p-2 sht sht-lihat">{{ ($data_rapor['kesehatan']) ? $data_rapor['kesehatan']->penglihatan : '-' }}</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td class="text-left p-2">Gigi</td>
-                            <td class="text-left p-2">{{ ($detil) ? $detil->gigi : '-' }}</td>
+                            <td class="text-left p-2 sht sht-gigi">{{ ($data_rapor['kesehatan']) ? $data_rapor['kesehatan']->gigi : '-' }}</td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td class="text-left p-2">Lainnya</td>
-                            <td class="text-left p-2">{{ ($detil) ? $detil->fisik_lain : '-' }}</td>
+                            <td class="text-left p-2 sht sht-lain">{{ ($data_rapor['kesehatan']) ? $data_rapor['kesehatan']->lain : '-' }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <br>
                 <h3 class="text-left">G. Prestasi</h3>
-                <table id="table-kesehatan" border="1" width="100%" style="border-collapse:collapse;">
+                <table id="table-prestasi" border="1" width="100%" style="border-collapse:collapse;" data-id="{{ ($data_rapor['prestasis']) ? $data_rapor['prestasis']->id : '0' }}">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -312,27 +296,15 @@
                         <tr>
                             <td>1</td>
                             <td class="text-left p-2">Kesenian</td>
-                            <td class="text-left p-2">
-                            @if($prestasis)
-                                @foreach($prestasis as $key => $prestasi)
-                                    @if($prestasi->jenis_prestasi == 'Kesenian')
-                                        {{ $loop->index+1 }}. {{ $prestasi->ket }} Tingkat {{ $prestasi->tingkat }}<br>
-                                    @endif
-                                @endforeach
-                            @endif
+                            <td class="text-left p-2 box-prestasi seni">
+                                {{ ($data_rapor['prestasis']) ? $data_rapor['prestasis']->kesenian : '-' }}
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td class="text-left p-2">Olahraga</td>
-                            <td class="text-left p-2">
-                            @if($prestasis)
-                                @foreach($prestasis as $key => $prestasi)
-                                    @if($prestasi->jenis_prestasi == 'Olahraga')
-                                        {{ $loop->index+1 }}. {{ $prestasi->ket }} Tingkat {{ $prestasi->tingkat }}
-                                    @endif
-                                @endforeach
-                            @endif
+                            <td class="text-left p-2 box-prestasi olahraga">
+                                {{ ($data_rapor['prestasis']) ? $data_rapor['prestasis']->olahraga : '-' }}
                             </td>
                         </tr>
                     </tbody>
@@ -343,19 +315,19 @@
                     <table id="table-kehadiran" border="1" style="border-collapse:collapse;display:block; width:40%; position: absolute; left:0; ">
                         <tbody>
                             <tr>
-                                <td style="width: 40%; border-right:none;" class="text-left p-3">Sakit</td>
+                                <td style="width: 40%; border-right:none;" class="text-left px-3">Sakit</td>
                                 <td style="width: 1%;border-left:none; border-right:none;">:</td>
-                                <td style="width: 40%%;border-left:none;"> {{ ($absensi) ? $absensi->sakit : '-'}} hari</td>
+                                <td style="width: 40%%;border-left:none;" class="td-sakit td-absensi"> {{ ($data_rapor['absensi']) ? $data_rapor['absensi']->sakit : '-'}} hari</td>
                             </tr>
                             <tr>
-                                <td class="text-left p-3" style="border-right:none;">Izin</td>
+                                <td class="text-left px-3" style="border-right:none;">Izin</td>
                                 <td style="border-left:none; border-right:none;">:</td>
-                                <td style="border-left:none;"> {{ ($absensi) ? $absensi->izin : '-'}} hari</td>
+                                <td style="border-left:none;" class="td-absensi td-ijin"> {{ ($data_rapor['absensi']) ? $data_rapor['absensi']->ijin : '-'}} hari</td>
                             </tr>
                             <tr>
-                                <td class="text-left p-3" style="border-right:none;">Tanpa Keterangan</td>
+                                <td class="text-left px-3" style="border-right:none;">Alpa</td>
                                 <td style="border-left:none; border-right:none;">:</td>
-                                <td style="border-left:none;"> {{ ($absensi) ? $absensi->alpa : '-'}} hari</td>
+                                <td style="border-left:none;" class="td-absensi td-alpa"> {{ ($data_rapor['absensi']) ? $data_rapor['absensi']->alpa : '-'}} hari</td>
                             </tr>
                         </tbody>
                     </table>
@@ -391,7 +363,7 @@
                             <br>
                             <br>
                             <br>
-                            <b><u>{{ Auth::user()->fullname }}</u></b> <br>
+                            <b><u style="text-transform: uppercase">{{ Auth::user()->nama }}</u></b> <br>
                             NIP. {{ Auth::user()->nip }}
                         </td>
                     </tr>
@@ -402,7 +374,7 @@
                             <br>
                             <br>
                             <br>
-                            <b><u>{{ $sekolah->ks->nama }}</u></b> <br>
+                            <b><u style="text-transform: uppercase">{{ $sekolah->ks->nama }}</u></b> <br>
                             NIP. {{ $sekolah->ks->nip }}
                         </td>
                         <td style="width:33.3%"></td>
@@ -421,12 +393,6 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <div class="form-group rapor-pas-cetak-toolbox">
-                        <label for="siswa">Siswa</label>
-                        <select name="siswa" class="form-control selSiswa" style="width:100%">
-                            <option value="0">Pilih Siswa</option>
-                        </select>
-                    </div>
                     <div class="form-group text-center">
                         <button class="btn btn-lg btn-primary" id="btn-print-rapor-pas">
                             <i class="mdi mdi-printer"></i>
@@ -442,7 +408,135 @@
 
 </div>
 
+<div class="modal fade" id="modalPrestasi">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Data Prestasi <br><small>{{ $siswa->nama_siswa }}</small></h3>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-prestasi">
+                    @csrf()
 
+                    <input type="hidden" name="siswa_id" value="{{ $siswa->nisn }}">
+                    <input type="hidden" name="id_prestasi" value="{{ ($data_rapor['prestasis']) ? $data_rapor['prestasis']->id : '0' }}">
+                    <div class="form-group">
+                        <label for="kesenian">Kesenian</label>
+                        <textarea name="kesenian" cols="30" rows="4" class="form-control" >{{ ($data_rapor['prestasis']) ? $data_rapor['prestasis']->kesenian : '' }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="olahraga">Olah Raga</label>
+                        <textarea name="olahraga" cols="30" rows="4" class="form-control" >{{ ($data_rapor['prestasis']) ? $data_rapor['prestasis']->olahraga : '' }}</textarea>
+                    </div>
+                    <div class="form-group text-center"><button class="btn btn-primary">Simpan</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- Modal Absensi --}}
+<div class="modal fade" id="modalAbsensi">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Data Absensi <br>
+                    <small>{{ $siswa->nama_siswa ?? '' }}</small>
+                    
+                </h4>
+                <button class="close" data-dismiss="modal"><i class="mdi mdi-close"></i></button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-absensi">
+                    @csrf()
+                    <input type="hidden" name="id_absensi" value="{{ ($data_rapor['absensi']) ? $data_rapor['absensi']->id : '0' }}">
+                    <input type="hidden" name="siswa_id" value="{{ $siswa->nisn }}">
+                    <div class="row">
+                        
+                        <div class="form-group col-sm-4">
+                            <label for="sakit">Sakit</label>
+                            <input type="number" name="sakit" class="form-control" value="{{ ($data_rapor['absensi']) ? $data_rapor['absensi']->sakit : '' }}">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="ijin">Izin</label>
+                            <input type="number" name="ijin" class="form-control" value="{{ ($data_rapor['absensi']) ? $data_rapor['absensi']->ijin : '' }}">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="alpa">Alpa</label>
+                            <input type="number" name="alpa" class="form-control" value="{{ ($data_rapor['absensi']) ? $data_rapor['absensi']->alpa : '' }}">
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Kesehatan --}}
+<div class="modal fade" id="modalKesehatan">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><i class="mdi mdi-stethoscope"></i> Data Kesehatan <br><small><span class="nama_siswa"></span></small></h4>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-kesehatan">
+                    @csrf()
+                    <input type="hidden" name="id_kesehatan" value="{{ $data_rapor['kesehatan'] ? $data_rapor['kesehatan']->id : '0' }}">
+                    <input type="hidden" name="nisn" value="{{ $siswa->nisn }}">
+                    <div class="form-group">
+                        <label for="pendengaran">Pendengaran</label>
+                        <div class="input-group">
+                            <input type="text" name="pendengaran" class="form-control" value="{{ $data_rapor['kesehatan']->pendengaran??'' }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="mdi mdi-ear-hearing"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="penglihatan">Penglihatan</label>
+                        <div class="input-group">
+                            <input type="text" name="penglihatan" class="form-control" value="{{ $data_rapor['kesehatan']->penglihatan??'' }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="mdi mdi-eye"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="gigi">Gigi</label>
+                        <div class="input-group">
+                            <input type="text" name="gigi" class="form-control" value="{{ $data_rapor['kesehatan']->gigi ?? '' }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="mdi mdi-tooth"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lain">Lainnya</label>
+                        <div class="input-group">
+                            <input type="text" name="lain" class="form-control" value="{{ $data_rapor['kesehatan']->lain ?? '' }}">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="mdi mdi-more"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Ekstrakurikuler --}}
 <div class="modal" id="modalNilaiEkskul">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -453,11 +547,62 @@
             <div class="modal-body">
                 <form action="" class="form-nilai-ekskul">
                     @csrf()
-                    <input type="hidden" name="nisn">
+                    <input type="hidden" name="siswa_id">
+                    <input type="hidden" name="id_nilai" value="0">
                     <input type="hidden" name="periode_id">
                     <input type="hidden" name="rombel_id">
                     <input type="hidden" name="ekskul_id">
-                    <textarea name="keterangan" cols="30" rows="10" class="form-control"></textarea>
+                    <div class="form-group">
+                        <textarea name="keterangan" cols="30" rows="10" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary">Simpan</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Fisik Siswa --}}
+<div class="modal" id="modalFisikSiswa">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">FISIK SISWA <br /><small><span id="nisn"></span></small></h3>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-fisik-siswa">
+                    @csrf()
+                    <input type="hidden" name="siswa_id">
+                    <input type="hidden" name="id_fisik" value="0">
+                    <input type="hidden" name="periode">
+                    {{-- <input type="hidden" name="rombel_id"> --}}
+                    <div class="row">
+                        <div class="form-group col-sm-4 offset-sm-2">
+                            <label for="tb">Tinggi Badan</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="tb">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">cm</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="bb">Berat Badan</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="bb">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary">Simpan</button>
+                    </div>
                 </form>
             </div>
         </div>

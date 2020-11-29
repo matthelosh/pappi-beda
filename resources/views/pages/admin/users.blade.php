@@ -55,7 +55,7 @@
                             <tr>
                                 <td>{{ $loop->index + 1}}</td>
                                 <td>{{ $user->sekolahs->nama_sekolah }}</td>
-                                <td><img class="img img-circle rounded" src="{{ asset('img/users/'.$user->nip.'.jpg') }}" alt="Foto User" height="50px"></td>
+                                <td><img class="img img-circle circled" src="{{ asset('img/users/'.$user->nip.'.jpg')}}" onerror="this.onerror=null;this.src='/img/users/user.jpg';" alt="Foto User" height="50px"></td>
                                 <td>{{ $user->nip }}</td>
                                 <td>{{ $user->nama }}</td>
                                 <td>{{ $user->jk }}</td>

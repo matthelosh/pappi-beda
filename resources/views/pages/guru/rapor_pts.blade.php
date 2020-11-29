@@ -208,7 +208,7 @@
                 <br>
 
                 <h3 class="text-left" >B. Saran-saran</h3>
-                <div class="box-saran p-5" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;" data-jenis="pts" data-id="{{ ($sarans['pts'] !=null) ? $sarans['pts']->id : null }}"> 
+                <div class="box-saran p-5 saran-pts" style="width:100%; margin: auto; border: 2px solid black;text-align:center; vertical-align:middle;" data-jenis="pts" data-id="{{ ($sarans['pts'] !=null) ? $sarans['pts']->id : null }}"> 
                     {{ ($sarans['pts'] != null) ? $sarans['pts']->teks : '-' }}
                 </div>
 
@@ -262,12 +262,6 @@
                     </h4>
                 </div>
                 <div class="card-body">
-                    <div class="form-group rapor-pas-cetak-toolbox">
-                        <label for="siswa">Siswa</label>
-                        <select name="siswa" class="form-control selSiswa" style="width:100%">
-                            <option value="0">Pilih Siswa</option>
-                        </select>
-                    </div>
                     <div class="form-group text-center">
                         <button class="btn btn-lg btn-primary" id="btn-print-rapor-pts">
                             <i class="mdi mdi-printer"></i>

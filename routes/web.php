@@ -211,6 +211,14 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             // Route::get('/', 'DashGuruController@rapor')->name('rapor.page');
             Route::get('/cetak', 'RaporController@cetak')->name('rapor.cetak');
             Route::post('/data/saran', 'RaporController@createSaran')->name('rapor.create.saran');
+            Route::post('/data/fisik','RaporController@saveFisik')->name('rapor.save.fisik');
+            Route::post('/data/kesehatan','RaporController@saveKesehatan')->name('rapor.save.kesehatan');
+            Route::post('/data/prestasi','RaporController@savePrestasi')->name('rapor.save.prestasi');
+            Route::post('/data/absensi','RaporController@saveAbsensi')->name('rapor.save.absensi');
+        });
+
+        Route::group(['prefix' => 'ekskul', 'middleware' => ['auth', 'isGuru']], function(){
+            Route::post('/', 'EkskulController@saveNilai')->name('ekskul.saveNilai');
         });
 
         Route::group(['prefix' => 'tema', 'middleware' => ['auth']], function(){

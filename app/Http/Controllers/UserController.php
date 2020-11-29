@@ -8,6 +8,7 @@ use Validator, Redirect, Response;
 use Illuminate\Support\Facades\Hash;
 use App\Imports\ImportUsers;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
@@ -21,7 +22,9 @@ class UserController extends Controller
             switch($request->query('req'))
             {
                 case "select":
-                    $datas = User::where('level','<>', 'admin')->get();
+                    $where = Auth::user()->sekolah_id == 'all' ? [['level','<>','admin']]:[['sekolah_id','=',Auth::user()->sekolah_id]];
+
+                    $datas = User::where($where)->get();
                     $users = [];
                     foreach($datas as $user)
                     {
@@ -53,10 +56,12 @@ class UserController extends Controller
             'password' => 'required',
             'email' => 'required|email',
             'hp' => 'required',
-            'alamat' => 'required'
+            'alamat' => 'required',
+            'sekolah_id' => 'required'
         ]);
         
         if( $validator->passes()) {
+            
             try {
                 User::create([
                     'nip' => $request->nip,
@@ -64,11 +69,13 @@ class UserController extends Controller
                     'jk' => $request->jk,
                     'username' => $request->username,
                     'role' => $request->role,
+                    'level' => $request->level,
                     'password' => Hash::make($request->password),
                     'email' => $request->email,
                     'hp' => $request->hp,
                     'alamat' => $request->alamat,
-                    'default_password' => ($request->role == 'admin') ? 'qwerty' : '12345'
+                    'default_password' => ($request->role == 'admin') ? 'qwerty' : '12345',
+                    'sekolah_id' => $request->sekolah_id
                 ]);
                 return redirect('/users')->with(['status' => 'sukses', 'msg' => 'Data Pengguna disimpan']);
             } catch (\Exception $e)
@@ -177,6 +184,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request, $nip)
     {
+        // dd($nip);
         try 
         {
             User::where('nip', $nip)->delete();

@@ -93,7 +93,7 @@ $(document).ready(function(){
     // $(document).on('click', '.btn-delete-siswa', function(e) {
     //     e.preventDefault();
     //     var siswa = tsiswas.row($(this).parents('tr')).data()
-    //     swal({
+    //     Swal.fire{
     //         title: "Yakin Menghapus Siswa "+siswa.nama_siswa+"?",
     //         text: "Siswa  akan dihapus dari database",
     //         icon: "warning",
@@ -101,20 +101,20 @@ $(document).ready(function(){
     //         dangerMode: true,
     //       })
     //       .then((hapus) => {
-    //         if (hapus) {
+    //         if (hapus.value) {
     //           $.ajax({
     //               headers: headers,
     //               type:'post',
     //               url: '/siswas/'+siswa.id,
     //               data: {'_method': 'delete'}
     //           }).done(res => {
-    //               swal('Info', res.msg, 'info')
+    //               Swal.fire('Info', res.msg, 'info')
     //               tsiswas.ajax.reload()
     //           }).fail(err => {
-    //               swal('Error', err.response.msg, 'error')
+    //               Swal.fire('Error', err.response.msg, 'error')
     //           })
     //         } else {
-    //           swal("Data Siswa Aman");
+    //           Swal.fire"Data Siswa Aman");
     //         }
     //       });
 
@@ -157,7 +157,7 @@ $(document).ready(function(){
             $('#form-ortu input[name="siswa_id"]').val(siswa.nisn)
             $('#modalOrtu').modal()
         }).fail(err => {
-            swal('Error', err.response.msg, 'error')
+            Swal.fire('Error', err.response.msg, 'error')
         })
     })
 
@@ -243,7 +243,7 @@ $(document).ready(function(){
     $(document).on('click', '.btn-delete-kd', function(e){
         e.preventDefault()
         var kd = tkds.row($(this).parents('tr')).data()
-        swal({
+        Swal.fire({
             title: 'Yakin Mengapus '+kd.kode_kd+'?',
             text: kd.teks_kd,
             buttons: true,
@@ -256,13 +256,13 @@ $(document).ready(function(){
                     url: '/kds/'+kd.id,
                     type: 'delete'
                 }).done(res=>{
-                    swal('Info', res.msg, 'info')
+                    Swal.fire('Info', res.msg, 'info')
                     tkds.ajax.reload()
                 }).fail(err => {
-                    swal('Error', err.response.msg, 'error')
+                    Swal.fire('Error', err.response.msg, 'error')
                 })
             } else {
-                swal('Info', 'KD tidak dihapus.', 'info')
+                Swal.fire('Info', 'KD tidak dihapus.', 'info')
             }
         })
     })
@@ -346,7 +346,7 @@ $(document).ready(function(){
     // Form Nilai
     $(document).on('click', '.btn-form-nilai', function(e) {
         if(sessionStorage.getItem('role') != 'wali' && $('select[name="rombel"]').val() =='0') {
-            swal('Perhatian', 'Pilih dulu Rombel', 'warning');
+            Swal.fire('Perhatian', 'Pilih dulu Rombel', 'warning');
             return false;
         }
         var data = {
@@ -391,7 +391,7 @@ $(document).ready(function(){
                 $('.form-nilai button[type="submit"]').addClass('d-none')
             }
         }).fail(err => {
-            swal('Error', err.resposne.msg, 'error')
+            Swal.fire('Error', err.resposne.msg, 'error')
         })
     })
 
@@ -407,7 +407,7 @@ $(document).ready(function(){
             type:'post',
             data: data,
             success: function(res) {
-                swal('Info', res.msg, 'info')
+                Swal.fire('Info', res.msg, 'info')
                 $('.btn-form-nilai').trigger('click')
             }
         })
@@ -443,7 +443,7 @@ $(document).ready(function(){
             success: function(res) {
                 // $('.btn-form-nilai').trigger('close')
                 // console.log(res)
-                swal('Info', res.msg, 'info')
+                Swal.fire('Info', res.msg, 'info')
                 $('input[name="nilais['+nisn+']"').val($('#modalEditNilai .formEditNilai input[name="nilai"]').val())
                 $('#modalEditNilai').modal('hide')
             }
@@ -501,7 +501,7 @@ $(document).ready(function(){
         // if(file.type == 'application/vnd.ms-excel' || file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type =='application/vnd.oasis.opendocument.spreadsheet') {
             $('.form-import-nilai input[name="nama_file"]').val(file.name)
         // } else {
-        //     swal('Error', 'File harus berjenis xls, xlsx, csv, ods', 'error')
+        //     Swal.fire('Error', 'File harus berjenis xls, xlsx, csv, ods', 'error')
         //     $('.form-import-nilai input[name="nama_file"]').val('')
         //     $(this).val(null)
         // }
@@ -615,6 +615,19 @@ function getRekap34(url=null) {
 
 // Cetak Rapor
     // Rapor Home
+    // tabs rapor
+    $('.nav-tabs li a').click(function(e) {
+        var href = $(this).attr('href')
+
+        $('.nav-tabs li').removeClass('active')
+
+        $('.nav-tabs li a[href="'+href+'"]').closest('li').addClass('active')
+
+        $('.tab-pane').removeClass('active')
+        $('.tab-pane'+href).addClass('active')
+
+    })
+
     var trapors = $('#table-siswa-rapor').DataTable({
         serverSide: true,
         ajax: {
@@ -627,7 +640,7 @@ function getRekap34(url=null) {
             {"data": "nisn"},
             {"data": null, render: (data) => {
                 return `
-                    <img src="/img/siswas/${sessionStorage.getItem('sekolah_id')+'_'+data.nisn+'.jpg'}" onerror="this.error=null;this.src='/img/no-photo.jpg';" height="40px" class="img img-avatar" />
+                    <img src="/img/siswas/${sessionStorage.getItem('sekolah_id')+'_'+data.nisn+'.jpg'}" onerror="this.error=null;this.src='/img/${(data.jk == 'L') ? 'no-photo.jpg' : 'siswa-p.png'}';" height="40px" class="img img-avatar" /> 
                 `
             }},
             {"data": "nama_siswa"},
@@ -661,6 +674,10 @@ function getRekap34(url=null) {
         e.preventDefault();
         cetakRapor('rapor_pts', 'Rapor PTS')
     })
+    $('#btn-print-rapor-pas').on('click', function(e) {
+        e.preventDefault();
+        cetakRapor('rapor_pas', 'Rapor PAS')
+    })
 
     function cetakRapor(divId, title){
         var page = document.querySelector('#'+divId)
@@ -690,8 +707,120 @@ function getRekap34(url=null) {
 
     // Ekskul
         $('#table-ekstra td.ket-ekskul').on('dblclick', function(e) {
+            var url = new URL(window.location.href)
+            var nisn = url.searchParams.get('nisn')
+            var ekskul_id = $(this).data('kode')
+            var nama_ekskul = $(this).parents('tr').find('td').eq(1).text()
+            var periode = url.searchParams.get('periode')
+            var id_nilai = ($(this).data('id') != '') ? $(this).data('id') : '0'
+            var ket = (id_nilai) ? $(this).text() : 'Ganti Teks ini dengan keterangan.'
+            $('#modalNilaiEkskul span.nama_ekskul').text(nama_ekskul)
+            $('#modalNilaiEkskul input[name="id_nilai"').val(id_nilai)
+            $('#modalNilaiEkskul input[name="siswa_id"').val(nisn)
+            $('#modalNilaiEkskul input[name="periode_id"').val(periode)
+            $('#modalNilaiEkskul input[name="ekskul_id"').val(ekskul_id)
+            $('#modalNilaiEkskul textarea').val(ket)
+            $('#modalNilaiEkskul input[name="rombel_id"').val(sessionStorage.getItem('rombel_id'))
+
             $('#modalNilaiEkskul').modal()
         })
+
+
+    // Save Nilai-Eksksul
+        $(document).on('submit', '#modalNilaiEkskul .form-nilai-ekskul', function(e){
+            e.preventDefault()
+            var data = $(this).serialize()
+            // console.log(data)
+            $.ajax({
+                url:'/'+sessionStorage.getItem('username')+'/ekskul?id='+$(this).find('input[name="id_nilai"]').val(),
+                type: 'post',
+                data: data,
+                headers: headers,
+                success: function(res) {
+                    Swal.fire('Info', res.msg, 'info')
+                    $('#table-ekstra td.eks-'+$('#modalNilaiEkskul input[name="ekskul_id"').val()).text($('#modalNilaiEkskul textarea').val())
+                }
+            })
+        })
+
+    // Fisik /TB BB
+        $(document).on('dblclick','.td-fisik', function() {
+            var url = new URL(window.location.href),
+                nisn = url.searchParams.get('nisn'),
+                periode = $(this).data('tapel')+''+$(this).data('sem'),
+                id_fisik = $(this).data('id'),
+                tb = ($(this).data('sem') == '1') ? $('.tb-1').text() : $('.tb-2').text(),
+                bb = ($(this).data('sem') == '1') ? $('.bb-1').text() : $('.bb-2').text()
+            
+            $('#modalFisikSiswa form.form-fisik-siswa input[name="siswa_id"]').val(nisn)
+            $('#modalFisikSiswa form.form-fisik-siswa input[name="id_fisik"]').val(id_fisik)
+            $('#modalFisikSiswa form.form-fisik-siswa input[name="periode"]').val(periode)
+            
+            $('#modalFisikSiswa form.form-fisik-siswa input[name="tb"]').val(tb.replace(/[^0-9]/g,''))
+            $('#modalFisikSiswa form.form-fisik-siswa input[name="bb"]').val(bb.replace(/[^0-9,]/g,''))
+
+
+            $('#modalFisikSiswa .modal-title span').text($('td.nama_siswa').text())
+            $('#modalFisikSiswa').modal()
+        
+        })
+
+    // Simpan Fisik
+    $(document).on('submit','#modalFisikSiswa form.form-fisik-siswa', function(e) {
+        e.preventDefault()
+        
+        var periode = $('#modalFisikSiswa form.form-fisik-siswa input[name="periode"]').val()
+
+
+
+
+        $.ajax({
+            headers: headers,
+            url: '/'+sessionStorage.getItem('username')+'/rapor/data/fisik',
+            type: 'post',
+            data: $(this).serialize(),
+            success: function(res) {
+                Swal.fire('Info',res.msg, 'info')
+                $('.tb-'+periode.substr(4,1)).text($('#modalFisikSiswa form.form-fisik-siswa input[name="tb"]').val()+' cm')
+                $('.bb-'+periode.substr(4,1)).text($('#modalFisikSiswa form.form-fisik-siswa input[name="bb"]').val()+' kg')
+                $('#modalFisikSiswa').modal('hide')
+            }
+        })
+    })
+
+
+    // KEsehatan
+    $(document).on('dblclick','.sht', function(){
+        $('#modalKesehatan .modal-title span.nama_siswa').text($('td.nama_siswa').text())
+        // var pendengaran = $('.sht-dengar').text(),
+        //     penglihatan = $('.sht-lihat').text(),
+        //     gigi = $('.sht-gigi').text(),
+        //     lain = $('.sht-lain').text(),
+        //     id = $('#table-kesehatan').data('id')
+        
+     
+        $('#modalKesehatan').modal()
+    })
+
+    $(document).on('submit','#modalKesehatan .form-kesehatan', function(e){
+        e.preventDefault()
+        var data = $(this).serialize()
+
+        $.ajax({
+            headers: headers,
+            url: '/'+sessionStorage.getItem('username')+'/rapor/data/kesehatan',
+            data: data,
+            type: 'post',
+            success: function(res) {
+                Swal.fire(res.status, res.msg, res.icon)
+                $('.sht-dengar').text($('#modalKesehatan .form-kesehatan input[name="pendengaran"]').val())
+                $('.sht-lihat').text($('#modalKesehatan .form-kesehatan input[name="penglihatan"]').val())
+                $('.sht-gigi').text($('#modalKesehatan .form-kesehatan input[name="gigi"]').val())
+                $('.sht-lain').text($('#modalKesehatan .form-kesehatan input[name="lain"]').val())
+                $('#modalKesehatan').modal('hide')
+            }
+        })
+    })
 
 // Tema
     var ttemas = $('#table-tema').DataTable({
@@ -802,7 +931,7 @@ function getRekap34(url=null) {
                     $(this).hide()
                     $(this).siblings('.kd').toggle().text($(this).val())
                     // console.log(res)
-                    swal('Info', res.msg, 'info')
+                    Swal.fire('Info', res.msg, 'info')
                 }).fail(err => {
                     console.log(err.response)
                 })
@@ -864,7 +993,7 @@ function getRekap34(url=null) {
         var nisn = url.searchParams.get('nisn')
         // alert(nisn)
 
-        $('#modalSaran .form-saran textarea').val($(this).text()).focus()
+        $('#modalSaran .form-saran textarea').val($(this).text().trim()).focus()
         $('#modalSaran .form-saran input[name="jenis_rapor"]').val($(this).data('jenis'))
         $('#modalSaran .form-saran input[name="siswa_id"]').val(nisn)
         $('#modalSaran .form-saran input[name="saran_id"]').val($(this).data('id'))
@@ -880,14 +1009,68 @@ function getRekap34(url=null) {
             data:data,
             headers: headers,
             success: function(res) {
-                // swal('Info', res.msg, 'info')
-                // $('.box-saran').text($('#modalSaran .form-saran textarea').val())
-                // $('#modalSaran').modal('hide')
-                location.reload()
+                Swal.fire('Info', res.msg, 'info')
+                $('.box-saran.saran-'+$('#modalSaran .form-saran input[name="jenis_rapor"]').val()).text($('#modalSaran .form-saran textarea').val())
+                $('#modalSaran').modal('hide')
             }
         })
 
 
         
     })
+
+    // Prestasi
+    $(document).on('dblclick', '.box-prestasi', function(){
+        var url = new URL(window.location.href)
+        var nisn = url.searchParams.get('nisn')
+
+
+        $('#modalPrestasi').modal()
+    })
+
+    $(document).on('submit', '#modalPrestasi .form-prestasi', function(e){
+        e.preventDefault()
+
+        var data = $(this).serialize()
+        $.ajax({
+            url: '/'+sessionStorage.getItem('username')+'/rapor/data/prestasi',
+            type:'POST',
+            data:data,
+            headers: headers,
+            success: function(res) {
+                Swal.fire('Info', res.msg, 'info')
+                $('.box-prestasi.seni').text($('textarea[name="kesenian"]').val())
+                $('.box-prestasi.olahraga').text($('textarea[name="olahraga"]').val())
+                $('#modalPrestasi').modal('hide')
+            }
+        })
+
+    })
+
+    // Absensi
+    $(document).on('dblclick', 'td.td-absensi', function() {
+        
+
+        $('#modalAbsensi').modal()
+    })
+
+    $(document).on('submit', '#modalAbsensi .form-absensi', function(e) {
+        e.preventDefault()
+
+        var data = $(this).serialize()
+        $.ajax({
+            url: '/'+sessionStorage.getItem('username')+'/rapor/data/absensi',
+            type:'POST',
+            data:data,
+            headers: headers,
+            success: function(res) {
+                Swal.fire('Info', res.msg, 'info')
+                $('.td-absensi.td-sakit').text($('input[name="sakit"]').val()+" hari")
+                $('.td-absensi.td-ijin').text($('input[name="ijin"]').val()+" hari")
+                $('.td-absensi.td-alpa').text($('input[name="alpa"]').val()+" hari")
+                $('#modalAbsensi').modal('hide')
+            }
+        })
+    })
+
 })
