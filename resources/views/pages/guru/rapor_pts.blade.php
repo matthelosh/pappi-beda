@@ -233,7 +233,7 @@
                             <br>
                             <br>
                             <b><u>{{ strtoupper(Auth::user()->nama) }}</u></b> <br>
-                            NIP. {{ Auth::user()->nip }}
+                            {{ (Auth::user()->status == 'pns') ? 'NIP.':'NIG.' }} {{ Auth::user()->nip }}
                         </td>
                     </tr>
                     <tr>

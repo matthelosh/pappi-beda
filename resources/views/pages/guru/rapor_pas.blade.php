@@ -364,7 +364,7 @@
                             <br>
                             <br>
                             <b><u style="text-transform: uppercase">{{ Auth::user()->nama }}</u></b> <br>
-                            NIP. {{ Auth::user()->nip }}
+                            {{ (Auth::user()->status == 'pns') ? 'NIP.':'NIG.' }}  {{ Auth::user()->nip }}
                         </td>
                     </tr>
                     <tr>

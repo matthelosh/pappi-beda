@@ -26,16 +26,25 @@ class SiswaController extends Controller
                     if($rombel_id == '') {
                         $siswas = Siswa::with('sekolahs', 'rombels', 'ortus')->get();
                     } else {
-                        $siswas = Siswa::where('rombel_id', $rombel_id)->with('sekolahs', 'rombels', 'ortus')->get();
+                        $siswas = Siswa::where([
+                            ['rombel_id','=', $rombel_id],
+                            ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                            ])->with('sekolahs', 'rombels', 'ortus')->get();
                     }
                     return DataTables::of($siswas)->addIndexColumn()->toJson();
                 break;
                 case "dt-members":
-                    $members = Siswa::where('rombel_id', $request->query('rombel_id'))->get();
+                    $members = Siswa::where([
+                        ['rombel_id', $request->query('rombel_id')],
+                        ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                    ])->get();
                     return DataTables::of($members)->addIndexColumn()->toJson();
                 break;
                 case "dt-non-members":
-                    $non_members = Siswa::where('rombel_id', '0')->get();
+                    $non_members = Siswa::where([
+                        ['rombel_id', '0'],
+                        ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                    ])->get();
                     return DataTables::of($non_members)->addIndexColumn()->toJson();
                 break;
                 case "select":
@@ -43,6 +52,7 @@ class SiswaController extends Controller
                         if($request->q != '') {
                             $siswas = Siswa::where([
                                 ['rombel_id', '=', $request->query('rombel')],
+                                ['sekolah_id','=', $request->session()->get('sekolah_id')],
                                 ['nama_siswa', 'LIKE' ,'%'.$request->q.'%']
                             ])->get();
                         } else {
@@ -59,10 +69,14 @@ class SiswaController extends Controller
                         if($request->q != '') {
                             $siswas = Siswa::where([
                                 ['nama_siswa', 'LIKE' ,'%'.$request->q.'%'],
-                                ['rombel_id', '<>', '0']
+                                ['rombel_id', '<>', '0'],
+                                ['sekolah_id','=', $request->session()->get('sekolah_id')],
                             ])->get();
                         } else {
-                            $siswas = Siswa::where('rombel_id','<>', '0')->get();
+                            $siswas = Siswa::where([
+                                ['rombel_id','<>', '0'],
+                                ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                            ])->get();
                         }
                     }
                     $datas = [];

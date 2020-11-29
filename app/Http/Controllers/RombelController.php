@@ -27,7 +27,10 @@ class RombelController extends Controller
                 break;
                 case "select":
                     if($request->q) {
-                        $datas = Rombel::where('nama_rombel','LIKE', '%'.$request->q.'%')->get();
+                        $datas = Rombel::where([
+                            ['nama_rombel','LIKE', '%'.$request->q.'%'],
+                            ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                        ])->get();
                     } else {
                     $datas = Rombel::all();
                     }
@@ -49,7 +52,7 @@ class RombelController extends Controller
         $import = new ImportRombel();
         try {
             $import->import($file);
-            return back()->with(['status' => 'sukses', 'msg' => 'Data Pengguna telah diimpor', 'errors' => $errors]);
+            return back()->with(['status' => 'sukses', 'msg' => 'Data Pengguna telah diimpor', 'errors' => 'Error Unknown']);
         } catch (\Exception $e) {
            
            return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
