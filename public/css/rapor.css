@@ -15,6 +15,8 @@
     height: auto;
     min-height: 11.69in;
 }
+
+
 table#table-biodata tr dt{
     text-align: left!important;
     font-size: 12pt;
@@ -101,6 +103,11 @@ table#table-biodata tr dt{
         background:#fff;
         border: none;
     }
+
+    .content_rapor_pts img.logo_kab {
+        height: 200px!important;
+    }
+    
     .page_rapor .teks-bawah {
        margin-top: 350px;
        margin-bottom: 50px;

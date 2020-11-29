@@ -1,5 +1,4 @@
 .<div class="card text-left col-sm-12">
-  {{-- <img class="card-img-top" src="holder.js/100px180/" alt=""> --}}
   <div class="card-header">
     <h4 class="card-title">Data Siswa Kelas {{ Session::get('rombel')->nama_rombel }} {{ Session::get('semester') }}</h4>
     <div class="row">
@@ -22,7 +21,6 @@
               echo '<option value="'.$i.'/'.($i+1).'" '.$selected.'>'.$i.'/'.($i+1).'</option>';
             }
           @endphp
-          {{-- <option value="0">Semester</option> --}}
         </select>
       </div>
       <div class="col-sm-2 form-group">
@@ -38,7 +36,6 @@
               echo '<option value="2" selected >Genap</option>';
             }
           @endphp
-          {{-- <option value="0">Semester</option> --}}
         </select>
       </div>
     </div>
@@ -54,22 +51,6 @@
           <th>Opsi</th>
         </thead>
         <tbody>
-          {{-- @foreach($siswas as $siswa)
-            <tr>
-              <td>{{ $loop->index +1 }}</td>
-              <td>{{ $siswa->nisn }}</td>
-              <td>
-                <img src="{{ asset('img/siswas/'.Session()->get('sekolah_id').'_'.$siswa->nisn.'.jpg') }}" alt="Foto" onerror="this.onerror=null;this.src='/img/no-photo.jpg'" height="50px" class="img img-avatar">
-              </td>
-              <td>{{ $siswa->nama_siswa }}</td>
-              <td>
-                <a href="/rapor/cetak?nisn={{ $siswa->nisn }}&periode={{ Session()->get('periode_aktif') }}" class="btn btn-primary">
-                  <i class="mdi mdi-printer"></i>
-                </a>
-                <button class="btn btn-info btn-edit-data"><i class="mdi mdi-pencil"></i></button>
-              </td>
-            </tr>
-          @endforeach --}}
         </tbody>
       </table>
 

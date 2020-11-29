@@ -646,22 +646,13 @@ function getRekap34(url=null) {
             {"data": "nama_siswa"},
             {"data": null, render: (data) => {
                 return `
-                    <button class="btn btn-info btn-edit-rapor"><i class="mdi mdi-pencil"></i></button>
-                    <a href="/${sessionStorage.getItem('username')}/rapor/cetak?nisn=${data.nisn}&periode=${sessionStorage.getItem('periode')}" class="btn btn-primary btn-cetak-rapor" ><i class="mdi mdi-printer"></i></a>
+                    <a href="/${sessionStorage.getItem('username')}/rapor/cetak?nisn=${data.nisn}&periode=${sessionStorage.getItem('periode')}" class="btn btn-danger btn-cetak-rapor" ><i class="mdi mdi-printer"></i> Cetak</a>
 
                 `
             }},
         ]
     })
 
-    $(document).on('click', '.btn-edit-rapor', function(){
-        var data = trapors.row($(this).parents('tr')).data();
-        $('#modalDataRapor').modal('show')
-        $('#modalDataRapor .modal-title #nama_siswa').text(data.nama_siswa)
-        $('#modalDataRapor #form-saran input[name="id_siswa"]').val(data.nisn)
-
-
-    })
 
 
 

@@ -13,7 +13,7 @@
                     <img src="{{ asset('img/malangkab.png') }}" alt="Logo Malangkab" class="logo-kab" height="100" style="position:absolute; left: 20px;top: 10px;">
                     <h4>PEMERINTAH KABUPATEN MALANG</h4>
                     <h4>DINAS PENDIDIKAN</h4>
-                    <h4>KOORDINATOR WILAYAH DINAS PENDIDIKAN KECAMATAN {{ strtoupper($sekolah->kec) }}</h4>
+                    <h5>KOORDINATOR WILAYAH DINAS PENDIDIKAN KECAMATAN {{ strtoupper($sekolah->kec) }}</h5>
                     <h2>{{ strtoupper($sekolah->nama_sekolah) }}</h2>
                     <p>{{ $sekolah->alamat }} {{ $sekolah->desa }}</p>
                     <p>Kecamatan {{ $sekolah->kec }} Kabupaten {{ $sekolah->kab }} Propinsi {{ $sekolah->prov }}</p>
@@ -76,25 +76,6 @@
                     </thead>
                     <tbody>
 
-                        {{-- <tr>
-                            <td rowspan="2">1</td>
-                            <td rowspan="2" class="text-left p-2">Pendidikan Agama dan Budi Pekerti</td>
-                            <td rowspan="2">70</td>
-                            <td  style="width:8.3%">3.1</td>
-                            <td style="width:8.3%">3.2</td>
-                            <td style="width:8.3%">3.3</td>
-                            <td style="width:8.3%">3.1</td>
-                            <td style="width:8.3%"> 3.2</td>
-                            <td style="width:8.3%">3.3</td>
-                        </tr>
-                        <tr>
-                            <td>70</td>
-                            <td>80</td>
-                            <td>90</td>
-                            <td>100</td>
-                            <td>80</td>
-                            <td>70</td>
-                        </tr> --}}
                         @foreach($pts as $pt)
                             <tr>
                                 <td rowspan="2">{{ $loop->index+1 }}</td>
