@@ -283,7 +283,7 @@
           })
       </script>
     @endif
-    @if(Auth::user()->level == 'admin')
+    @if(Auth::user()->level == 'admin' || Auth::user()->level == 'operator')
     <script src="{{ asset('js/main.js') }}"></script>
     @else
       <script>

@@ -15,6 +15,8 @@ class LoginController extends Controller
         if(Auth::check()){
             if(Auth::user()->level == 'admin') {
                 return redirect('/dashboard');
+            } elseif (Auth::user()->level == 'operator') {
+                return redirect('/operator/'.Auth::user()->sekolah_id.'/dashboard');
             } else {
                 return redirect('/'.Auth::user()->username.'/dashboard');
             }
@@ -34,6 +36,8 @@ class LoginController extends Controller
             // dd(Auth::user());
             if (Auth::user()->level == 'admin'){
                 return redirect()->intended('dashboard');
+            } elseif (Auth::user()->level == 'operator') {
+                return redirect('/operator/'.Auth::user()->sekolah_id.'/dashboard');
             } else {
                 return redirect('/'.Auth::user()->username.'/dashboard');
             }

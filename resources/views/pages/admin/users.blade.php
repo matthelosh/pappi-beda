@@ -33,7 +33,7 @@
             </h4>
             <hr>
             <div class="table-responsive">
-                <table class="table table-sm table-striped table-users" id="table-users" style="width:100%">
+                <table class="table table-users table-sm table-striped table-users" id="table-users" style="width:100%">
                     <thead>
                         <tr>
                             <th>No</th>

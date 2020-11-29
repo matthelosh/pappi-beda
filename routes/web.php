@@ -39,6 +39,7 @@ Route::group(['prefix' => 'login'], function(){
 Route::get('/logout', 'LoginController@logout')->name('logout');
 
 // Route Admin
+
     Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function() {
         // dd($request->session->all());
         Route::get('/', 'DashController@index')->name('dashboard');
@@ -158,6 +159,17 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
         Route::get('menus', 'DashController@menus')->name('preferences.menus');
     });
 
+// Route Operator
+    Route::group(['prefix' => 'operator', 'middleware' => ['auth','isOperator']], function(){
+        Route::group(['prefix' => '{sekolah_id}', 'middleware' => ['auth', 'isOperator']], function(){
+            Route::get('/dashboard', 'DashOperatorController@dashboard')->name('operator.dashboard');
+
+            Route::group(['prefix'=> 'users', 'middleware' => ['auth','isOperator']], function(){
+                Route::get('/', 'DashOperatorController@users')->name('operator.users');
+            });
+        });
+    });
+
 // Route Guru
     Route::group(['prefix' => '{username}', 'middleware' => ['auth', 'isGuru']], function(){
         Route::get('/dashboard', 'DashGuruController@dashboard')->name('guru.dashboard');
@@ -236,3 +248,4 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
         });
 
     });
+

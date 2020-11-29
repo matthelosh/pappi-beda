@@ -15,13 +15,6 @@
                         <label for="parent_id" class="col-form-label">Menu Induk:</label>
                         <select name="parent_id" class="form-control selMenu" style="width:100%">
                             <option value="0">Menu Induk</option>
-                            {{-- @if(isset($datas))
-                                @foreach($datas as $menu)
-                                    @if($menu->parent_id == 0)
-                                        <option value="{{ $menu->id }}">{{ $menu->title }}</option>
-                                    @endif
-                                @endforeach
-                            @endif --}}
                         </select>
                     </div>
                     <div class="form-group">
@@ -47,6 +40,7 @@
                             <option value="admin">Admin</option>
                             <option value="wali">Wali Kelas</option>
                             <option value="guru">Guru Mapel</option>
+                            <option value="operator">Operator</option>
                         </select>
                     </div>
 
@@ -79,16 +73,16 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <label for="sekolah_id">NIP</label>
+                            <label for="sekolah_id">Sekolah</label>
                             <select name="sekolah_id" class="form-control selSekolah" style="width:100%">
-
+                                <option value="0">Pilih Sekolah</option>
                             </select>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="nip">NIP</label>
                             <input type="text" class="form-control" name="nip" placeholder="Cth: 198709081992011001">
                         </div>
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-8">
                             <label for="nama">Nama</label>
                             <input type="text" class="form-control" name="nama" placeholder="Nama Lengkap">
                         </div>
@@ -99,9 +93,17 @@
                                 <option value="p">Perempuan</option>
                             </select>
                         </div>
-                        <div class="form-group col-sm-8">
+                        <div class="form-group col-sm-5">
                             <label for="username">Nama Pengguna</label>
                             <input type="text" name="username" class="form-control" placeholder="Nama Pengguna">
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="status">Status</label>
+                            <select name="status" class="form-control">
+                                <option value="0">Status</option>
+                                <option value="pns">PNS</option>
+                                <option value="gtt">GTT</option>
+                            </select>
                         </div>
                         <div class="form-group col-sm-4">
                             <label for="role">Peran</label>
@@ -110,11 +112,21 @@
                                 <option value="ks">Kepala Sekolah</option>
                                 <option value="gmapel">Guru Mapel</option>
                                 <option value="wali">Wali Kelas</option>
+                                <option value="operator">Operator</option>
                             </select>
                         </div>
                         <div class="form-group col-sm-8">
                             <label for="password">Kata Sandi</label>
                             <input type="password" name="password" class="form-control" placeholder="Kata Sandi">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="level">Level</label>
+                            <select name="level"  class="form-control">
+                                <option value="0">Pilih</option>
+                                <option value="ks">Kepala Sekolah</option>
+                                <option value="guru">Guru Mapel</option>
+                                <option value="operator">Operator</option>
+                            </select>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="email">Email</label>
@@ -126,12 +138,12 @@
                         </div>
                         <div class="form-group col-sm-12">
                             <label for="alamat">Alamat</label>
-                            <textarea name="alamat" cols="30" rows="3" class="form-control" placeholder="Alamat"></textarea>
+                            <textarea name="alamat" cols="30" rows="2" class="form-control" placeholder="Alamat"></textarea>
                         </div>
 
                     </div>
                 </div>
-                <div class="card-footer text-right">
+                <div class="card-footer text-center">
                     <button class="btn btn-primary" type="submit">
                         Simpan
                     </button>
@@ -965,7 +977,7 @@
             </div>
         </div>
     </div>
-@if(Auth::user()->role != 'admin')
+@if(Auth::user()->role != 'admin' && Auth::user()->role != 'operator')
     <div class="modal fade" id="modalDataRapor">
         <div class="modal-dialog modal-xl" >
             <div class="modal-content" style="width:100%">

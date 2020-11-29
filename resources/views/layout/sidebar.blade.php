@@ -23,10 +23,13 @@
                 Tutup Menu
               </a>
             </li>
+            @php
+              $path = (Auth::user()->level == 'admin') ? '' : ((Auth::user()->level == 'operator') ? '/operator/'.Auth::user()->sekolah_id : '/'.Auth::user()->username);
+            @endphp
         @foreach($menus as $menu)
           @if(strpos($menu->role, Auth::user()->role) !== false || $menu->role == 'all')
             <li class="c-sidebar-nav-item {{ $menu->childs()->count() ? 'c-sidebar-nav-dropdown' : '' }}">
-              <a href="{{ ((Auth::user()->level != 'admin') ? '/'.Auth::user()->username: '') . $menu->url }}" class="c-sidebar-nav-link {{ ($menu->childs()->count() > 0) ? 'c-sidebar-nav-dropdown-toggle': '' }}">
+              <a href="{{  $path . $menu->url }}" class="c-sidebar-nav-link {{ ($menu->childs()->count() > 0) ? 'c-sidebar-nav-dropdown-toggle': '' }}">
                 @php($link = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$menu->icon )
                 <svg class="c-sidebar-nav-icon">
                   <use xlink:href="{{ asset($link) }}"></use>
@@ -37,9 +40,8 @@
                 <ul class="c-sidebar-nav-dropdown-items">
                   @foreach($menu->childs as $child)
                     @if(strpos($child->role, Auth::user()->role) !== false || $child->role == 'all')
-                    {{-- @if($child->role == Auth::user()->role) --}}
                       <li class="c-sidebar-nav-item side-child">
-                        <a href="{{((Auth::user()->level != 'admin') ? '/'.Auth::user()->username: '') . $child->url }}" class="c-sidebar-nav-link">
+                        <a href="{{  $path . $child->url }}" class="c-sidebar-nav-link">
                           @php($link_sub = 'coreui/vendors/@coreui/icons/svg/free.svg#'.$child->icon )
                           <svg class="c-sidebar-nav-icon">
                             <use xlink:href="{{ asset($link_sub) }}"></use>
