@@ -46,7 +46,7 @@
                             <th>Email</th>
                             <th>HP</th>
                             <th>Alamat</th>
-                            <th>Password Asli</th>
+                            <th>Password Asli</th> 
                             <th>Opsi</th>
                         </tr>
                     </thead>

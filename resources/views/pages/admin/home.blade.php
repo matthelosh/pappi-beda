@@ -1,4 +1,3 @@
-<h1>{{ Auth::user()->level }}</h1>
 <div class="col-sm-3">
     <div class="card bg-gradient-warning">
         <div class="card-body">

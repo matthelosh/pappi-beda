@@ -50,7 +50,9 @@ $(document).ready(function() {
     // Edit User
     $(document).on('click', '.btn-edit-user', function(e) {
         e.preventDefault()
+        
         var user = tusers.row($(this).parents('tr')).data()
+        console.log(user)
         $.ajax({
             headers: headers,
             url: '/users/'+user[3],

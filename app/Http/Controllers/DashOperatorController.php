@@ -39,6 +39,10 @@ class DashOperatorController extends Controller
         return view('pages.admin.dashboard', ['page_title' => 'Data Sekolah', 'menus' => $this->showMenus($request)]);
     }
 
+    public function siswa(Request $request)
+    {
+        return view('pages.operator.siswa', ['page_title' => 'Siswa', 'menus' => $this->showMenus($request)]);
+    }
     public function rombels(Request $request)
     {
         return view('pages.admin.dashboard', ['page_title' => 'Data Rombel', 'menus' => $this->showMenus($request)]);

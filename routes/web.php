@@ -167,6 +167,10 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::group(['prefix'=> 'users', 'middleware' => ['auth','isOperator']], function(){
                 Route::get('/', 'DashOperatorController@users')->name('operator.users');
             });
+
+            Route::group(['prefix' => 'siswas', 'middleware' => ['auth', 'isOperator']], function(){
+                Route::get('/', 'DashOperatorController@siswa')->name('operator.siswa');
+            });
         });
     });
 

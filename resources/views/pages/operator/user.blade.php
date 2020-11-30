@@ -4,10 +4,15 @@
             <h4 class="card-title">
                 <i class="mdi mdi-card-account-details-outline"></i>
                 Data Pengguna
+                <div class="float-right">
+                    <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#modalUser"    ><i class="mdi mdi-account"></i> Tambah</button>
+                    <button class="btn btn-primary btn-import-user"><i class="mdi mdi-upload"></i> Unggah</button>
+                </div>
             </h4>
+            <hr>
             <div class="card-text">
                 <div class="table-responsive">
-                    <table class="table table-sm table-bordered">
+                    <table class="table table-users table-sm table-striped table-users" id="table-users" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>

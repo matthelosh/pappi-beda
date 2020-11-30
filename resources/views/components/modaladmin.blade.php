@@ -110,7 +110,8 @@
                             <select name="role"  class="form-control">
                                 <option value="0">Pilih</option>
                                 <option value="ks">Kepala Sekolah</option>
-                                <option value="gmapel">Guru Mapel</option>
+                                <option value="gpai">Guru Agama</option>
+                                <option value="gor">Guru Olahraga</option>
                                 <option value="wali">Wali Kelas</option>
                                 <option value="operator">Operator</option>
                             </select>
@@ -123,8 +124,7 @@
                             <label for="level">Level</label>
                             <select name="level"  class="form-control">
                                 <option value="0">Pilih</option>
-                                <option value="ks">Kepala Sekolah</option>
-                                <option value="guru">Guru Mapel</option>
+                                <option value="guru">Guru</option>
                                 <option value="operator">Operator</option>
                             </select>
                         </div>

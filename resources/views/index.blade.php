@@ -284,7 +284,7 @@
       </script>
     @endif
     @if(Auth::user()->level == 'admin' || Auth::user()->level == 'operator')
-    <script src="{{ asset('js/main.js') }}"></script>
+      <script src="{{ asset('js/main.js') }}"></script>
     @else
       <script>
         var rombel_id = "{{ Session::get('rombel_id') }}"
