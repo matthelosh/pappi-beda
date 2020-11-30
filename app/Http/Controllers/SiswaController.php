@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Imports\ImportSiswa;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class SiswaController extends Controller
 {
@@ -23,8 +24,13 @@ class SiswaController extends Controller
                 case "dt":
                     $rombel_id = ($request->query('rombel_id')) ??'';
 
-                    if($rombel_id == '') {
+                    if($rombel_id == '' && Auth::user()->level == 'admin') {
                         $siswas = Siswa::with('sekolahs', 'rombels', 'ortus')->get();
+                    } elseif($rombel_id == '' && Auth::user()->level == 'operator') {
+                        $siswas = Siswa::where([
+                            ['sekolah_id','=', Auth::user()->sekolah_id]
+                        ])->with('sekolahs','rombels','ortus')
+                        ->get();
                     } else {
                         $siswas = Siswa::where([
                             ['rombel_id','=', $rombel_id],
@@ -93,11 +99,39 @@ class SiswaController extends Controller
 
     public function import(Request $request)
     {
-        $file=$request->file('file');
+        // $file=$request->file('file');
+        $redirect = (Auth::user()->level == 'admin') ? '/siswas' : '/operator/'.Auth::user()->sekolah_id.'/siswas';
 
-        Excel::import(new ImportSiswa, $file);
+        // Excel::import(new ImportSiswa, $file);
 
-        return redirect('/siswas')->with(['status' => 'sukses', 'msg' => 'Data Siswa diimpor']);
+        // return redirect($redirect)->with(['status' => 'sukses', 'msg' => 'Data Siswa diimpor']);
+
+        try {
+
+            $siswas = $request->datas;
+            foreach($siswas as $siswa) {
+                Siswa::create([
+                    'nis' => $siswa['nis'],
+                    'nisn' =>  $siswa['nisn'],
+                    'nama_siswa' =>  $siswa['nama_siswa'],
+                    'jk' =>  $siswa['jk'],
+                    'agama' => $siswa['agama'],
+                    'alamat' =>  $siswa['alamat'],
+                    'desa' =>  $siswa['desa'],
+                    'kec' =>  $siswa['kec'],
+                    'kab' =>  $siswa['kab'],
+                    'prov' =>  $siswa['prov'],
+                    'hp' =>  $siswa['hp'],
+                    'sekolah_id' =>  $siswa['sekolah_id'],
+                    'rombel_id' =>  $siswa['rombel_id']
+                ]);
+            }
+
+            return response()->json(['status' => 'sukses', 'msg' => 'Data Siswa disimpan']);
+
+        } catch(\Exception $e) {
+            return response()->json(['status' => 'gagal', 'msg' => $e->getCode().':'.$e->getMessage()]);
+        }
     }
 
     public function out(Request $request)
@@ -153,6 +187,7 @@ class SiswaController extends Controller
      */
     public function create(Request $request)
     {
+        $redirect = (Auth::user()->level == 'admin') ? '/siswas' : '/operator/'.Auth::user()->sekolah_id.'/siswas';
         try {
             $foto = $request->file('foto_siswa');
             $dest = public_path('img/siswas/');
@@ -176,7 +211,7 @@ class SiswaController extends Controller
                 'sekolah_id' =>  $request->sekolah_id,
                 'rombel_id' =>  $request->rombel_id
             ]);
-            return redirect('/siswas')->with(['status' => 'sukses', 'msg' => 'Data Siswa Disimpan']);
+            return redirect($redirect)->with(['status' => 'sukses', 'msg' => 'Data Siswa Disimpan']);
         } catch(\Exception $e)
         {
             return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);

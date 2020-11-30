@@ -168,11 +168,11 @@
                 <button class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="" enctype="multipart/form-data" class="form form-import" method="POST">
+                <form action="" class="form form-import" method="POST">
                     @csrf()
                     <div class="form-group">
                         <label for="file">Pilih File Excel</label>
-                        <input type="file" name="file" class="form-control">
+                        <input type="file" name="file" class="form-control" accept=".xls,.xlsx,.odt,.csv">
                     </div>
                     <div class="form-group">
                         <button class="btn btn-primary">
@@ -486,7 +486,8 @@
                 <button class="close" data-dismiss="modal">&times</button>
             </div>
             <div class="modal-body">
-                <form action="/siswas/create" method="POST" class="form form-siswa" id="form-siswa" enctype="multipart/form-data">
+                {{-- /siswas/create --}}
+                <form action="{{ (Auth::user()->level == 'admin') ? '/siswas/create' : '/operator/'.Auth::user()->sekolah_id.'/siswas/create' }}" method="POST" class="form form-siswa" id="form-siswa" enctype="multipart/form-data">
                     @csrf()
                     <div class="row">
                         <div class="form-group col-sm-2">
@@ -562,12 +563,12 @@
                             <input type="file" name="foto_siswa" class="form-control">
                         </div>
                         <div class="form-group col-sm-4">
-                            <img src="" alt="Foto Siswa" class="img img-thumbnail foto-siswa" onerror="this.onerror=null;this.src='img/favicon.png'">
+                            <img src="" alt="Foto Siswa" class="img img-thumbnail foto-siswa" onerror="this.onerror=null;this.src='/img/favicon.png'">
                         </div>
                         <div class="form-group col-sm-12 text-right">
                             <button class="btn btn-primary" type="submit">
                                 <svg class="c-icon">
-                                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-save') }}"></use>
+                                    <use xlink:href="{{ asset('/coreui/vendors/@coreui/icons/svg/free.svg#cil-save') }}"></use>
                                 </svg>
                                 Simpan
                             </button>

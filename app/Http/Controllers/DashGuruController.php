@@ -14,23 +14,23 @@ class DashGuruController extends Controller
     private $menus;
     public function dashboard(Request $request)
     {
-        // $sekolah = 'App\Sekolah'::where('nisn', Auth::user)
+        $sekolah = 'App\Sekolah'::where('nisn', Auth::user()->nip)->first();
         $rombel = 'App\Rombel'::where('guru_id', Auth::user()->nip)->first();
         $periode = 'App\Periode'::where('status', 'aktif')->first();
         if($rombel) {
-            session(['role' => 'wali', 'rombel_id' => $rombel->kode_rombel, 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'rombel' => $rombel]);
-            $jurnals = 'App\Jurnal'::where([
-                ['periode_id' ,'=', $periode->kode_periode],
-                ['rombel_id', '=', $rombel->kode_rombel]
-            ])->with('siswas')->get();
+            session(['role' => 'wali', 'rombel_id' => $rombel->kode_rombel, 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'sekolah' => $sekolah, 'rombel' => $rombel]);
+            $jurnals = [];
+            // $jurnals = 'App\Jurnal'::where([
+            //     ['periode_id' ,'=', $periode->kode_periode],
+            //     ['rombel_id', '=', $rombel->kode_rombel]
+            // ])->with('siswas')->get();
         } else {
             if(Auth::user()->role == 'gpai') {
                 $jurnals = 'App\Jurnal'::where('periode_id', '=', $periode->kode_periode);
-                // $jurnals = 'App\Jurnal'::where('periode_id', '=', $periode->kode_periode);
             } else {
                 $jurnals = (Object) [];
             }
-            session(['role' => Auth::user()->role, 'rombel_id' => 'all', 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id]);
+            session(['role' => Auth::user()->role, 'rombel_id' => 'all', 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'sekolah' => $sekolah]);
         }
 
     //    dd($request->session->all());

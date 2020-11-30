@@ -7,6 +7,7 @@ use App\Rombel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class RombelController extends Controller
 {
@@ -21,8 +22,10 @@ class RombelController extends Controller
             switch($request->query('req'))
             {
                 case "dt":
-                    $rombels =  Rombel::with('sekolahs', 'gurus')->get();
-
+                    $where = (Auth::user()->level == 'admin') ? [''] : [
+                        ['sekolah_id','=',Auth::user()->sekolah_id]
+                    ];
+                    $rombels =  Rombel::where($where)->with('sekolahs', 'gurus')->get();
                     return DataTables::of($rombels)->addIndexColumn()->toJson();
                 break;
                 case "select":
@@ -48,14 +51,26 @@ class RombelController extends Controller
 
     public function import(Request $request)
     {
-        $file = $request->file('file');
-        $import = new ImportRombel();
         try {
-            $import->import($file);
-            return back()->with(['status' => 'sukses', 'msg' => 'Data Pengguna telah diimpor', 'errors' => 'Error Unknown']);
+            $rombels = $request->datas;
+            foreach ( $rombels as $rombel )
+            {
+                Rombel::updateOrCreate(
+                    [
+                        'sekolah_id' => Auth::user()->sekolah_id,
+                        'kode_rombel' => Auth::user()->sekolah_id.'-'.$rombel['kode_rombel']
+                    ],
+                    [
+                        'nama_rombel' => $rombel['nama_rombel'],
+                        'tingkat' => $rombel['tingkat'],
+                        'guru_id' => $rombel['guru_id']
+                    ]
+                );
+
+                return response()->json(['status' => 'sukses','msg' => 'Data Rombel disimpan']);
+            }
         } catch (\Exception $e) {
-           
-           return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
+            return response()->json(['status' => 'gagal', 'msg' => $e->getCode().':'.$e->getMessage()]);
         }
     }
     /**
@@ -66,7 +81,17 @@ class RombelController extends Controller
     public function create(Request $request)
     {
         try {
-            Rombel::create($request->all());
+            Rombel::updateOrCreate(
+                [
+                    'sekolah_id' => Auth::user()->sekolah_id,
+                    'kode_rombel' => Auth::user()->sekolah_id.'-'.$request->kode_rombel
+                ],
+                [
+                    'nama_rombel' => $request->nama_rombel,
+                    'tingkat' => $request->tingkat,
+                    'guru_id' => $request->guru_id
+                ]
+            );
             return response()->json(['status' => 'sukses', 'msg' => 'Rombel disimpan']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);

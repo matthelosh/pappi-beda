@@ -15,8 +15,9 @@ class DashOperatorController extends Controller
 
     public function dashboard(Request $request)
     {
+        $sekolah = 'App\Sekolah'::where('npsn', Auth::user()->sekolah_id)->first();
         $periode = 'App\Periode'::where('status', 'aktif')->first();
-            session(['role' => Auth::user()->role, 'rombel_id' => 'all', 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id]);
+            session(['role' => Auth::user()->role, 'rombel_id' => 'all', 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'sekolah' => $sekolah]);
 
         return view('pages.operator.dashboard', ['page_title' => 'Dashboard', 'menus' => $this->showMenus($request)]);
     }
@@ -28,53 +29,14 @@ class DashOperatorController extends Controller
         return view('pages.operator.dashboard', ['page_title' => 'Pengguna', 'menus' => $this->showMenus($request), 'users' => $users]);
     }
 
-    function menus(Request $request)
-    {
-        $datas = 'App\Menu'::paginate(10);
-        return view('pages.admin.dashboard', ['page_title' => 'Menu', 'menus' => $this->showMenus($request), 'datas' => $datas]);
-    }
-
-    public function sekolahs(Request $request)
-    {
-        return view('pages.admin.dashboard', ['page_title' => 'Data Sekolah', 'menus' => $this->showMenus($request)]);
-    }
-
     public function siswa(Request $request)
     {
-        return view('pages.operator.siswa', ['page_title' => 'Siswa', 'menus' => $this->showMenus($request)]);
-    }
-    public function rombels(Request $request)
-    {
-        return view('pages.admin.dashboard', ['page_title' => 'Data Rombel', 'menus' => $this->showMenus($request)]);
+        return view('pages.operator.dashboard', ['page_title' => 'Siswa', 'menus' => $this->showMenus($request)]);
     }
 
-    public function siswas(Request $request)
+    public function rombel(Request $request)
     {
-        return view('pages.admin.dashboard', ['page_title' => 'Data Siswa', 'menus' => $this->showMenus($request)]);
+        return view('pages.operator.dashboard', ['page_title' => 'Rombel', 'menus' => $this->showMenus($request)]);
     }
 
-    public function mapels(Request $request)
-    {
-        return view('pages.admin.dashboard', ['page_title' => 'Data Mapel', 'menus' => $this->showMenus($request)]);
-    }
-
-    public function kds(Request $request)
-    {
-        return view('pages.admin.dashboard', ['page_title' => 'Data Kompetensi', 'menus' => $this->showMenus($request)]);
-    }
-
-    public function periode(Request $request)
-    {
-        return view('pages.admin.dashboard', ['page_title' => 'Data Periode', 'menus' => $this->showMenus($request)]);
-    }
-
-    public function tanggalRapor(Request $request)
-    {
-        return view('pages.admin.dashboard', ['page_title' => 'Tanggal Rapor', 'menus' => $this->showMenus($request)]);
-    }
-
-    public function ekskul(Request $request)
-    {
-        return view('pages.admin.dashboard', ['page_title' => 'Ekstrakurikuler', 'menus' => $this->showMenus($request)]);
-    }
 }

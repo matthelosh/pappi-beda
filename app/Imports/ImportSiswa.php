@@ -21,6 +21,7 @@ class ImportSiswa implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
+        // dd($row);
         return new Siswa([
             'nis' => $row['nis'],
             'nisn'=> $row['nisn'],

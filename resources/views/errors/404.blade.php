@@ -24,7 +24,7 @@
         }
         .wrapper .box {
             text-align:center;
-            color: #4d4d4d;
+            color: #efefef;
         }
         .rotate-center {
             -webkit-animation: rotate-center 0.6s ease-in-out both;
@@ -81,13 +81,15 @@
 <body>
     <div class="wrapper">
         <div class="box" >
+            
             <img src="{{ asset('img/pappi.png') }}" alt="Pappi Beda" width="300px" class="rotate-center">
-            <h2>HALAMAN TIDAK DITEMUKAN</h2>
-            <a href="/" title="Kembali Ke Baranda" style="color:white;">
+            <h1 class="text-white">MAAF! SEMENTARA LAMAN INI BELUM DAPAT DIAKSES.<br> HUBUNGI ADMIN UNTUK INFO LEBIH LANJUT.</h1>
+            {{-- <a href="{{ ((Auth::user()->level == 'admin') ? '/': (Auth::user()->level == 'operator')) ? '/operator/'.Auth::user()->sekolah_id : '/'.Auth::user()->username.'/beranda' }}" title="Kembali Ke Baranda" style="color:white;">
                 <svg width="118" height="46">
-                    <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-home"></use>
+                    <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-home"></use>
                 </svg>
-            </a>
+            </a> --}}
+            
         </div>
     </div>
 </body>

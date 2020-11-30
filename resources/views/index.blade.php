@@ -16,7 +16,7 @@
     <meta name="author" content="Łukasz Holeczek">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>PAPPI Beda | {{ ($page_title) ?? 'SD Negeri 1 Bedalisodo' }}</title>
+    <title> {{ Session::get('sekolah') ? Session::get('sekolah')->nama_sekolah : 'Administrator' }}  | {{ ($page_title) }}</title>
     {{-- <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('coreui/assets/favicon/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('coreui/assets/favicon/apple-icon-60x60.png') }}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('coreui/assets/favicon/apple-icon-72x72.png') }}">
@@ -110,6 +110,7 @@
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2.all.min.js') }}"></script>
     <script src="{{ asset('select2/js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/xlsx.full.min.js') }}"></script>
      <script>
       var headers =  {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -283,6 +284,12 @@
           })
       </script>
     @endif
+    <script>
+      sessionStorage.setItem('role', "{{ Session::get('role') }}")
+        sessionStorage.setItem('username', "{{ Session::get('username') }}")
+        sessionStorage.setItem('periode', "{{ Session::get('periode_aktif') }}")
+        sessionStorage.setItem('sekolah_id', "{{ Session::get('sekolah_id') }}")
+    </script>
     @if(Auth::user()->level == 'admin' || Auth::user()->level == 'operator')
       <script src="{{ asset('js/main.js') }}"></script>
     @else
@@ -290,10 +297,7 @@
         var rombel_id = "{{ Session::get('rombel_id') }}"
         var role = "{{ Session::get('role') }}"
         sessionStorage.setItem('rombel_id', rombel_id)
-        sessionStorage.setItem('role', "{{ Session::get('role') }}")
-        sessionStorage.setItem('username', "{{ Session::get('username') }}")
-        sessionStorage.setItem('periode', "{{ Session::get('periode_aktif') }}")
-        sessionStorage.setItem('sekolah_id', "{{ Session::get('sekolah_idcoop0w') }}")
+        
       </script>
       <script src="{{ asset('js/guru.js') }}"></script>
 

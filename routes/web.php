@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RombelController;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -166,10 +167,22 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
 
             Route::group(['prefix'=> 'users', 'middleware' => ['auth','isOperator']], function(){
                 Route::get('/', 'DashOperatorController@users')->name('operator.users');
+                Route::post('/import', 'UserController@import')->name('operator.users.import');
+                Route::post('/get', 'UserController@index')->name('users.index');
             });
 
             Route::group(['prefix' => 'siswas', 'middleware' => ['auth', 'isOperator']], function(){
                 Route::get('/', 'DashOperatorController@siswa')->name('operator.siswa');
+                Route::post('/', 'SiswaController@index')->name('operator.siswa.index');
+                Route::post('/create', 'SiswaController@create')->name('operator.siswa.create');
+                Route::post('/import', 'SiswaController@import')->name('operator.siswa.import');
+            });
+
+            Route::group(['prefix' => 'rombels', 'middleware' => ['auth','isOperator']], function(){
+                Route::get('/', 'DashOperatorController@rombel')->name('operator.rombel');
+                Route::post('/', 'RombelController@index')->name('operator.rombel.index');
+                Route::post('/create', 'RombelController@create')->name('operator.rombel.create');
+                Route::post('/import', 'RombelController@import')->name('operator.rombel.import');
             });
         });
     });

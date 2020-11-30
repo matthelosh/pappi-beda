@@ -37,7 +37,7 @@ $(document).ready(function() {
 
 
     var tusers = $('.table-users').DataTable({
-        dom: 'ftip',
+        dom: 'Bftlip',
         select: 'multi'
     })
 
@@ -86,7 +86,8 @@ $(document).ready(function() {
     // Import USer
     $(document).on('click', '.btn-import-user', function(e) {
         e.preventDefault()
-        $('#modalImport .form-import').prop('action', '/users/import')
+        var url = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/users/import':'/users/import'
+        $('#modalImport .form-import').prop('action', url)
         $('#modalImport #model').text('Pengguna')
         $('#modalImport').modal()
     })
@@ -318,10 +319,11 @@ $(document).ready(function() {
     })
 
     // ROmbels
+    var urlRombel = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/rombels?req=dt' : '/rombels?req=dt'
     var trombels = $('#table-rombels').DataTable({
         serverSide: true,
         ajax: {
-            url: '/rombels?req=dt',
+            url: urlRombel,
             type: 'post',
             headers: headers
         },
@@ -340,17 +342,17 @@ $(document).ready(function() {
                 return  `
                     <button class="btn btn-info btn-mnj-rombel btn-sm" title="Manajemen Rombel ${data.nama_rombel} ?">
                         <svg class="c-icon">
-                            <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-equalizer"></use>
+                            <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-equalizer"></use>
                         </svg>
                     </button>
                     <button class="btn btn-warning btn-edit-rombel btn-sm" title="Edit Rombel ${data.nama_rombel} ?">
                         <svg class="c-icon">
-                            <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                            <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
                         </svg>
                     </button>
                     <button class="btn btn-danger btn-delete-rombel btn-sm" title="Hapus Rombel ${data.nama_rombel} ?">
                         <svg class="c-icon">
-                            <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                            <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
                         </svg>
                     </button>
                 `
@@ -633,7 +635,8 @@ $(document).ready(function() {
     $(document).on('submit', '#formRombel', function(e) {
         e.preventDefault()
         var data = $(this).serialize()
-        var url = ($('#modalRombel .mode-form').text() == 'Buat') ? '/rombels/create' : '/rombels/update'
+        var target = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/':'/'
+        var url = ($('#modalRombel .mode-form').text() == 'Buat') ? target+'rombels/create' : target+'rombels/update'
         $.ajax({
             headers: headers,
             url: url,
@@ -650,7 +653,8 @@ $(document).ready(function() {
     // import ROmbel
     $(document).on('click', '.btn-import-rombels', function(e) {
         e.preventDefault()
-        $('#modalImport .form-import').prop('action', '/rombels/import')
+        var url = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/rombels/import':'/rombels/import'
+        $('#modalImport .form-import').prop('action', url)
         $('#modalImport #model').text('Rombel')
         $('#modalImport').modal()
     })
@@ -658,9 +662,11 @@ $(document).ready(function() {
 // Siswa
     var tsiswas = $('#table-siswas').DataTable({
         serverSide: true,
+        dom: "Bftlip",
         ajax: {
             headers: headers,
-            url: '/siswas?req=dt',
+            url: (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/siswas?req=dt' : '/siswas?req=dt',
+            // url: '/siswas?req=dt',
             type: 'post'
         },
         columns: [
@@ -680,17 +686,17 @@ $(document).ready(function() {
                 return `
                 <button class="btn btn-info btn-ortu btn-sm" title="Buat Ortu ${data.nama_siswa} ?">
                     <svg class="c-icon">
-                        <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-blind"></use>
+                        <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-blind"></use>
                     </svg>
                 </button>
                 <button class="btn btn-warning btn-edit-siswa btn-sm" title="Edit ${data.nama_siswa} ?">
                     <svg class="c-icon">
-                        <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                        <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
                     </svg>
                 </button>
                 <button class="btn btn-danger btn-delete-siswa btn-sm" title="Hapus ${data.nama_siswa} ?">
                     <svg class="c-icon">
-                        <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                        <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
                     </svg>
                 </button>
                     `
@@ -700,10 +706,52 @@ $(document).ready(function() {
 
     $(document).on('click', '.btn-import-siswas', function(e) {
         e.preventDefault()
-        $('#modalImport .form-import').prop('action', '/siswas/import')
+        var url = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/siswas/import':'/siswas/import'
+        $('#modalImport .form-import').prop('action', url)
         $('#modalImport #model').text('Siswa')
         $('#modalImport').modal()
     })
+
+    // Coba Import Excel dengan JS
+    var selectedFile;
+    $(document).on('change', '#modalImport .form-import input[name="file"]', function(e) {
+        selectedFile = e.target.files[0];
+        // console.log(selectedFile);
+    })
+
+    $(document).on('submit', '#modalImport .form-import', function(e){
+        e.preventDefault()
+        var url = $(this).prop('action');
+        if ( selectedFile ) {
+            // console.log(selectedFile)
+            var fileReader = new FileReader();
+            fileReader.onload = function(event) {
+                var data = event.target.result;
+                var workbook = XLSX.read(data, {
+                    type: "binary"
+                });
+                workbook.SheetNames.forEach( sheet => {
+                    let datas = XLSX.utils.sheet_to_row_object_array(
+                        workbook.Sheets[sheet]
+                    );
+                    // console.log(datas)
+                    // var fd = new FormData();
+                    // fd.append('siswas', datas);
+                    $.ajax({
+                        headers: headers,
+                        url: url,
+                        data: {datas: datas},
+                        type: 'post',
+                        success: function(res) {
+                            Swal.fire('Info', res.msg, 'info')
+                        }
+                    })
+                });
+            };
+            fileReader.readAsBinaryString( selectedFile );
+        }
+    })
+
     // Ambil Foto Siswa
     $(document).on('change', '#form-siswa input[name="foto_siswa"]', function(e) {
         $('#form-siswa img.foto-siswa').prop('src', URL.createObjectURL(e.target.files[0]))
@@ -730,8 +778,8 @@ $(document).ready(function() {
         $('#form-siswa input[name=hp]').val(siswa.hp)
         $('#form-siswa select[name=sekolah_id]').append(`<option value="${(siswa.sekolahs)?siswa.sekolah_id:'0'}" selected>${(siswa.sekolahs)?siswa.sekolahs.nama_sekolah:'Pilih Sekolah'}</option>`)
         $('#form-siswa select[name=rombel_id]').append(`<option value="${(siswa.rombels)?siswa.rombel_id:'0'}" selected>${(siswa.rombels)?siswa.rombels.nama_rombel:'Pilih rombel'}</option>`)
-        $('#form-siswa img.foto-siswa').prop({'src': 'img/siswas/'+siswa.sekolah_id+'_'+siswa.nisn+'.jpg'}).on('error', function(){
-            $(this).prop('src', 'img/no-photo.jpg')
+        $('#form-siswa img.foto-siswa').prop({'src': '/img/siswas/'+siswa.sekolah_id+'_'+siswa.nisn+'.jpg'}).on('error', function(){
+            $(this).prop('src', '/img/no-photo.jpg')
         })
 
         $('#modalSiswa').modal()
@@ -747,7 +795,6 @@ $(document).ready(function() {
             text: "Siswa  akan dihapus dari database",
             icon: "warning",
             showCancelButton : true,
-            dangerMode: true,
           })
           .then((hapus) => {
             if (hapus.value) {
@@ -1210,10 +1257,12 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
 
         },
     })
+
+    var urlUser = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/users/' : '/users/'
     $('.selWali').select2({
         ajax: {
             headers: headers,
-            url: '/users/get?req=select',
+            url: urlUser+'get?req=select',
             type: 'post',
                 dataType: 'json',
                 delay: 250,

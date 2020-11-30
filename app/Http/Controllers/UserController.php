@@ -22,7 +22,7 @@ class UserController extends Controller
             switch($request->query('req'))
             {
                 case "select":
-                    $where = Auth::user()->sekolah_id == 'all' ? [['level','<>','admin']]:[['sekolah_id','=',Auth::user()->sekolah_id]];
+                    $where = Auth::user()->sekolah_id == 'all' ? [['level','<>','admin']]:[['sekolah_id','=',Auth::user()->sekolah_id],['level','=','guru']];
 
                     $datas = User::where($where)->get();
                     $users = [];
@@ -93,24 +93,33 @@ class UserController extends Controller
 
     public function import(Request $request)
     {
-        $file = $request->file('file');
+        $file = $request->file('file'); 
          try {
-            $import = new ImportUsers();
-            $import->import($file);
-            // dd($import);
-            $errors = ($import->errors()) ??  '';
-            return back()->with(['status' => 'sukses', 'msg' => 'Data Pengguna telah diimpor', 'errors' => $errors]);
-         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-             $msg = '';
-             $failures = $e->failures();
-             foreach ($failures as $failure) {
-                //$failure->row(); // row that went wrong
-                $failure->attribute(); // either heading key (if using heading row concern) or column index
-                $failure->errors(); // Actual error messages from Laravel validator
-                $values = $failure->values(); // The values of the row that has failed.
-                $msg .= 'Pengguna dengan '.$failure->attribute().':'.$values['nip']. ' sudah ada. <br>';
+            $users = $request->datas;
+            foreach ( $users as $user )
+            {
+                User::updateOrCreate([
+                    'nip' => $user['nip'],
+                    'username' => $user['username']],
+                    [
+                    'nama' => $user['nama'],
+                    'jk' => $user['jk'],
+                    'role' => $user['role'],
+                    'level' => 'guru',
+                    'status' => $user['status'],
+                    'password' => Hash::make($user['password']),
+                    'email' => $user['email'],
+                    'hp' => $user['hp'],
+                    'alamat' => $user['alamat'],
+                    'default_password' => ($user['role'] == 'admin') ? 'qwerty' : '12345',
+                    'sekolah_id' => $user['sekolah_id'] ?? Auth::user()->sekolah_id
+                ]);
             }
-            return back()->with(['status' => 'error', 'msg' => $msg]);
+
+            return response()->json(['status' => 'sukses', 'msg' => 'Data Pengguna tersimpan.']);
+
+         } catch (\Exception $e) {
+             return response()->json(['status' => 'sukses', 'msg' => $e->getCode().':'.$e->getMessage()]);
          }
     }
 
