@@ -2,10 +2,15 @@
 
 namespace App;
 
+// use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Siswa extends Model
 {
+    // use SoftDeletes;
+    // use SoftCascadeTrait;
+
     protected $fillable = [
         'nis',
         'nisn',
@@ -21,6 +26,8 @@ class Siswa extends Model
         'sekolah_id',
         'rombel_id'
     ];
+
+    // protected $softCascade = ['ortus','ekskuls','fisiks', 'kesehatans', 'prestasis','absens','nilais'];
 
     public function sekolahs()
     {
@@ -60,5 +67,10 @@ class Siswa extends Model
     public function absens()
     {
         return $this->hasMany('App\Absensi','siswa_id','nisn');
+    }
+
+    public function nilais()
+    {
+        return $this->hasMany('App\Nilai','siswa_id','nisn');
     }
 }

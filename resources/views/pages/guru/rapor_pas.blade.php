@@ -110,7 +110,7 @@
                             @php
                                 $na_k3 = (isset($nilai['k3']['na'])) ? round($nilai['k3']['na']) : null;
                                 $na_k4 = (isset($nilai['k4']['na'])) ? round($nilai['k4']['na']) : null;
-                                $kkm=$nilai['kkm']->nilai;
+                                $kkm = $nilai['kkm']->nilai ?? 80;
                             @endphp
                             <tr>
                                 <td class="text-center p-2">{{ ($loop->index +1) }}</td>
@@ -374,8 +374,8 @@
                             <br>
                             <br>
                             <br>
-                            <b><u style="text-transform: uppercase">{{ $sekolah->ks->nama }}</u></b> <br>
-                            NIP. {{ $sekolah->ks->nip }}
+                            <b><u style="text-transform: uppercase">{{ $sekolah->ks->nama ?? '..................' }}</u></b> <br>
+                            NIP. {{ $sekolah->ks->nip ?? '-' }}
                         </td>
                         <td style="width:33.3%"></td>
                     </tr>

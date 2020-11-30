@@ -134,8 +134,8 @@
                                 <br>
                                 <br>
                                 <br>
-                                <strong><u>{{ $sekolah->ks->nama }}</u></strong><br>
-                                NIP. {{ $sekolah->ks->nip }}
+                                <strong><u>{{ $sekolah->ks->nama ?? '' }}</u></strong><br>
+                                NIP. {{ $sekolah->ks->nip ?? '' }}
                             </td>
                         </tr>
                     </table>

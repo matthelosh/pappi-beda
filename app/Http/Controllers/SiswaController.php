@@ -258,8 +258,9 @@ class SiswaController extends Controller
      * @param  \App\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $sekolah_id, $id)
     {
+        $redirect = (Auth::user()->level == 'operator') ? '/operator/'.Auth::user()->sekolah_id.'/siswas' : '/siswas';
         try {
             $foto = $request->file('foto_siswa');
             $dest = public_path('img/siswas/');
@@ -268,7 +269,7 @@ class SiswaController extends Controller
                 $simpan = $foto->move($dest, $nama);
             }
             
-            Siswa::findOrFail($id)->update([
+            'App\Siswa'::findOrFail($id)->update([
                 'nis' => $request->nis,
                 'nisn' =>  $request->nisn,
                 'nama_siswa' =>  $request->nama_siswa,
@@ -283,10 +284,11 @@ class SiswaController extends Controller
                 'sekolah_id' =>  $request->sekolah_id,
                 'rombel_id' =>  $request->rombel_id
             ]);
-            return redirect('/siswas')->with(['status' => 'sukses', 'msg' => 'Data Siswa Diperbarui']);
+            return redirect($redirect)->with(['status' => 'sukses', 'msg' => 'Data Siswa Diperbarui']);
         } catch(\Exception $e)
         {
             return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
+            // dd($e);
         }
     }
 
@@ -296,7 +298,7 @@ class SiswaController extends Controller
      * @param  \App\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $sekolah_id, $id)
     {
         try {
             Siswa::findOrFail($id)->delete();

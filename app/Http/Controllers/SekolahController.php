@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Sekolah;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class SekolahController extends Controller
 {
@@ -23,7 +24,7 @@ class SekolahController extends Controller
                     return DataTables::of($sekolahs)->addIndexColumn()->toJson();
                 break;
                 case "select":
-                    $sekolahs = Sekolah::with('ks', 'operators')->get();
+                    $sekolahs = (Auth::user()->level == 'admin') ? Sekolah::all() : Sekolah::where('npsn',Auth::user()->sekolah_id)->get();
                     $datas = [];
                     foreach($sekolahs as $sekolah)
                     {

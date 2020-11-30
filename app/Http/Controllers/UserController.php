@@ -47,6 +47,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         // dd($request->all());
+        $redirect = (Auth::user()->level == 'admin') ? '/users' : '/operator/'.Auth::user()->sekolah_id.'/users';
         $validator = Validator::make($request->all(), [
             'nip' => 'required',
             'nama' => 'required',
@@ -80,7 +81,7 @@ class UserController extends Controller
                     'default_password' => ($request->role == 'admin') ? 'qwerty' : '12345',
                     'sekolah_id' => $request->sekolah_id
                 ]);
-                return redirect('/users')->with(['status' => 'sukses', 'msg' => 'Data Pengguna disimpan']);
+                return redirect($redirect)->with(['status' => 'sukses', 'msg' => 'Data Pengguna disimpan']);
             } catch (\Exception $e)
             {
                 return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
@@ -119,7 +120,7 @@ class UserController extends Controller
             return response()->json(['status' => 'sukses', 'msg' => 'Data Pengguna tersimpan.']);
 
          } catch (\Exception $e) {
-             return response()->json(['status' => 'sukses', 'msg' => $e->getCode().':'.$e->getMessage()]);
+             return response()->json(['status' => 'gagal', 'code' => $e->getCode(),'msg' => $e->getMessage()], 409);
          }
     }
 
@@ -153,6 +154,9 @@ class UserController extends Controller
      */
     public function edit(Request $request, $nip)
     {
+        // dd($request->all());
+        $nip = ($nip == $request->nip) ? $nip : $request->nip;
+        // dd($nip);
         $user = User::where('nip', $nip)->with('sekolahs')->first();
 
         return response()->json(['status' => 'sukses', 'user' => $user]);
@@ -194,9 +198,9 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $nip)
+    public function destroy(Request $request)
     {
-        // dd($nip);
+        $nip = $request->query('nip');
         try 
         {
             User::where('nip', $nip)->delete();

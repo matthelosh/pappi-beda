@@ -80,7 +80,7 @@
                             <tr>
                                 <td rowspan="2">{{ $loop->index+1 }}</td>
                                 <td rowspan="2" class="text-left p-2">{{ $pt['nama_mapel'] }}</td>
-                                <td rowspan="2">{{ $pt['kkm']->nilai}}</td>
+                                <td rowspan="2">{{ $pt['kkm']->nilai ?? '-'}}</td>
                                 @if(isset($pt['nilais']))
                                     {{-- @foreach ($pt['nilais']['uh'] as $k => $uh)
                                         <td>{{ $k }}</td>
@@ -126,8 +126,8 @@
 
                                     @endfor
                                     @php($nhs = ($nhs > 0 ? number_format((float)$nhs/count($uh_keys), 2,',','') : 0))
-                                <td rowspan="2" class="{{ ($nhs < $pt['kkm']->nilai ? 'text-danger': '')  }}">
-                                    {{ $nhs }}
+                                <td rowspan="2" class="">
+                                    {{ $nhs ?? '-' }}
                                 </td>
 
                                     @php($pts_keys = array_keys($pt['nilais']['pts']))
@@ -139,7 +139,8 @@
 
                                     @endfor
                                     @php( $npts = ($npts > 0 ? number_format((float)$npts/count($pts_keys), 2,',','') : 0))
-                                <td rowspan="2" class="{{ ($npts < $pt['kkm']->nilai ? 'text-danger': '')  }}">
+                                <td rowspan="2" class="">
+                                {{-- <td rowspan="2" class="{{ ($npts < $pt['kkm']->nilai ? 'text-danger': '')  }}"> --}}
                                     {{ $npts }}
                                 </td>
                             </tr>
@@ -224,8 +225,8 @@
                             <br>
                             <br>
                             <br>
-                            <b><u>{{ strtoupper($sekolah->ks->nama) }}</u></b> <br>
-                            NIP. {{ $sekolah->ks->nip }}
+                            <b><u>{{ strtoupper($sekolah->ks->nama ?? '-') }}</u></b> <br>
+                            NIP. {{ $sekolah->ks->nip ?? '-' }}
                         </td>
                         <td style="width:33.3%"></td>
                     </tr>

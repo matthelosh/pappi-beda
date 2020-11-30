@@ -78,7 +78,6 @@ class RaporController extends Controller
             'pts' => $pts, 
             'pas' => $pas, 
             'sarans' => $sarans, 
-            'tgl_pts' => $tgl_pts->tanggal, 
             'sikaps' => $sikaps, 
             'ekskuls' => $ekskuls,
             'fisik' => $this->fisik($request),

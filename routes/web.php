@@ -167,8 +167,12 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
 
             Route::group(['prefix'=> 'users', 'middleware' => ['auth','isOperator']], function(){
                 Route::get('/', 'DashOperatorController@users')->name('operator.users');
+                Route::post('/', 'UserController@create')->name('operator.users.create');
+                Route::put('/', 'UserController@update')->name('operator.users.update');
                 Route::post('/import', 'UserController@import')->name('operator.users.import');
-                Route::post('/get', 'UserController@index')->name('users.index');
+                Route::post('/get', 'UserController@index')->name('operator.users.index');
+                Route::get('/edit', 'UserController@edit')->name('operator.users.edit');
+                Route::delete('/{nip}', 'UserController@destroy')->name('operator.users.delete');
             });
 
             Route::group(['prefix' => 'siswas', 'middleware' => ['auth', 'isOperator']], function(){
@@ -176,6 +180,8 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
                 Route::post('/', 'SiswaController@index')->name('operator.siswa.index');
                 Route::post('/create', 'SiswaController@create')->name('operator.siswa.create');
                 Route::post('/import', 'SiswaController@import')->name('operator.siswa.import');
+                Route::put('/{id}', 'SiswaController@update')->name('operator.siswa.update');
+                Route::delete('/{id}', 'SiswaController@destroy')->name('operator.siswa.delete');
             });
 
             Route::group(['prefix' => 'rombels', 'middleware' => ['auth','isOperator']], function(){

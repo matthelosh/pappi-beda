@@ -2,6 +2,8 @@ $(document).ready(function() {
     var headers =  {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
+
+    var ajaxUrl = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/' : '/'
     // Swal.fire("Halo")
     // Add Menu MOdal
     $('.btn-add-menu').on('click', function(e) {
@@ -52,14 +54,16 @@ $(document).ready(function() {
         e.preventDefault()
         
         var user = tusers.row($(this).parents('tr')).data()
-        console.log(user)
+        
+        // console.log(user)
         $.ajax({
             headers: headers,
-            url: '/users/'+user[3],
+            url: ajaxUrl+'users/edit?nip='+user[3],
             type: 'get'
         }).done(res => {
+            console.log(res)
             var user = res.user
-            $('.form-user').append(`<input type="hidden" name="_method" value="put"><input type="hidden" name="id" value="${user.id}">`)
+            $('.form-user').append(`<input type="hidden" name="_method" value="PUT"><input type="hidden" name="id" value="${user.id}">`)
             $('.form-user select[name="sekolah_id"]').append(`<option value="${(user.sekolahs)?user.sekolah_id:'0'}" selected>${(user.sekolahs)?user.sekolahs.nama_sekolah:'Pilih Sekolah'}</option>`)
             $('.form-user input[name="nip"]').val(user.nip)
             $('.form-user input[name="nama"]').val(user.nama)
@@ -101,20 +105,20 @@ $(document).ready(function() {
             title: "Yakin Menghapus "+user[4]+"?",
             html: img,
             icon: "warning",
-            
-            dangerMode: true,
             showCancelButton : true,
           })
           .then((hapus) => {
             if (hapus.value) {
+                // var fd = new FormData();
+                // fd.append('_method', 'DELETE');
               $.ajax({
                   headers: headers,
                   type:'post',
-                  url: '/users/'+user[3],
+                  url: ajaxUrl+'users/'+user[3],
                   data: {'_method': 'delete'}
               }).done(res => {
                   Swal.fire('Info', res.msg, 'info')
-                  window.location.reload()
+                //   window.location.reload()
               }).fail(err => {
                   Swal.fire('Error', err.response.msg, 'error')
               })
@@ -742,9 +746,14 @@ $(document).ready(function() {
                         url: url,
                         data: {datas: datas},
                         type: 'post',
+                        dataType:'json',
                         success: function(res) {
                             Swal.fire('Info', res.msg, 'info')
                         }
+                    }).fail(err => {
+                        // console.log(err.responseJSON)
+                        var msg = (err.responseJSON.code == '23000') ? 'Data email / NIP / username ada yang sama atau sudah dipakai.' : err.responseJSON.msg
+                        Swal.fire('Error', msg, 'error')
                     })
                 });
             };
@@ -759,10 +768,12 @@ $(document).ready(function() {
     // Edit Siswa
     $(document).on('click', '.btn-edit-siswa', function(e) {
         e.preventDefault()
+        var url = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/' : '/'
         var siswa = tsiswas.row($(this).parents('tr')).data()
+        var noFoto = (siswa.jk.toLowerCase() == 'l') ? '/img/no-photo.jpg' : '/img/siswa-p.png'
         $('#modalSiswa ')
         $('#form-siswa').prop({
-            'action':'/siswas/'+siswa.id
+            'action':url+'siswas/'+siswa.id
         }).prepend(`<input type="hidden" name="_method" value="put">`)
 
         $('#form-siswa input[name="nis"]').val(siswa.nis)
@@ -779,7 +790,7 @@ $(document).ready(function() {
         $('#form-siswa select[name=sekolah_id]').append(`<option value="${(siswa.sekolahs)?siswa.sekolah_id:'0'}" selected>${(siswa.sekolahs)?siswa.sekolahs.nama_sekolah:'Pilih Sekolah'}</option>`)
         $('#form-siswa select[name=rombel_id]').append(`<option value="${(siswa.rombels)?siswa.rombel_id:'0'}" selected>${(siswa.rombels)?siswa.rombels.nama_rombel:'Pilih rombel'}</option>`)
         $('#form-siswa img.foto-siswa').prop({'src': '/img/siswas/'+siswa.sekolah_id+'_'+siswa.nisn+'.jpg'}).on('error', function(){
-            $(this).prop('src', '/img/no-photo.jpg')
+            $(this).prop('src', noFoto)
         })
 
         $('#modalSiswa').modal()
@@ -790,6 +801,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-delete-siswa', function(e) {
         e.preventDefault();
         var siswa = tsiswas.row($(this).parents('tr')).data()
+        var url = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/' : '/'
         Swal.fire({
             title: "Yakin Menghapus Siswa "+siswa.nama_siswa+"?",
             text: "Siswa  akan dihapus dari database",
@@ -801,7 +813,7 @@ $(document).ready(function() {
               $.ajax({
                   headers: headers,
                   type:'post',
-                  url: '/siswas/'+siswa.id,
+                  url: ajaxUrl+'siswas/'+siswa.id,
                   data: {'_method': 'delete'}
               }).done(res => {
                   Swal.fire('Info', res.msg, 'info')

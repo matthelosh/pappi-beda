@@ -92,3 +92,33 @@
         </ul>
     </div>
 </div>
+
+ {{-- Modal Saran --}}
+ <div class="modal fade" id="modalSaran">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Masukkan Saran </h3>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form action="" class="form-saran">
+                            <input type="hidden" value="{{ Session::get('periode_aktif') }}" name="semester">
+                            <input type="hidden" value="{{ Session::get('rombel')->kode_rombel }}" name="rombel">
+                            <input type="hidden"  name="siswa_id">
+                            <input type="hidden"  name="jenis_rapor">
+                            <input type="hidden"  name="saran_id">
+                            <div class="form-group">
+                                <label for="teks_saran">Saran</label>
+                                <textarea name="teks_saran" cols="30" rows="10" class="form-control"></textarea>
+                            </div>
+                            <button class="btn btn-primary">Simpan</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

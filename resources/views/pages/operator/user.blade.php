@@ -20,6 +20,7 @@
                                 <th>Foto</th>
                                 <th>NIP</th>
                                 <th>Nama</th>
+                                <th class="d-none">ID</th>
                                 <th>JK</th>
                                 <th>Username</th>
                                 <th>Email</th>
@@ -37,6 +38,7 @@
                                     <td><img class="img img-circle circled" src="{{ asset('img/users/'.$user->nip.'.jpg')}}" onerror="this.onerror=null;this.src='/img/users/user.jpg';" alt="Foto User" height="50px"></td>
                                     <td>{{ $user->nip }}</td>
                                     <td>{{ $user->nama }}</td>
+                                    <td class="d-none">{{ $user->id }}</td>
                                     <td>{{ $user->jk }}</td>
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->email }}</td>

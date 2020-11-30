@@ -29,13 +29,16 @@ class RombelController extends Controller
                     return DataTables::of($rombels)->addIndexColumn()->toJson();
                 break;
                 case "select":
+                    $where = (Auth::user()->level == 'operator') ? ['sekolah_id','=', Auth::user()->sekolah_id] : [];
+                    
                     if($request->q) {
                         $datas = Rombel::where([
                             ['nama_rombel','LIKE', '%'.$request->q.'%'],
-                            ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                            $where
+                            
                         ])->get();
                     } else {
-                    $datas = Rombel::all();
+                    $datas = Rombel::where([$where])->get();
                     }
                     $rombels = [];
                     foreach($datas as $rombel)

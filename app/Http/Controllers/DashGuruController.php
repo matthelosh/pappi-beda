@@ -14,7 +14,7 @@ class DashGuruController extends Controller
     private $menus;
     public function dashboard(Request $request)
     {
-        $sekolah = 'App\Sekolah'::where('nisn', Auth::user()->nip)->first();
+        $sekolah = 'App\Sekolah'::where('npsn', Auth::user()->sekolah_id)->first();
         $rombel = 'App\Rombel'::where('guru_id', Auth::user()->nip)->first();
         $periode = 'App\Periode'::where('status', 'aktif')->first();
         if($rombel) {

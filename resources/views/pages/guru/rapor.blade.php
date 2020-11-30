@@ -1,4 +1,4 @@
-.<div class="card text-left col-sm-12">
+<div class="card text-left col-sm-12">
   <div class="card-header">
     <h4 class="card-title">Data Siswa Kelas {{ Session::get('rombel')->nama_rombel }} {{ Session::get('semester') }}</h4>
     <div class="row">
