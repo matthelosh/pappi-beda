@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+// use Session;
 
 class RombelController extends Controller
 {
@@ -23,22 +24,28 @@ class RombelController extends Controller
             {
                 case "dt":
                     $where = (Auth::user()->level == 'admin') ? [''] : [
-                        ['sekolah_id','=',Auth::user()->sekolah_id]
+                        ['sekolah_id','=',Auth::user()->sekolah_id],
+                        ['status','=','aktif'],
+                        ['tapel','=', substr($request->session()->get('periode_aktif'), 0,4)]
                     ];
                     $rombels =  Rombel::where($where)->with('sekolahs', 'gurus')->get();
                     return DataTables::of($rombels)->addIndexColumn()->toJson();
                 break;
                 case "select":
-                    $where = (Auth::user()->level == 'operator') ? ['sekolah_id','=', Auth::user()->sekolah_id] : [];
-                    
+                    $where = (Auth::user()->level == 'operator') ?[['sekolah_id','=', Auth::user()->sekolah_id]]: [];
+                    // dd($where);
                     if($request->q) {
-                        $datas = Rombel::where([
-                            ['nama_rombel','LIKE', '%'.$request->q.'%'],
+                        $datas = Rombel::where(
                             $where
-                            
+                        )->where([
+                            ['nama_rombel','LIKE', '%'.$request->q.'%'],
+                            ['status','=','aktif'],
+                            ['tapel','=', substr($request->session()->get('periode_aktif'), 0, 4)]
                         ])->get();
                     } else {
-                    $datas = Rombel::where([$where])->get();
+                    $datas = Rombel::where($where)->where([
+                        ['status','=','aktif'],['tapel','=', substr($request->session()->get('periode_aktif'), 0, 4)]
+                    ])->get();
                     }
                     $rombels = [];
                     foreach($datas as $rombel)

@@ -102,7 +102,7 @@
                 <div>
                   <img src="{{ asset('img/favicon.png') }}" alt="Logo Pappi" width="100px" style="position:relative;">
                   <h2>PAPPI BEDA</h2>
-                  <p>Prgram Aplikasi Pengolahan dan Pelaporan Nilai SD Negeri 1 Bedalisodo</p>
+                  <p>Prgram Aplikasi Pengolahan dan Pelaporan Nilai Gugus 1  SD Negeri Bedalisodo</p>
                 </div>
               </div>
             </div>
