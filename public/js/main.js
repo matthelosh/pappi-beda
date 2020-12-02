@@ -723,6 +723,7 @@ $(document).ready(function() {
         // console.log(selectedFile);
     })
 
+    // Submit File Import
     $(document).on('submit', '#modalImport .form-import', function(e){
         e.preventDefault()
         var url = $(this).prop('action');
@@ -749,6 +750,8 @@ $(document).ready(function() {
                         dataType:'json',
                         success: function(res) {
                             Swal.fire('Info', res.msg, 'info')
+                            $('.modal').modal('hide')
+                            $('.table').DataTable().draw()
                         }
                     }).fail(err => {
                         // console.log(err.responseJSON)
