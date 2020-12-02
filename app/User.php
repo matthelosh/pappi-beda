@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Sekolah', 'sekolah_id', 'npsn');
     }
+
+    public function logs()
+    {
+        return $this->hasMany('App\LogInfo', 'user_id', 'nip');
+    }
 }
