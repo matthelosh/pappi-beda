@@ -68,12 +68,13 @@ class RombelController extends Controller
                 Rombel::updateOrCreate(
                     [
                         'sekolah_id' => Auth::user()->sekolah_id,
-                        'kode_rombel' => Auth::user()->sekolah_id.'-'.$rombel['kode_rombel']
+                        'kode_rombel' => Auth::user()->sekolah_id.'-'.$rombel['kode_rombel'],
+                        'tapel' => $rombel['tapel'] ?? substr($request->session()->get('periode_aktif'), 0,4)
                     ],
                     [
                         'nama_rombel' => $rombel['nama_rombel'],
                         'tingkat' => $rombel['tingkat'],
-                        'guru_id' => $rombel['guru_id']
+                        'guru_id' => $rombel['guru_id'] ?? '0'
                     ]
                 );
 
@@ -94,9 +95,12 @@ class RombelController extends Controller
             Rombel::updateOrCreate(
                 [
                     'sekolah_id' => Auth::user()->sekolah_id,
-                    'kode_rombel' => Auth::user()->sekolah_id.'-'.$request->kode_rombel
+                    'kode_rombel' => Auth::user()->sekolah_id.'-'.$request->kode_rombel,
+                    'tapel' => substr($request->session()->get('periode_aktif'), 0,4),
+                    
                 ],
-                [
+                [ 
+                    
                     'nama_rombel' => $request->nama_rombel,
                     'tingkat' => $request->tingkat,
                     'guru_id' => $request->guru_id
@@ -104,7 +108,7 @@ class RombelController extends Controller
             );
             return response()->json(['status' => 'sukses', 'msg' => 'Rombel disimpan']);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
+            return response()->json(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()], 409);
         }
     }
 
