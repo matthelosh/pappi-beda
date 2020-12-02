@@ -63,7 +63,8 @@ $(document).ready(function() {
         }).done(res => {
             console.log(res)
             var user = res.user
-            $('.form-user').append(`<input type="hidden" name="_method" value="PUT"><input type="hidden" name="id" value="${user.id}">`)
+            $('.form-user').append(`<input type="hidden" name="_method" value="PUT">
+                                    <input type="hidden" name="id" value="${user.id}">`)
             $('.form-user select[name="sekolah_id"]').append(`<option value="${(user.sekolahs)?user.sekolah_id:'0'}" selected>${(user.sekolahs)?user.sekolahs.nama_sekolah:'Pilih Sekolah'}</option>`)
             $('.form-user input[name="nip"]').val(user.nip)
             $('.form-user input[name="nama"]').val(user.nama)
