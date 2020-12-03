@@ -54,16 +54,16 @@
                         @foreach($users as $key => $user)
                             <tr>
                                 <td>{{ $loop->index + 1}}</td>
-                                <td>{{ $user->sekolahs->nama_sekolah }}</td>
+                                <td>{{ $user->sekolahs->nama_sekolah ?? '-' }}</td>
                                 <td><img class="img img-circle circled" src="{{ asset('img/users/'.$user->nip.'.jpg')}}" onerror="this.onerror=null;this.src='/img/users/user.jpg';" alt="Foto User" height="50px"></td>
-                                <td>{{ $user->nip }}</td>
-                                <td>{{ $user->nama }}</td>
-                                <td>{{ $user->jk }}</td>
-                                <td>{{ $user->username }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->hp }}</td>
-                                <td>{{ $user->alamat }}</td>
-                                <td>{{ $user->default_password }}</td>
+                                <td>{{ $user->nip ?? '-' }}</td>
+                                <td>{{ $user->nama ?? '-'}}</td>
+                                <td>{{ $user->jk ?? '-'}}</td>
+                                <td>{{ $user->username ?? '-'}}</td>
+                                <td>{{ $user->email ?? '-'}}</td>
+                                <td>{{ $user->hp ?? '-'}}</td>
+                                <td>{{ $user->alamat ?? '-' }}</td>
+                                <td>{{ $user->default_password ?? '-'}}</td>
                                 <td>
                                     <button class="btn btn-info btn-sm btn-edit-user" title="Edit {{ $user->nama }}">
                                         <svg class="c-icon">

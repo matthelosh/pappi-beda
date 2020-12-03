@@ -1,6 +1,7 @@
 <?php
 namespace App\Exports;
 
+use Doctrine\DBAL\Types\StringType;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
@@ -72,7 +73,8 @@ class FormatNilai implements FromArray, WithTitle, WithHeadings, ShouldAutoSize
             foreach($kds as $kd)
             {
                 
-                array_push($headings, str_replace(".", "_",$kd->kode_kd)); 
+                array_push($headings, str_replace(".",".",$kd->kode_kd)); 
+                // array_push($headings, str_replace(".", "_",$kd->kode_kd)); 
             }
         // dd($kds);
         return $headings;

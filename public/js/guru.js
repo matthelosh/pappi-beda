@@ -491,23 +491,52 @@ $(document).ready(function(){
     $(document).on('click', '.form-import-nilai input[name="nama_file"]', function(){
         $('#file_nilai').trigger('click');
     });
-
+    var fileNilai;
     $('#file_nilai').on('change', function(e) {
         var file = e.target.files[0]
-
-        // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet = xlsx
-        // application/vnd.ms-excel = csv, xls application/vnd.ms-excel
-        // application/vnd.oasis.opendocument.spreadsheet = ods
-        // if(file.type == 'application/vnd.ms-excel' || file.type == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || file.type =='application/vnd.oasis.opendocument.spreadsheet') {
-            $('.form-import-nilai input[name="nama_file"]').val(file.name)
-        // } else {
-        //     Swal.fire('Error', 'File harus berjenis xls, xlsx, csv, ods', 'error')
-        //     $('.form-import-nilai input[name="nama_file"]').val('')
-        //     $(this).val(null)
-        // }
-
+        $('.form-import-nilai input[name="nama_file"]').val(file.name)
+        fileNilai = file
     })
 
+   
+    $('.form-import-nilai').submit(function(e){
+        e.preventDefault()
+        // var datas = {nilais: [], mapel: '', aspek: '', periode: ''}
+        if (fileNilai) {
+            var fileReader = new FileReader()
+            fileReader.onload = function(event) {
+                var data = event.target.result
+                var workbook = XLSX.read(data, {
+                    type: "binary"
+                })
+
+                workbook.SheetNames.forEach( sheet => {
+                    let datas = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+                    $.ajax({
+                        headers: headers,
+                        type: 'post',
+                        url: '/'+sessionStorage.getItem('username')+'/nilais/import',
+                        data: {
+                            periode: datas['periode'] = $('select[name="periode_id"').val(),
+                            mapel: $('select[name="mapel_id"').val(),
+                            jenis: sheet.toLowerCase(),
+                            aspek: $('select[name="aspek"]').val(),
+                            nilais: datas
+                            
+                        },
+                        dataType: 'json',
+                        success: function(res) {
+                            // Swal.fire('Info', res.msg, 'info')
+                            console.log(res)
+                        }
+                    }).fail(err => {
+                        console.log(err)
+                    })
+                })
+            }
+            fileReader.readAsBinaryString( fileNilai )
+        }
+    })
 
     $(document).on('click', '.btn-unduh-format', function(e) {
         e.preventDefault()
@@ -517,24 +546,45 @@ $(document).ready(function(){
             aspek: $('select[name="aspek"]').val()
         }
 
+        // var json = [
+        //     {no: 1, nama: "Saya"},
+        //     {no: 2, nama: 'Kamu'}
+        // ]
+
+        // var wb = XLSX.utils.book_new()
+        //     wb.Props = {
+        //         Title: "Tes",
+        //         Subject: "tes",
+        //         Author: "MS",
+        //         CreatedDate: new Date(2020,12,2)
+        //     }
+
+        //     wb.SheetNames.push("Sheet 1")
+
+        //     var ws_data = XLSX.utils.json_to_sheet(json)
+
+        //     wb.Sheets['Sheet 1'] = ws_data
+        //     var wbout = XLSX.write(wb, {bookType:'xlsx', type: 'binary'})
+
+        //     function s2ab(s) {
+        //         var buf = new ArrayBuffer(s.length)
+        //         var view = new Uint8Array(buf)
+        //         for (var i=0;i<s.length; i++) view[i] = s.charCodeAt(i)
+        //         return buf
+        //     }
+
+        //     XLSX.writeFile(wb, 'g.xlsx')
+
         $.ajax({
             headers: headers,
             url:'/'+sessionStorage.getItem('username')+'/nilais/format',
             type:'get',
             data: data,
-            xhrFields: { responseType: 'blob' }
+            dataType: 'json'
         }).done(res => {
             console.log(res)
-            var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
-            var blob = res
-                const a = document.createElement('a')
-                var filename = 'Nilai.'+rombel+'.'+$('select[name="mapel_id"]').val()+"."+$('select[name="aspek"]').val()+'.xlsx'
-                document.body.appendChild(a)
-                a.href = window.URL.createObjectURL(blob)
-                a.download = filename
-                a.target = '_blank'
-                a.click()
-                a.remove()
+        }).fail(err => {
+            console.log(err)
         })
     })
 

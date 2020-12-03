@@ -222,25 +222,30 @@ class NilaiController extends Controller
         // return DataTables::of($rekaps)->addIndexColumn()->toJson();
     }
 
+    // public function import(Request $request)
+    // {
+    //     try {
+    //         $file = $request->file('file_nilai');
+    //         $mime = $file->getClientMimeType();
+    //         $nama = $file->getClientOriginalName();
+    //         $pecah = explode('.', $nama);
+    //         $rombel = 'App\Rombel'::where('kode_rombel', $pecah[1])->first();
+    //         $headings = (new HeadingRowImport)->toArray($file);
+    //         // dd($headings);
+    //         Excel::import(new ImportNilai($headings, $pecah[1], $rombel->tingkat, $request->session()->get('periode_aktif'),$pecah[2],$pecah[3]), $file);
+
+    //         return back()->with(['status' => 'sukses', 'msg' => 'Nilai dimpor']);
+    //     } catch(\Exception $e)
+    //     {
+    //         return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
+
+    //     }
+
+    // }
+
     public function import(Request $request)
     {
-        try {
-            $file = $request->file('file_nilai');
-            $mime = $file->getClientMimeType();
-            $nama = $file->getClientOriginalName();
-            $pecah = explode('.', $nama);
-            $rombel = 'App\Rombel'::where('kode_rombel', $pecah[1])->first();
-            $headings = (new HeadingRowImport)->toArray($file);
-            // dd($headings);
-            Excel::import(new ImportNilai($headings, $pecah[1], $rombel->tingkat, $request->session()->get('periode_aktif'),$pecah[2],$pecah[3]), $file);
-
-            return back()->with(['status' => 'sukses', 'msg' => 'Nilai dimpor']);
-        } catch(\Exception $e)
-        {
-            return back()->with(['status' => 'error', 'msg' => $e->getCode().':'.$e->getMessage()]);
-
-        }
-
+        dd($request->all());
     }
 
     public function entri(Request $request)
@@ -283,10 +288,48 @@ class NilaiController extends Controller
         $rombel = 'App\Rombel'::where('kode_rombel', $request->rombel)->first();
         $mapel = $request->mapel;
         $aspek = $request->aspek;
-        $file =  Excel::download(new ExportFormatNilai($mapel, $rombel, $aspek), 'FormatNilai.xlsx');
 
-        return $file;
-        // return (new ExportFormatNilai($mapel, $rombel, $aspek))->download('invoices.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+        // $file =  Excel::download(new ExportFormatNilai($mapel, $rombel, $aspek), 'FormatNilai.xlsx');
+        // return $file;
+
+        // $data_kds = 'App\Kd'::where([
+        //     ['tingkat','=',$rombel->tingkat],
+        //     ['mapel_id','=', $mapel],
+        //     ['kode_kd', 'LIKE', $aspek.'.%']
+        // ])->get();
+
+        $siswas = 'App\Siswa'::where([
+            ['sekolah_id','=', Auth::user()->sekolah_id],
+            ['rombel_id','=',$request->rombel]
+        ])->get();
+        
+        $datas = [];
+        // $datas = [
+        //     [
+        //         'nisn' => '123',
+        //         'nama' => 'Bejo',
+        //         '3.1' => '',
+        //         '3.2' => ''
+        //     ],
+        //     [
+        //         'nisn' => '124',
+        //         'nama' => 'Beji',
+        //         '3.1' => '',
+        //         '3.2' => ''
+        //     ],
+        // ];
+        // $kds = [];
+        // foreach($data_kds as $kd) 
+        // {
+        //     array_push($kds, [$kd->kode_kd => '']);
+        // }
+        foreach ( $siswas as $siswa )
+        {
+            $datas[] = ['nisn' => $siswa->nisn, 'nama_siswa' => $siswa->nama_siswa];
+            
+        }
+
+        return response()->json(['status' => 'sukses', 'msg' => 'Data Siswa', 'data' => $datas]);
     }
 
     public function update(Request $request)
