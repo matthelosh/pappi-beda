@@ -74,4 +74,9 @@ class DashController extends Controller
     {
         return view('pages.admin.dashboard', ['page_title' => 'Ekstrakurikuler', 'menus' => $this->showMenus($request)]);
     }
+
+    public function logs(Request $request)
+    {
+        return view('pages.admin.dashboard', ['page_title' => 'Catatan Login', 'menus' => $this->showMenus($request)]);
+    }
 }

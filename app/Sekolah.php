@@ -37,4 +37,9 @@ class Sekolah extends Model
         return $this->hasMany('App\User', 'sekolah_id', 'npsn');
     }
 
+    public function logs()
+    {
+        return $this->hasMany('App\LogInfo','sekolah_id', 'npsn')
+    }
+
 }

@@ -35,5 +35,8 @@
         @case('Ekstrakurikuler')
             @include('pages.admin.ekskul')
         @break
+        @case('Catatan Login')
+            @include('pages.admin.logs')
+        @break
     @endswitch
 @endsection

@@ -12,4 +12,9 @@ class LogInfo extends Model
     {
         return $this->belongsTo('App\User', 'user_id', 'nip');
     }
+
+    public function sekolahs()
+    {
+        return $this->belongsTo('App\Sekolah', 'sekolah_id', 'npsn');
+    }
 }

@@ -1146,6 +1146,28 @@ var ttanggalRapor = $('#table-tanggal-rapor').DataTable({
     ]
 })
 
+// Logs
+    var tlogs = $('#table-logs').DataTable({
+        serverSide: true,
+        dom: 'Bftlip',
+        ajax: {
+            headers: headers,
+            url: '/logs?req=dt',
+            type: 'post'
+        },
+        columns: [
+            {"data": 'DT_RowIndex'},
+            {"data": 'user_id'},
+            {"data": null, render: (data) => {
+                return data.users.nama
+            }},
+            {"data": 'client_ip'},
+            {"data": 'client_os'},
+            {"data": 'created_at'},
+            {"data": 'logout_time'},
+        ]
+    })
+
 $(document).on('click', '.btn-delete-tanggal-rapor', function(e) {
     e.preventDefault()
     var data = ttanggalRapor.row($(this).parents('tr')).data()
@@ -1291,6 +1313,8 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
 
         },
     })
+
+    
 
     // Select Sekolah
     // $('.selSekolah').select2({

@@ -160,6 +160,11 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
         Route::get('menus', 'DashController@menus')->name('preferences.menus');
     });
 
+    Route::group(['prefix' => 'logs', 'middleware' => ['auth', 'isAdmin']], function(){
+        Route::get('/', 'DashController@logs')->name('logs');
+        Route::post('/', 'LogInfoController@index')->name('logs.index');
+    });
+
 // Route Operator
     Route::group(['prefix' => 'operator', 'middleware' => ['auth','isOperator']], function(){
         Route::group(['prefix' => '{sekolah_id}', 'middleware' => ['auth', 'isOperator']], function(){
