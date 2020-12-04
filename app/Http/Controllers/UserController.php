@@ -94,7 +94,7 @@ class UserController extends Controller
 
     public function import(Request $request)
     { 
-        $file = $request->file('file'); 
+        $file = $request->file('file');
          try {
             $users = $request->datas;
             foreach ( $users as $user )

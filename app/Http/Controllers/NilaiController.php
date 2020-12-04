@@ -13,6 +13,10 @@ use App\Traits\NilaiTrait;
 use Ramsey\Uuid\Rfc4122\NilTrait;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+
 
 class NilaiController extends Controller
 {
@@ -245,7 +249,59 @@ class NilaiController extends Controller
 
     public function import(Request $request)
     {
-        dd($request->all());
+        try { 
+            $nilais = $request->nilais;
+            switch($request->aspek)
+            {
+                case "1":
+                    $Nilai = 'App\Nilai1';
+                break;
+                case "2":
+                    $Nilai = 'App\Nilai2';
+                break;
+                case "3":
+                    $Nilai = 'App\Nilai3';
+                break;
+                case "4":
+                    $Nilai = 'App\Nilai4';
+                break;
+
+            }
+            // dd($nilai);
+            $kds = array_keys($nilais[0]);
+            $kds = array_slice($kds,-0,count($kds) - 2);
+            $datas = [];
+
+            $i=0;
+            foreach($nilais as $nilai)
+            {
+                $siswa_id = $nilai['nisn'];
+                // echo $nilai['nisn'].'<br>';
+                $js =  array_slice($nilai,-0,count($nilais[0])-2, true);
+                $datas = [];
+                foreach($js as $k=>$j) 
+                {
+                    $Nilai::updateOrCreate(
+                        [
+                            'sekolah_id' => $request->session()->get('sekolah_id'),
+                            'periode_id' => $request->periode,
+                            'rombel_id' => $request->session()->get('rombel')->kode_rombel,
+                            'mapel_id' => $request->mapel,
+                            'jenis' => $request->jenis,
+                            'kd_id' => $request->aspek.'.'.$k,
+                            'siswa_id' => $siswa_id
+                        ],
+                        [
+                            'nilai' => $j
+                        ]
+                    );
+                }
+                
+            }
+            return response()->json(['status' => 'sukses', 'msg' => 'Data Nilai siswa diimpor']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'gagal', 'msg' => $e->getCode().$e->getMessage()]);
+        }
     }
 
     public function entri(Request $request)

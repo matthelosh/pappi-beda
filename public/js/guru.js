@@ -502,6 +502,17 @@ $(document).ready(function(){
     $('.form-import-nilai').submit(function(e){
         e.preventDefault()
         // var datas = {nilais: [], mapel: '', aspek: '', periode: ''}
+        var periode = $('select[name="periode_id"').val(),
+            mapel = $('select[name="mapel_id"').val(),
+            aspek= $('select[name="aspek"]').val()
+
+        if (periode == '0') {
+            Swal.fire('Peringatan', 'Pilih Periode Nilai Dulu.', 'error')
+        } else if (mapel == '0') {
+            Swal.fire('Peringatan', 'Pilih Mapel Dulu', 'error')
+        } else if ( aspek == '0' ) {
+            Swal.fire('Peringatan', 'Pilih Aspek Nilai Dulu.', 'error')
+        }
         if (fileNilai) {
             var fileReader = new FileReader()
             fileReader.onload = function(event) {
@@ -517,17 +528,17 @@ $(document).ready(function(){
                         type: 'post',
                         url: '/'+sessionStorage.getItem('username')+'/nilais/import',
                         data: {
-                            periode: datas['periode'] = $('select[name="periode_id"').val(),
-                            mapel: $('select[name="mapel_id"').val(),
+                            periode: datas['periode'] = periode,
+                            mapel: mapel,
                             jenis: sheet.toLowerCase(),
-                            aspek: $('select[name="aspek"]').val(),
+                            aspek: aspek,
                             nilais: datas
                             
                         },
                         dataType: 'json',
                         success: function(res) {
-                            // Swal.fire('Info', res.msg, 'info')
-                            console.log(res)
+                            Swal.fire('Info', res.msg, 'info')
+                            $('.btn-form-nilai').trigger('click')
                         }
                     }).fail(err => {
                         console.log(err)
