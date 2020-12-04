@@ -345,9 +345,15 @@ $(document).ready(function(){
 
     // Form Nilai
     $(document).on('click', '.btn-form-nilai', function(e) {
-        if(sessionStorage.getItem('role') != 'wali' && $('select[name="rombel"]').val() =='0') {
-            Swal.fire('Perhatian', 'Pilih dulu Rombel', 'warning');
+        if($('select[name="jenis"]').val() == '0') {
+            Swal.fire('Perhatian', 'Pilih dulu Jenis Penilaian', 'warning');
             return false;
+        } else if($('select[name="mapel_id"]').val() == '0') {
+            Swal.fire('error', 'Pilih Mapel Dulu', 'warning')
+            return false
+        } else if ($('select[name="aspek"]').val() == '0') {
+            Swal.fire('error', 'Pilih Aspek Penilaian', 'warning')
+            return false
         }
         var data = {
             periode_id : $('select[name="periode_id"').val(),
@@ -358,6 +364,11 @@ $(document).ready(function(){
             rombel : (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
         }
 
+        $('.btn-show-tool-form-nilai').on('click', function(){
+            $('.tool-form-nilai').slideDown()
+            // $(this).hide()
+        })
+
         $.ajax({
             headers: headers,
             url: '/'+sessionStorage.getItem('username')+'/nilais?req=view',
@@ -367,6 +378,9 @@ $(document).ready(function(){
                 $('.form-list').addClass('d-flex').removeClass('d-none')
             }
         }).done(res => {
+            $('.card-entri-nilai-parent').removeClass('d-none')
+            $('.tool-form-nilai').slideUp()
+            $('.btn-show-tool-form-nilai').show()
             var siswas = res.datas
             var trs = ''
             var no = 0

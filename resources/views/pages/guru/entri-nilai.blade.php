@@ -1,41 +1,30 @@
 <div class="col-sm-12">
     <div class="card card-entri-nilai">
         <div class="card-header">
-             <h4 class="card-title">
-                <svg class="c-icon">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
-                </svg>
-                Entri Nilai
-
-                
-                {{-- <button class="btn btn-import-mapelku btn-primary float-right mr-2">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet') }}"></use>
-                    </svg>
-                    Import
-                </button>
-                <button class="btn btn-new-mapelku btn-info float-right mr-2" data-toggle="modal" data-target="#modalMapel">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
-                    </svg>
-                    Buat
-                </button> --}}
-            </h4>    
-            {{-- <button class="btn  btn-success float-right mr-2 btn-print-mapelku">
-                <svg class="c-icon">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
-                </svg>
-                Cetak
-            </button> --}}
-            @if(Auth::user()->role != 'wali')
-                <div class="form-group float-right mr-2">
-                    <select name="rombel" class="form-control selRombel" style="width:200px;">
-                        <option value="0">Pilih Rombel</option>
-                    </select>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 class="card-title">
+                        <svg class="c-icon">
+                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
+                        </svg>
+                        Entri Nilai
+                    </h4> 
                 </div>
-            @endif
+                <div class="col-sm-6">
+                    <button class="btn float-right mr-2 btn-show-tool-form-nilai"><i class="mdi mdi-arrow-expand-down"></i></button>   
+                    @if(Auth::user()->role != 'wali')
+                        <div class="form-group float-right mr-2">
+                            <select name="rombel" class="form-control selRombel" style="width:200px;">
+                                <option value="0">Pilih Rombel</option>
+                            </select>
+                        </div>
+                    @endif
+                </div>
+            </div>
+             
+            
         </div>
-        <div class="card-body">
+        <div class="card-body tool-form-nilai">
             <div class="row">
                 <div class="col-6 col-md-2">
                     <div class="form-group">
@@ -69,13 +58,6 @@
                         <label for="aspek">Aspek</label>
                         <select name="aspek" style="width:100%" class="select selAspek">
                             <option value="0">Aspek</option>
-                            {{-- @if(Auth::user()->role == 'gpai')
-                                <option value="1">K1</option>
-                            @elseif(Auth::user()->role == 'wali')
-                                <option value="2">K2</option>
-                            @endif
-                            <option value="3">K3</option>
-                            <option value="4">K4</option> --}}
                         </select>
                     </div>
                 </div>
@@ -89,11 +71,11 @@
                 </div>
                 <div class="col-12 text-center">
                     {{-- <div class="btn-group"> --}}
-                        <button class="btn btn-primary btn-form-nilai">
+                        <button class="btn btn-square btn-primary btn-form-nilai">
                             <i class="mdi mdi-magnify"></i>
                             Lihat
                         </button>
-                        <button class="btn btn-primary btn-unduh-format">
+                        <button class="btn btn-square btn-primary btn-unduh-format">
                             <svg class="c-icon">
                                 <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-cloud-download') }}"></use>
                             </svg>
@@ -102,11 +84,19 @@
                     {{-- </div> --}}
                 </div>
             </div>
+            {{-- <hr> --}}
+        </div>
+    </div>
+</div>
 
-            <hr>
-            <div class="row">
+<div class="col-sm-12 d-none card-entri-nilai-parent">
+    <div class="card card-entri-nilai">
+        {{-- <div class="card-header">
+        </div> --}}
+        <div class="card-body">
+            <div class="row" >
                 <div class="col-sm-10">
-                    <div class="card">
+                    <div class="card card-form-nilai">
                         <div class="card-body">
                             <h4 class="card-title">Form Nilai</h4>
                             <form action="/{{ Auth::user()->username }}/nilais/entri" method="POST" class="form-nilai">
