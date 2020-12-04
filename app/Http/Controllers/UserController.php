@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Imports\ImportUsers;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
+
 class UserController extends Controller
 {
     /**
@@ -32,7 +34,17 @@ class UserController extends Controller
                     }
                     return response()->json(['status' => 'sukses', 'msg' => 'Data Semua Pengguna', 'users' => $users]);
                 break;
+                case "dt":
+                    $where = (AUth::user()->level == 'operator') ? ['sekolah_id','=', Auth::user()->sekolah_id] : ['level','<>','xxx'];
+                    $users = User::where([
+                        ['level','<>','admin'],
+                        $where
+                    ])->with('sekolahs')->get();
+
+                    return DataTables::of($users)->addIndexColumn()->make(true);
+                break;
             }
+
         } else {
             $users = User::where('level','<>', 'admin')->with('sekolahs')->get();
             return response()->json(['status' => 'sukses', 'msg' => 'Data Semua Pengguna', 'users' => $users]);
@@ -200,7 +212,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-        $nip = $request->query('nip');
+        $nip = $request->nip;
         try 
         {
             User::where('nip', $nip)->delete();

@@ -63,7 +63,7 @@
 {{-- Modal Users --}}
 <div class="modal fade" id="modalUser">
     <div class="modal-dialog" role="document">
-        <form action="{{ $action_url.'users' }}" method="POST" class="modal-user form-user">
+        <form action="{{ $action_url.'users/create' }}" method="POST" class="modal-user form-user">
             @csrf()
             <div class="modal-content">
                 <div class="modal-header">

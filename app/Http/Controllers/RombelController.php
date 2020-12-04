@@ -28,7 +28,7 @@ class RombelController extends Controller
                         ['status','=','aktif'],
                         ['tapel','=', substr($request->session()->get('periode_aktif'), 0,4)]
                     ];
-                    $rombels =  Rombel::where($where)->with('sekolahs', 'gurus')->get();
+                    $rombels =  Rombel::where($where)->with('sekolahs', 'gurus', 'siswas')->get();
                     return DataTables::of($rombels)->addIndexColumn()->toJson();
                 break;
                 case "select":

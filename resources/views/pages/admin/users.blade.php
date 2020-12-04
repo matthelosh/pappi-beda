@@ -1,37 +1,23 @@
 <div class="col-sm-12">
     <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 class="card-title">
+                        <i class="mdi mdi-card-account-details-outline"></i>
+                        Data Pengguna
+                        
+                    </h4>
+                </div>
+                <div class="col-sm-6">
+                    <div class="float-right">
+                        <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#modalUser"    ><i class="mdi mdi-account"></i> Tambah</button>
+                        <button class="btn btn-primary btn-import-user"><i class="mdi mdi-upload"></i> Unggah</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">
-                <svg class="c-icon">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-people') }}"></use>
-                </svg>
-                Data Pengguna
-                <button class="btn btn-reset-all btn-danger float-right">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-reload') }}"></use>
-                    </svg>
-                    Reset Password
-                </button>
-                <button class="btn btn-import-user btn-primary float-right mr-2">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet') }}"></use>
-                    </svg>
-                    Import
-                </button>
-                <button class="btn btn-add btn-info float-right mr-2" data-toggle="modal" data-target="#modalUser">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
-                    </svg>
-                    Buat
-                </button>
-                <button class="btn btn-add btn-success float-right mr-2 btn-print-users">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
-                    </svg>
-                    Cetak
-                </button>
-            </h4>
-            <hr>
             <div class="table-responsive">
                 <table class="table table-users table-sm table-striped table-users" id="table-users" style="width:100%">
                     <thead>
@@ -41,17 +27,17 @@
                             <th>Foto</th>
                             <th>NIP</th>
                             <th>Nama</th>
-                            <th>JK</th>
+                            {{-- <th>JK</th> --}}
                             <th>Username</th>
                             <th>Email</th>
-                            <th>HP</th>
-                            <th>Alamat</th>
+                            {{-- <th>HP</th> --}}
+                            {{-- <th>Alamat</th> --}}
                             <th>Password Asli</th> 
                             <th>Opsi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $key => $user)
+                        {{-- @foreach($users as $key => $user)
                             <tr>
                                 <td>{{ $loop->index + 1}}</td>
                                 <td>{{ $user->sekolahs->nama_sekolah ?? '-' }}</td>
@@ -82,7 +68,7 @@
                                     </button>
                                 </td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>

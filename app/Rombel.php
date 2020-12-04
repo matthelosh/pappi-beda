@@ -17,4 +17,9 @@ class Rombel extends Model
     {
         return $this->belongsTo('App\User', 'guru_id', 'nip');
     }
+
+    public function siswas()
+    {
+        return $this->hasMany('App\Siswa','rombel_id', 'kode_rombel');
+    }
 }

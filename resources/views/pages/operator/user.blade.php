@@ -1,15 +1,23 @@
 <div class="col-sm-12">
     <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">
-                <i class="mdi mdi-card-account-details-outline"></i>
-                Data Pengguna
-                <div class="float-right">
-                    <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#modalUser"    ><i class="mdi mdi-account"></i> Tambah</button>
-                    <button class="btn btn-primary btn-import-user"><i class="mdi mdi-upload"></i> Unggah</button>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 class="card-title">
+                        <i class="mdi mdi-card-account-details-outline"></i>
+                        Data Pengguna
+                        
+                    </h4>
                 </div>
-            </h4>
-            <hr>
+                <div class="col-sm-6">
+                    <div class="float-right">
+                        <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#modalUser"    ><i class="mdi mdi-account"></i> Tambah</button>
+                        <button class="btn btn-primary btn-import-user"><i class="mdi mdi-upload"></i> Unggah</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
             <div class="card-text">
                 <div class="table-responsive">
                     <table class="table table-users table-sm table-striped table-users" id="table-users" style="width:100%">
@@ -20,18 +28,17 @@
                                 <th>Foto</th>
                                 <th>NIP</th>
                                 <th>Nama</th>
-                                <th class="d-none">ID</th>
-                                <th>JK</th>
+                                {{-- <th>JK</th> --}}
                                 <th>Username</th>
                                 <th>Email</th>
-                                <th>HP</th>
-                                <th>Alamat</th>
+                                {{-- <th>HP</th> --}}
+                                {{-- <th>Alamat</th> --}}
                                 <th>Password Asli</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($users as $key => $user)
+                            {{-- @foreach($users as $key => $user)
                                 <tr>
                                     <td>{{ $loop->index + 1}}</td>
                                     <td>{{ $user->sekolahs->nama_sekolah }}</td>
@@ -63,7 +70,7 @@
                                         </button>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>

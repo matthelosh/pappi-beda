@@ -39,8 +39,48 @@ $(document).ready(function() {
 
 
     var tusers = $('.table-users').DataTable({
+        serverSide: true,
         dom: 'Bftlip',
-        select: 'multi'
+        select: 'multi',
+        ajax: {
+            headers: headers,
+            url: ajaxUrl+'users?req=dt',
+            type: 'post'
+        },
+        columns: [
+            {"data": "DT_RowIndex"},
+            {"data": 'sekolahs.nama_sekolah'},
+            {"data": null, render: (data) => {
+                return `<img class="img img-circle circled" src="/img/users/${data.nip}.jpg" onerror="this.onerror=null;this.src='/img/users/user.jpg';" alt="Foto User" height="50px">`
+            }},
+            {"data": 'nip'},
+            {"data": 'nama'},
+            // {"data": 'jk'},
+            {"data": 'username'},
+            {"data": 'email'},
+            // {"data": 'hp'},
+            // {"data": 'alamat'},
+            {"data": 'default_password'},
+            {"data": null, render: (data) => {
+                    return `
+                        <button class="btn btn-info btn-sm btn-edit-user"   title="Edit ${data.nama}">
+                        <svg class="c-icon">
+                        <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+                    </svg>
+                        </button>
+                        <button class="btn btn-danger btn-sm btn-delete-user" title=" Hapus ${data.nama}">
+                            <svg class="c-icon">
+                                <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
+                            </svg>
+                        </button>
+                        <button class="btn btn-warning btn-sm btn-reset-password" title="Reset Password ${data.nama}">
+                            <svg class="c-icon">
+                                <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-reload"></use>
+                            </svg>
+                        </button>
+                `
+            }}
+        ]
     })
 
     // var selectedTr = [];
@@ -58,7 +98,7 @@ $(document).ready(function() {
         // console.log(user)
         $.ajax({
             headers: headers,
-            url: ajaxUrl+'users/edit?nip='+user[3],
+            url: ajaxUrl+'users/edit?nip='+user.nip,
             type: 'get'
         }).done(res => {
             console.log(res)
@@ -101,9 +141,9 @@ $(document).ready(function() {
     $(document).on('click', '.btn-delete-user', function(e) {
         e.preventDefault()
         var user = tusers.row($(this).parents('tr')).data()
-        var img = user[2]
+        var img = `<img class="img img-circle circled" src="/img/users/${user.nip}.jpg" onerror="this.onerror=null;this.src='/img/users/user.jpg';" alt="Foto User" height="50px">`
         Swal.fire({
-            title: "Yakin Menghapus "+user[4]+"?",
+            title: `Yakin Menghapus ${user.nama}?`,
             html: img,
             icon: "warning",
             showCancelButton : true,
@@ -115,8 +155,8 @@ $(document).ready(function() {
               $.ajax({
                   headers: headers,
                   type:'post',
-                  url: ajaxUrl+'users/'+user[3],
-                  data: {'_method': 'delete'}
+                  url: ajaxUrl+'users',
+                  data: {'_method': 'delete', 'nip': user[3]}
               }).done(res => {
                   Swal.fire('Info', res.msg, 'info')
                 //   window.location.reload()
@@ -135,7 +175,7 @@ $(document).ready(function() {
         e.preventDefault()
         var user = tusers.row($(this).parents('tr')).data()
         Swal.fire({
-            title: 'Yakin Menyetel Ulang Sandi '+user[4]+'?',
+            title: 'Yakin Menyetel Ulang Sandi '+user.nama+'?',
             html: user[2],
             text: 'Sandi Pengguna akan diganti Sandi Asal',
             icon: 'warning',
@@ -145,7 +185,7 @@ $(document).ready(function() {
             if(lanjut) {
                 $.ajax({
                     headers: headers,
-                    url: '/users/reset/'+user[3],
+                    url: '/users/reset/'+user.nip,
                     type: 'post',
                     data: {'_method': 'put'}
                 }).done( res => {
@@ -326,6 +366,7 @@ $(document).ready(function() {
     // ROmbels
     var urlRombel = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/rombels?req=dt' : '/rombels?req=dt'
     var trombels = $('#table-rombels').DataTable({
+        dom: "Bftlip",
         serverSide: true,
         ajax: {
             url: urlRombel,
@@ -340,6 +381,9 @@ $(document).ready(function() {
             {"data": "kode_rombel"  },
             {"data": "nama_rombel"},
             {"data": "tingkat"  },
+            {"data": null, render: (data) => {
+                return data.siswas.length
+            }  },
             {"data": null, render: (data) => {
                 return (data.gurus) ? data.gurus.nama: 'Belum ada Wali Kelas'
             }},
@@ -1262,23 +1306,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
 
     //     },
     // })
-    // Fungsi select User
-    $('.selUsers').select2({
-        ajax: {
-            headers: headers,
-            url: '/users/get?req=select',
-            type: 'post',
-                dataType: 'json',
-                delay: 250,
-                processResults: function(response) {
-                    return {
-                        results: response.users
-                    };
-                },
-                cache: true,
-
-        },
-    }).focus(function () { $(this).select2('focus'); })
+   
     $('.selMenu').select2({
         ajax: {
             headers: headers,
@@ -1296,11 +1324,11 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
         },
     }).focus(function () { $(this).select2('focus'); })
 
-    var urlUser = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/users/' : '/users/'
+    var urlUser = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/users' : '/users'
     $('.selWali').select2({
         ajax: {
             headers: headers,
-            url: urlUser+'get?req=select',
+            url: urlUser+'?req=select',
             type: 'post',
                 dataType: 'json',
                 delay: 250,
@@ -1314,7 +1342,23 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
         },
     }).focus(function () { $(this).select2('focus'); })
 
-    
+     // Fungsi select User
+     $('.selUsers').select2({
+        ajax: {
+            headers: headers,
+            url: urlUser+'?req=select',
+            type: 'post',
+                dataType: 'json',
+                delay: 250,
+                processResults: function(response) {
+                    return {
+                        results: response.users
+                    };
+                },
+                cache: true,
+
+        },
+    }).focus(function () { $(this).select2('focus'); })
 
     // Select Sekolah
     // $('.selSekolah').select2({

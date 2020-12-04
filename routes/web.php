@@ -60,8 +60,8 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
     // Users
     Route::group(['prefix' => 'users', 'middleware' =>  ['auth', 'isAdmin']], function(){
         Route::get('/', 'DashController@users')->name('users.page');
-        Route::post('/', 'UserController@create')->name('users.create');
-        Route::post('/get', 'UserController@index')->name('users.index');
+        Route::post('/create', 'UserController@create')->name('users.create');
+        Route::post('/', 'UserController@index')->name('users.index');
         Route::put('/', 'UserController@update')->name('users.update');
         Route::post('/import', 'UserController@import')->name('users.import');
         Route::put('/reset', 'UserController@resetAll')->name('users.resetall');
@@ -172,12 +172,13 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
 
             Route::group(['prefix'=> 'users', 'middleware' => ['auth','isOperator']], function(){
                 Route::get('/', 'DashOperatorController@users')->name('operator.users');
-                Route::post('/', 'UserController@create')->name('operator.users.create');
+                Route::post('/', 'UserController@index')->name('operator.users.create');
+                Route::post('/create', 'UserController@create')->name('operator.users.create');
                 Route::put('/', 'UserController@update')->name('operator.users.update');
                 Route::post('/import', 'UserController@import')->name('operator.users.import');
                 Route::post('/get', 'UserController@index')->name('operator.users.index');
                 Route::get('/edit', 'UserController@edit')->name('operator.users.edit');
-                Route::delete('/{nip}', 'UserController@destroy')->name('operator.users.delete');
+                Route::delete('/', 'UserController@destroy')->name('operator.users.delete');
             });
 
             Route::group(['prefix' => 'siswas', 'middleware' => ['auth', 'isOperator']], function(){
