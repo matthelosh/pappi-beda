@@ -45,7 +45,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-6 col-md-1">
+                <div class="col-6 col-md-2">
                     <div class="form-group">
                         <label for="jenis">Jenis</label>
                         <select name="jenis" style="width:100%" class="select">
@@ -79,7 +79,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-12 col-md-5">
+                <div class="col-sm-12 col-md-4">
                     <div class="form-group">
                         <label for="kd_id">Kompetensi Dasar</label>
                         <select name="kd_id" style="width:100%" class="selKd">

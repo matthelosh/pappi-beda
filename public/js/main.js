@@ -1278,7 +1278,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
                 cache: true,
 
         },
-    })
+    }).focus(function () { $(this).select2('focus'); })
     $('.selMenu').select2({
         ajax: {
             headers: headers,
@@ -1294,7 +1294,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
                 cache: true,
 
         },
-    })
+    }).focus(function () { $(this).select2('focus'); })
 
     var urlUser = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/users/' : '/users/'
     $('.selWali').select2({
@@ -1312,7 +1312,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
                 cache: true,
 
         },
-    })
+    }).focus(function () { $(this).select2('focus'); })
 
     
 

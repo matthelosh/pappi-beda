@@ -504,14 +504,23 @@ $(document).ready(function(){
         // var datas = {nilais: [], mapel: '', aspek: '', periode: ''}
         var periode = $('select[name="periode_id"').val(),
             mapel = $('select[name="mapel_id"').val(),
-            aspek= $('select[name="aspek"]').val()
+            aspek= $('select[name="aspek"]').val(),
+            jenis = $('select[name="jenis"]').val()
 
         if (periode == '0') {
             Swal.fire('Peringatan', 'Pilih Periode Nilai Dulu.', 'error')
-        } else if (mapel == '0') {
-            Swal.fire('Peringatan', 'Pilih Mapel Dulu', 'error')
+            return false
+        } else if (jenis == '0') {
+            Swal.fire('Peringatan', 'Pilih Jenis Penilaian Harian, PTS atau PAS.', 'error')
+            $('.selMapel').focus()
+            return false
         } else if ( aspek == '0' ) {
             Swal.fire('Peringatan', 'Pilih Aspek Nilai Dulu.', 'error')
+            $('.selAspek').focus()
+            return false
+        } else if ( mapel == '0' ) {
+            Swal.fire('Peringatan', 'Pilih Mapel Dulu', 'error')
+            return false
         }
         if (fileNilai) {
             var fileReader = new FileReader()
@@ -530,7 +539,7 @@ $(document).ready(function(){
                         data: {
                             periode: datas['periode'] = periode,
                             mapel: mapel,
-                            jenis: sheet.toLowerCase(),
+                            jenis: jenis,
                             aspek: aspek,
                             nilais: datas
                             
@@ -1014,9 +1023,9 @@ function getRekap34(url=null) {
             cache: true,
 
         },
-    })
+    }).focus(function () { $(this).select2('focus'); })
 
-    $('.selSikap').select2()
+    $('.selSikap').select2().focus(function () { $(this).select2('focus'); })
     $(document).on('change', '.form-jurnal select[name="aspek"]', function(){
         var aspek = $(this).val()
         // alert(aspek)
