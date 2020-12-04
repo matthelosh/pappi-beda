@@ -4,7 +4,7 @@
             <h4 class="card-title"><i class="mdi mdi-clipboard-list-outline"></i> Catatan  Login  Pengguna</h4>
             <div class="card-text">
                 <div class="table-responsive">
-                    <table class="table table-sm table-bordered" id="table-logs" style="width:100%">
+                    <table class="table table-sm table-striped" id="table-logs" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
