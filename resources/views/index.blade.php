@@ -303,12 +303,27 @@
 
     @endif
 
-    {{-- <script>
-      $('.modal-dialog').draggable({
-        handle: '.modal-header'
-      })
-    </script> --}}
-
+    <script>
+      // $('.btn-logout').on('click', function(e) {
+      //   e.preventDefault()
+      //   alert('logout')
+      // })
+      function logout(e) {
+        Swal.fire({
+          title: 'Anda yakin keluar?',
+          showCancelButton: true,
+          confirmButtonText: 'Iya',
+          cancelButtonText: 'Tidak Jadi',
+          icon: 'warning'
+        }).then((keluar) => {
+          if(keluar.isConfirmed) {
+            sessionStorage.clear()
+            window.location.href = '/logout'
+          }
+        })
+      }
+    </script>
+    
 
   </body>
 </html>

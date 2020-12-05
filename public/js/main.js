@@ -63,20 +63,14 @@ $(document).ready(function() {
             {"data": 'default_password'},
             {"data": null, render: (data) => {
                     return `
-                        <button class="btn btn-info btn-sm btn-edit-user"   title="Edit ${data.nama}">
-                        <svg class="c-icon">
-                        <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-                    </svg>
+                        <button class="btn btn-square btn-info btn-sm btn-edit-user"   title="Edit ${data.nama}">
+                            <i class="mdi mdi-pencil-outline"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm btn-delete-user" title=" Hapus ${data.nama}">
-                            <svg class="c-icon">
-                                <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                            </svg>
+                        <button class="btn btn-square btn-danger btn-sm btn-delete-user" title=" Hapus ${data.nama}">
+                            <i class="mdi mdi-trash-can-outline"></i>
                         </button>
-                        <button class="btn btn-warning btn-sm btn-reset-password" title="Reset Password ${data.nama}">
-                            <svg class="c-icon">
-                                <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-reload"></use>
-                            </svg>
+                        <button class="btn btn-square btn-warning btn-sm btn-reset-password" title="Reset Password ${data.nama}">
+                            <i class="mdi mdi-lock-reset"></i>
                         </button>
                 `
             }}
@@ -733,20 +727,14 @@ $(document).ready(function() {
             }},
             {"data": null, render: (data) => {
                 return `
-                <button class="btn btn-info btn-ortu btn-sm" title="Buat Ortu ${data.nama_siswa} ?">
-                    <svg class="c-icon">
-                        <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-blind"></use>
-                    </svg>
+                <button class="btn btn-info btn-square btn-ortu btn-sm" title="Buat Ortu ${data.nama_siswa} ?">
+                    <i class="mdi mdi-account-child"></i>
                 </button>
-                <button class="btn btn-warning btn-edit-siswa btn-sm" title="Edit ${data.nama_siswa} ?">
-                    <svg class="c-icon">
-                        <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-                    </svg>
+                <button class="btn btn-warning btn-square btn-edit-siswa btn-sm" title="Edit ${data.nama_siswa} ?">
+                    <i class="mdi mdi-pencil-outline"></i>
                 </button>
-                <button class="btn btn-danger btn-delete-siswa btn-sm" title="Hapus ${data.nama_siswa} ?">
-                    <svg class="c-icon">
-                        <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                    </svg>
+                <button class="btn btn-danger btn-square btn-delete-siswa btn-sm" title="Hapus ${data.nama_siswa} ?">
+                    <i class="mdi mdi-trash-can-outline"></i>
                 </button>
                     `
             }}
@@ -918,6 +906,7 @@ $(document).ready(function() {
 
 // Mapel
     var tmapels = $('#table-mapels').DataTable({
+        dom: 'Bftilp',
         serverSide: true,
         ajax: {
             headers: headers,
@@ -932,15 +921,11 @@ $(document).ready(function() {
             {"data": "tingkat"},
             {"data": null, render: (data) => {
                 return `
-                <button class="btn btn-warning btn-edit-mapel btn-sm" title="Edit ${data.nama_mapel} ?">
-                    <svg class="c-icon">
-                        <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-                    </svg>
+                <button class="btn btn-warning btn-square btn-edit-mapel btn-sm" title="Edit ${data.nama_mapel} ?">
+                   <i class="mdi mdi-pencil-outline"></i>
                 </button>
-                <button class="btn btn-danger btn-delete-mapel btn-sm" title="Hapus ${data.nama_mapel} ?">
-                    <svg class="c-icon">
-                        <use xlink:href="coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                    </svg>
+                <button class="btn btn-danger btn-square  btn-delete-mapel btn-sm" title="Hapus ${data.nama_mapel} ?">
+                    <i class="mdi mdi-trash-can-outline"></i>
                 </button>
                 `
             }},

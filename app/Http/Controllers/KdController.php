@@ -22,6 +22,7 @@ class KdController extends Controller
             switch($request->query('req'))
             {
                 case "dt":
+                    dd($request->session()->all());
                     if ($request->query('rombel_id') != 'all') {
                         $rombel = 'App\Rombel'::where('kode_rombel', $request->query('rombel_id'))->first();
                         $kds = Kd::where('tingkat', $rombel->tingkat)->with('mapels')->get();

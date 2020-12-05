@@ -30,14 +30,19 @@ class LoginController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-
+        
         $credentials = $request->only('username', 'password');
         if(Auth::attempt($credentials)) {
             // dd($this->getClientOS($request));
             
+            $sekolah = 'App\Sekolah'::where('npsn', Auth::user()->sekolah_id)->first();
+            $rombel = 'App\Rombel'::where('guru_id', Auth::user()->nip)->first();
+            $periode = 'App\Periode'::where('status', 'aktif')->first();
+
             $user = Auth::user();
             $log_id = uniqid($user->nip.'_');
             // dd($log_id);
+            session(['role' => $user->role, 'rombel_id' => ($user->role == 'wali') ? $rombel->kode_rombel : 'all', 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'sekolah' => $sekolah, 'rombel' => ($user->role == 'wali') ? $rombel : []]);
             session(['log_id' => $log_id]);
             'App\LogInfo'::create([
                 'log_id' => $log_id,
@@ -58,12 +63,14 @@ class LoginController extends Controller
         return Redirect::to('login')->withInput(['username' => $request->username])->with(['status' => 'error', 'msg' => 'Username dan atau Password Tidak Benar'], 403);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        $log_id = Session::get('log_id');
+        $log_id = $request->session()->get('log_id');
         'App\LogInfo'::where('log_id', $log_id)->update(['logout_time' => date('Y-m-d H:i:s')]);
         // dd($log_id);
+        $request->session()->flush();
         Auth::logout();
+
         return redirect('login');
     }
 

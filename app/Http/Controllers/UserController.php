@@ -24,7 +24,7 @@ class UserController extends Controller
             switch($request->query('req'))
             {
                 case "select":
-                    $where = Auth::user()->sekolah_id == 'all' ? [['level','<>','admin']]:[['sekolah_id','=',Auth::user()->sekolah_id],['level','=','guru']];
+                    $where = Auth::user()->sekolah_ißd == 'all' ? [['level','<>','admin']]:[['sekolah_id','=',Auth::user()->sekolah_id],['level','=','guru']];
 
                     $datas = User::where($where)->get();
                     $users = [];

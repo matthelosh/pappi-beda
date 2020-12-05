@@ -11,8 +11,8 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="float-right">
-                        <button class="btn btn-primary btn-add" data-toggle="modal" data-target="#modalUser"    ><i class="mdi mdi-account"></i> Tambah</button>
-                        <button class="btn btn-primary btn-import-user"><i class="mdi mdi-upload"></i> Unggah</button>
+                        <button class="btn btn-square btn-primary btn-add" data-toggle="modal" data-target="#modalUser"    ><i class="mdi mdi-account"></i> Tambah</button>
+                        <button class="btn btn-square btn-primary btn-import-user"><i class="mdi mdi-upload"></i> Unggah</button>
                     </div>
                 </div>
             </div>

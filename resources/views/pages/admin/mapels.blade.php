@@ -1,31 +1,27 @@
 <div class="col-sm-12">
     <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4 class="card-title">
+                        <i class="mdi mdi-bookshelf"></i>
+                        Data Mapel
+                        
+                    </h4>
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-import-mapel btn-square btn-primary float-right mr-2">
+                        <i class="mdi mdi-cloud-upload"></i>
+                        Import
+                    </button>
+                    <button class="btn btn-new-mapel btn-info btn-square float-right mr-2" data-toggle="modal" data-target="#modalMapel">
+                        <i class="mdi mdi-plus"></i>
+                        Buat
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">
-                <svg class="c-icon">
-                    <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-layers') }}"></use>
-                </svg>
-                Data Mapel
-                <button class="btn btn-import-mapel btn-primary float-right mr-2">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet') }}"></use>
-                    </svg>
-                    Import
-                </button>
-                <button class="btn btn-new-mapel btn-info float-right mr-2" data-toggle="modal" data-target="#modalMapel">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
-                    </svg>
-                    Buat
-                </button>
-                <button class="btn  btn-success float-right mr-2 btn-print-mapel">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
-                    </svg>
-                    Cetak
-                </button>
-            </h4>
-            <hr>
             <div class="table-responsive">
                 <table class="table table-sm table-striped table-mapels" id="table-mapels" style="width:100%">
                     <thead>

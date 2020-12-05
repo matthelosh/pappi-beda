@@ -69,10 +69,10 @@
                 {{-- <svg class="c-icon mr-2">
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
                 </svg> Lock Account</a> --}}
-                <a class="dropdown-item" href="/logout" class="text-danger">
+                <button class="dropdown-item btn-logout" onclick="logout()" class="text-danger" >
                 <svg class="c-icon mr-2">
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-account-logout') }}"></use>
-                </svg> Keluar</a>
+                </svg> Keluar</button>
             </div>
           </li>
         </ul>

@@ -18,7 +18,7 @@ class DashGuruController extends Controller
         $rombel = 'App\Rombel'::where('guru_id', Auth::user()->nip)->first();
         $periode = 'App\Periode'::where('status', 'aktif')->first();
         if($rombel) {
-            session(['role' => 'wali', 'rombel_id' => $rombel->kode_rombel, 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'sekolah' => $sekolah, 'rombel' => $rombel]);
+            // session(['role' => 'wali', 'rombel_id' => $rombel->kode_rombel, 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'sekolah' => $sekolah, 'rombel' => $rombel]);
             $jurnals = [];
             // $jurnals = 'App\Jurnal'::where([
             //     ['periode_id' ,'=', $periode->kode_periode],
