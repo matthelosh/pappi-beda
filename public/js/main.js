@@ -41,6 +41,8 @@ $(document).ready(function() {
     var tusers = $('.table-users').DataTable({
         serverSide: true,
         dom: 'Bftlip',
+        "language": {
+            processing: '<i class="mdi mdi-loading mdi-spin fa-3x fa-fw"></i><span class="sr-only">Loading...</span> '},
         select: 'multi',
         ajax: {
             headers: headers,

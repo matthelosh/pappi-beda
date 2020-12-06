@@ -76,7 +76,7 @@ class NilaiController extends Controller
                         $status_form = 'update';
                     }
                     // dd($datas);
-                    dd($input);
+                    // dd($input);
                     return response()->json(['status' => 'sukses', 'datas' => $datas, 'status_form' => $status_form, 'msg' => 'Data Nilai Siswa']);
                 break;
             }

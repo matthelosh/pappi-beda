@@ -111,7 +111,9 @@
         // $('.loading').removeClass('d-flex').addClass('d-none')
         $('.loading').fadeOut()
       })
-
+      // $(window).on('unload', function(){
+      //   alert('hi')
+      // })
     </script>
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('coreui/vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
