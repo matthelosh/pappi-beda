@@ -63,8 +63,8 @@
     <link href="{{ asset('coreui/vendors/@coreui/chartjs/css/coreui-chartjs.css') }}" rel="stylesheet">
   </head>
   <body class="c-app">
-    <div class="loading d-flex justify-content-center align-items-center">
-      <div class="text-center">
+    <div class="loading">
+      <div class="text-center" style="padding-top: 20%;">
         <img src="{{ asset('img/pappi.png') }}" alt="Pappi Beda"  class="pulse"  />
         <br>
         {{-- <i class="mdi mdi-loading mdi-spin mdi-48px mx-auto;"></i> --}}
@@ -108,7 +108,8 @@
     <script src="{{ asset('datatables/datatables.js') }}"></script>
     <script>
       $(window).on('load', function(){
-        $('.loading').removeClass('d-flex').addClass('d-none')
+        // $('.loading').removeClass('d-flex').addClass('d-none')
+        $('.loading').fadeOut()
       })
 
     </script>
