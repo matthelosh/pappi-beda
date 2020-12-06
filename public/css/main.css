@@ -4,6 +4,56 @@ tr.selected {
 li.side-child {
     padding-left: 20px;
 }
+.loading {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99999;
+    background: #e43883bc;    
+    color: #efefef;
+}
+
+.pulse {
+    /* margin:100px; */
+    /* display: block; */
+    width: 100px;
+    /* height: 22px; */ 
+    /* border-radius: 50%; */
+    /* background: #cca92c; */
+    cursor: pointer;
+    /* filter: drop-shadow(0 0 0 white); */
+    animation: pulse 2s infinite;
+    position: relative;
+    /* margin-bottom: 100px; */
+  }
+  .pulse:hover {
+    animation: none;
+  }
+  
+  @keyframes pulse {
+    0% {
+        filter: drop-shadow(0 0 0 white);
+        /* transform: scale(0.5 0.5); */
+        /* width: 100px; */
+    }
+    25% {
+        filter: drop-shadow(0 0 10px white);
+        transform: rotate(10deg);
+        /* width: 150px; */
+    }
+    50% {
+        filter: drop-shadow(0 0 10px white);
+        transform: rotate(-10deg);
+        /* width: 150px; */
+    }
+    75% {
+        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+        /* width: 100px */
+        /* transform: rotate(45deg); */
+    }
+  }
 /* .modal {
     position: relative!important;
 }

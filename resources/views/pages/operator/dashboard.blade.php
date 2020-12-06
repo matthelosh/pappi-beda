@@ -14,5 +14,8 @@
         @case('Rombel')
             @include('pages.operator.rombel')
         @break
+        @case('Periodik')
+            @include('pages.operator.periodik')
+        @break
      @endswitch
  @endsection

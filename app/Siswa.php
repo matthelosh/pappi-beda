@@ -73,4 +73,9 @@ class Siswa extends Model
     {
         return $this->hasMany('App\Nilai','siswa_id','nisn');
     }
+
+    public function periodiks()
+    {
+        return $this->hasMany('App\Periodik', 'siswa_id', 'nisn');
+    }
 }

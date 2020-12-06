@@ -42,4 +42,19 @@ class Sekolah extends Model
         return $this->hasMany('App\LogInfo','sekolah_id', 'npsn');
     }
 
+    public function periodiks()
+    {
+        return $this->hasMany('App\Periodik', 'sekolah_id', 'npsn');
+    }
+
+    public function siswas()
+    {
+        return $this->hasMany('App\siswa', 'sekolah_id', 'npsn');
+    }
+
+    public function rombels()
+    {
+        return $this->hasMany('App\Rombel', 'sekolah_id', 'npsn');
+    }
+
 }

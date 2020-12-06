@@ -1238,6 +1238,31 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
     $('#modalTanggalRapor').modal()
 })
 
+// Periodik
+    var tperiodik = $('.table-periodik').DataTable({
+        serverSide: true,
+        dom: "Bftilp",
+        ajax: {
+            headers: headers,
+            url: ajaxUrl+'periodik?req=dt',
+            type: 'post',
+        },
+        columns:[
+            {"data": "DT_RowIndex"},
+            {"data": null, render:(data)=> {
+                var status = (data.status == 'aktif') ? ' *':''
+                return data.kode_periode + status
+            }},
+            {"data": null, render: (data) => {
+                return `<button class="btn btn-sm btn-square btn-danger btn-detil-periodik"><i class="mdi mdi-magnify"></i></button>`
+            }}
+        ]
+    })
+
+    $(document).on('click', '.btn-detil-periodik', function(){
+        var tr = $(this).parents('tr')
+        var td = $(this).parents('td')
+    })
 
 // Select2
 

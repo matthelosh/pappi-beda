@@ -63,6 +63,15 @@
     <link href="{{ asset('coreui/vendors/@coreui/chartjs/css/coreui-chartjs.css') }}" rel="stylesheet">
   </head>
   <body class="c-app">
+    <div class="loading d-flex justify-content-center align-items-center">
+      <div class="text-center">
+        <img src="{{ asset('img/pappi.png') }}" alt="Pappi Beda"  class="pulse"  />
+        <br>
+        {{-- <i class="mdi mdi-loading mdi-spin mdi-48px mx-auto;"></i> --}}
+        <h4>Sabar, Ya.. Sebentar lagi selesai.</h4>
+      </div>
+      
+    </div>
     @include('layout.sidebar')
     <div class="c-wrapper c-fixed-components">
       @include('layout.header')
@@ -92,11 +101,17 @@
     {{-- @if(Auth::user()->level == 'admin') --}}
       @include('components.modaladmin')
     {{-- @endif --}}
+    
     <script src="{{ asset('jquery/jquery.js') }}"></script>
     <script src="{{ asset('jquery-ui/jquery-ui.js') }}"></script>
     {{-- <script src="{{ asset('bootstrap/js/bootstrap.js') }}"></script> --}}
     <script src="{{ asset('datatables/datatables.js') }}"></script>
+    <script>
+      $(window).on('load', function(){
+        $('.loading').removeClass('d-flex').addClass('d-none')
+      })
 
+    </script>
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('coreui/vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
     <!--[if IE]><!-->

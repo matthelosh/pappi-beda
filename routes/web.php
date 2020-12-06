@@ -196,6 +196,11 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
                 Route::post('/create', 'RombelController@create')->name('operator.rombel.create');
                 Route::post('/import', 'RombelController@import')->name('operator.rombel.import');
             });
+
+            Route::group(['prefix' => 'periodik', 'middleware' => ['auth', 'isOperator']], function(){
+                Route::get('/', 'DashOperatorController@periodik')->name('operator.periodik');
+                Route::post('/', 'PeriodikController@index')->name('operator.periodik.index');
+            });
         });
     });
 

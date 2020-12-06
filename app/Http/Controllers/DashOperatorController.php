@@ -39,4 +39,9 @@ class DashOperatorController extends Controller
         return view('pages.operator.dashboard', ['page_title' => 'Rombel', 'menus' => $this->showMenus($request)]);
     }
 
+    public function periodik(Request $request)
+    {
+        return view('pages.operator.dashboard', ['page_title' => 'Periodik', 'menus' => $this->showMenus($request)]);
+    }
+
 }
