@@ -42,8 +42,8 @@ class LoginController extends Controller
             $user = Auth::user();
             $log_id = uniqid($user->nip.'_');
             // dd($log_id);
-            session(['role' => $user->role, 'rombel_id' => ($user->role == 'wali') ? $rombel->kode_rombel : 'all', 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'sekolah' => $sekolah, 'rombel' => ($user->role == 'wali') ? $rombel : []]);
-            session(['log_id' => $log_id]);
+            session(['role' => $user->role, 'rombel_id' => ($user->role == 'wali') ? $rombel->kode_rombel : 'all', 'username' =>  Auth::user()->username, 'periode_aktif' => $periode->kode_periode, 'sekolah_id' => Auth::user()->sekolah_id, 'sekolah' => $sekolah, 'rombel' => ($user->role == 'wali') ? $rombel : [], 'log_id' => $log_id]);
+            // session(['log_id' => $log_id]);
             'App\LogInfo'::create([
                 'log_id' => $log_id,
                 'sekolah_id' => $user->sekolah_id,

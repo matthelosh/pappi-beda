@@ -23,7 +23,7 @@ class RombelController extends Controller
             switch($request->query('req'))
             {
                 case "dt":
-                    $where = (Auth::user()->level == 'admin') ? [''] : [
+                    $where = (Auth::user()->level == 'admin') ? [] : [
                         ['sekolah_id','=',Auth::user()->sekolah_id],
                         ['status','=','aktif'],
                         ['tapel','=', substr($request->session()->get('periode_aktif'), 0,4)]
