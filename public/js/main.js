@@ -1242,7 +1242,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
 
 // Periodik
     var tperiodik = $('.table-periodik').DataTable({
-        serverSide: true,
+        serverSide: true, 
         dom: "Bftilp",
         ajax: {
             headers: headers,
@@ -1262,9 +1262,53 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
     })
 
     $(document).on('click', '.btn-detil-periodik', function(){
-        var tr = $(this).parents('tr')
-        var td = $(this).parents('td')
+        var periodik = tperiodik.row($(this).parents('tr')).data()
+
+        console.log(periodik)
+        $('#modalPeriodik .card span#periode_terpilih').text(periodik.kode_periode)
+        // getDataPeriodik(periodik.kode_periode)
+        var tDetilPeriodik = $('.table-periodik-detil').DataTable({
+            serverSide: true,
+            dom: "Bftilp",
+            ajax: {
+                headers: headers,
+                url: ajaxUrl+'periodik?req=dt_detil',
+                type: 'post',
+                data: {periode_id: periodik.kode_periode}
+            },
+            columns: [
+                {'data': 'DT_RowIndex'},
+                {'data': 'siswas.nisn'},
+                {'data': 'siswas.nama_siswa'},
+                {'data': 'rombels.nama_rombel'}
+            ]
+        })
+        $('#modalPeriodik').modal()
+
+        
     })
+
+    $('#modalPeriodik').on('hidden.coreui.modal' , function(){
+        $('.table-periodik-detil').DataTable().destroy()
+    })
+
+    // getDataPeriodik(periode_id) {
+    //     var tDetilPeriodik = $('.table-periodik-detil').DataTable({
+    //         serverSide: true,
+    //         dom: "Bftilp",
+    //         ajax: {
+    //             url: ajaxUrl+'periodik?req=dt_detil',
+    //             type: 'post',
+    //             data: {periode_id: periode_id}
+    //         },
+    //         columns: [
+    //             {'data': 'DT_RowIndex'},
+    //             {'data': 'siswas.nisn'},
+    //             {'data': 'siswas.nama_siswa'},
+    //             {'data': 'rombels.nama_rombel'}
+    //         ]
+    //     })
+    // }
 
 // Select2
 

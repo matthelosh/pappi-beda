@@ -249,6 +249,7 @@ class NilaiController extends Controller
 
     public function import(Request $request)
     {
+        // dd($request->all());
         try { 
             $nilais = $request->nilais;
             switch($request->aspek)
@@ -269,7 +270,7 @@ class NilaiController extends Controller
             }
             // dd($nilai);
             $kds = array_keys($nilais[0]);
-            $kds = array_slice($kds,-0,count($kds) - 2);
+            $kds = array_slice($kds,2);
             $datas = [];
 
             $i=0;
@@ -277,7 +278,7 @@ class NilaiController extends Controller
             {
                 $siswa_id = $nilai['nisn'];
                 // echo $nilai['nisn'].'<br>';
-                $js =  array_slice($nilai,-0,count($nilais[0])-2, true);
+                $js =  array_slice($nilai,2, true);
                 $datas = [];
                 foreach($js as $k=>$j) 
                 {
@@ -288,16 +289,18 @@ class NilaiController extends Controller
                             'rombel_id' => $request->session()->get('rombel')->kode_rombel,
                             'mapel_id' => $request->mapel,
                             'jenis' => $request->jenis,
-                            'kd_id' => $request->aspek.'.'.$k,
+                            'kd_id' => $k,
                             'siswa_id' => $siswa_id
                         ],
                         [
                             'nilai' => $j
                         ]
                     );
+                    // $datas[] = [$k=>$j];
                 }
                 
             }
+            // dd($kds);
             return response()->json(['status' => 'sukses', 'msg' => 'Data Nilai siswa diimpor']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'gagal', 'msg' => $e->getCode().$e->getMessage()]);
