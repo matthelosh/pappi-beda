@@ -342,6 +342,10 @@ $(document).ready(function(){
     })
 
 
+    $('.btn-show-tool-form-nilai').on('click', function(){
+        $('.tool-form-nilai').slideToggle()
+        // $(this).hide()
+    })
 
     // Form Nilai
     $(document).on('click', '.btn-form-nilai', function(e) {
@@ -364,10 +368,7 @@ $(document).ready(function(){
             rombel : (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
         }
 
-        $('.btn-show-tool-form-nilai').on('click', function(){
-            $('.tool-form-nilai').slideDown()
-            // $(this).hide()
-        })
+       
 
         $.ajax({
             headers: headers,
@@ -1148,4 +1149,15 @@ function getRekap34(url=null) {
         })
     })
 
+    // Model Rapor PTS
+    $(document).on('change', 'input#model-rapor', function(){
+        var val = $(this).prop('checked')
+        if ( val == true) {
+            $('.dg-deskripsi').show()
+            $('.per-kd').hide()
+        } else {
+            $('.dg-deskripsi').hide()
+            $('.per-kd').show()
+        }
+    })
 })

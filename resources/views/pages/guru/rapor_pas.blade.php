@@ -354,7 +354,7 @@
                             <br>
                             <br>
                             <br>
-                            <b>Nama Orang Tua</b>
+                            <b>......................</b>
                         </td>
                         <td style="width:33.3%"></td>
                         <td style="width:33.3%">

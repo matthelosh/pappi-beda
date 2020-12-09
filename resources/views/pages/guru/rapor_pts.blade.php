@@ -57,136 +57,168 @@
                 </table>
                 <br>
                 <h3 class="text-left">A. Nilai Pengetahuan</h3>
-                <table id="table34" border="1" width="100%" style="border-collapse:collapse;">
-                    <thead>
-                        <tr>
-                            <th rowspan="2" class="p-2">No</th>
-                            <th rowspan="2" class="p-2" >Muatan Pelajaran</th>
-                            <th rowspan="2" class="p-2" >KKM</th>
-                            <th colspan="10" class="p-2" style="width:50%">NILAI KOMPETENSI DASAR</th>
-                            <th colspan="2">RERATA</th>
-                        </tr>
-
-                        <tr>
-                            <th class="p-2" colspan="5" style="width:25%">PENILAIAN HARIAN</th>
-                            <th class="p-2" colspan="5" style="width:25%">PENILAIAN TENGAH SEMESTER</th>
-                            <th>UH</th>
-                            <th>UTS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @foreach($pts as $pt)
-                            <tr>
-                                <td rowspan="2">{{ $loop->index+1 }}</td>
-                                <td rowspan="2" class="text-left p-2">{{ $pt['nama_mapel'] }}</td>
-                                <td rowspan="2">{{ $pt['kkm']->nilai ?? '-'}}</td>
-                                @if(isset($pt['nilais']))
-                                    {{-- @foreach ($pt['nilais']['uh'] as $k => $uh)
-                                        <td>{{ $k }}</td>
-                                    @endforeach --}}
-                                    @php($uh_keys = array_keys($pt['nilais']['uh']))
-                                    {{-- <td>{{ dd($uh_keys[]) }}</td> --}}
-                                    @for ($i = 0; $i < 5; $i++)
-                                        <td style="font-weight:600">
-                                            @if(isset($uh_keys[$i]))
-                                                {{ $uh_keys[$i] }}
-                                            @else
-                                                -
-                                            @endif
-
+                <div class="table-responsive">
+                    <div class="per-kd" style="display: none;">
+                        <table id="table34" border="1" width="100%" style="border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="p-2">No</th>
+                                    <th rowspan="2" class="p-2" >Muatan Pelajaran</th>
+                                    <th rowspan="2" class="p-2" >KKM</th>
+                                    <th colspan="10" class="p-2" style="width:50%">NILAI KOMPETENSI DASAR</th>
+                                    <th colspan="2">RERATA</th>
+                                </tr>
+    
+                                <tr>
+                                    <th class="p-2" colspan="5" style="width:25%">PENILAIAN HARIAN</th>
+                                    <th class="p-2" colspan="5" style="width:25%">PENILAIAN TENGAH SEMESTER</th>
+                                    <th>UH</th>
+                                    <th>UTS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+    
+                                @foreach($pts as $pt)
+                                    <tr>
+                                        <td rowspan="2">{{ $loop->index+1 }}</td>
+                                        <td rowspan="2" class="text-left p-2">{{ $pt['nama_mapel'] }}</td>
+                                        <td rowspan="2">{{ $pt['kkm']->nilai ?? '-'}}</td>
+                                        @if(isset($pt['nilais']))
+                                            @php($uh_keys = array_keys($pt['nilais']['uh']))
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <td style="font-weight:600">
+                                                    @if(isset($uh_keys[$i]))
+                                                        {{ $uh_keys[$i] }}
+                                                    @else
+                                                        -
+                                                    @endif
+    
+                                                </td>
+                                            @endfor
+    
+    
+                                            @php($pts_keys = array_keys($pt['nilais']['pts']))
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <td style="font-weight:600">
+                                                    @if(isset($pts_keys[$i]))
+                                                        {{ $pts_keys[$i] }}
+                                                    @else
+                                                        -
+                                                    @endif
+    
+                                                </td>
+                                            @endfor
+                                        @else
+                                            @for ($i = 0; $i < 12; $i++)
+                                                <td>-</td>
+                                            @endfor
+                                        @endif
+    
+                                            @php($uh_keys = array_keys($pt['nilais']['uh']))
+                                            @php($nhs =0)
+                                            @for ($i = 0; $i < 5; $i++)
+                                                    @if(isset($uh_keys[$i]))
+                                                    @php($nhs += $pt['nilais']['uh'][$uh_keys[$i]]['nilai'] ?? 0)
+                                                    @endif
+    
+                                            @endfor
+                                            @php($nhs = ($nhs > 0 ? number_format((float)$nhs/count($uh_keys), 2,',','') : 0))
+                                        <td rowspan="2" class="">
+                                            
+                                            {{ $nhs ?? '-' }}
                                         </td>
-                                    @endfor
-
-
-                                    @php($pts_keys = array_keys($pt['nilais']['pts']))
-                                    {{-- <td>{{ dd($uh_keys[]) }}</td> --}}
-                                    @for ($i = 0; $i < 5; $i++)
-                                        <td style="font-weight:600">
-                                            @if(isset($pts_keys[$i]))
-                                                {{ $pts_keys[$i] }}
-                                            @else
-                                                -
-                                            @endif
-
+                                            
+                                            @php($pts_keys = array_keys($pt['nilais']['pts']))
+                                            @php($npts =0)
+                                            @for ($i = 0; $i < 5; $i++)
+                                                    @if(isset($pts_keys[$i]))
+                                                    @php($npts += $pt['nilais']['pts'][$uh_keys[$i]]['nilai'] ?? 0)
+                                                    @endif
+    
+                                            @endfor
+                                            @php( $npts = ($npts > 0 ? number_format((float)$npts/count($pts_keys), 2,',','') : 0))
+                                        <td rowspan="2" class="">
+                                            
+                                            {{ $npts }}
                                         </td>
-                                    @endfor
-                                @else
-                                    @for ($i = 0; $i < 12; $i++)
-                                        <td>-</td>
-                                    @endfor
-                                @endif
-
-                                    @php($uh_keys = array_keys($pt['nilais']['uh']))
-                                    @php($nhs =0)
-                                    @for ($i = 0; $i < 5; $i++)
-                                            @if(isset($uh_keys[$i]))
-                                             @php($nhs += $pt['nilais']['uh'][$uh_keys[$i]]['nilai'] ?? 0)
-                                            @endif
-
-                                    @endfor
-                                    @php($nhs = ($nhs > 0 ? number_format((float)$nhs/count($uh_keys), 2,',','') : 0))
-                                <td rowspan="2" class="">
-                                    {{ $nhs ?? '-' }}
-                                </td>
-
-                                    @php($pts_keys = array_keys($pt['nilais']['pts']))
-                                    @php($npts =0)
-                                    @for ($i = 0; $i < 5; $i++)
-                                            @if(isset($pts_keys[$i]))
-                                             @php($npts += $pt['nilais']['pts'][$uh_keys[$i]]['nilai'] ?? 0)
-                                            @endif
-
-                                    @endfor
-                                    @php( $npts = ($npts > 0 ? number_format((float)$npts/count($pts_keys), 2,',','') : 0))
-                                <td rowspan="2" class="">
-                                {{-- <td rowspan="2" class="{{ ($npts < $pt['kkm']->nilai ? 'text-danger': '')  }}"> --}}
-                                    {{ $npts }}
-                                </td>
-                            </tr>
-                            <tr>
-                                @if(isset($pt['nilais']))
-                                    @php($uh_keys = array_keys($pt['nilais']['uh']))
-                                    @for ($i = 0; $i < 5; $i++)
-                                        <td>
-                                            @if(isset($uh_keys[$i]))
-                                            {{ ($pt['nilais']['uh'][$uh_keys[$i]]->nilai ?? '-' ) }}
-                                            @else
+                                    </tr>
+                                    <tr>
+                                        @if(isset($pt['nilais']))
+                                            @php($uh_keys = array_keys($pt['nilais']['uh']))
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <td>
+                                                    
+                                                    @if(isset($uh_keys[$i]))
+                                                    {{ $pt['nilais']['uh'][$uh_keys[$i]]->nilai ?? '-'  }}
+                                                    @else
+                                                        -
+                                                    @endif
+    
+                                                </td>
+                                            @endfor
+                                            @php($pts_keys = array_keys($pt['nilais']['pts']))
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <td>
+                                                    @if(isset($pts_keys[$i]))
+                                                        {{ ($pt['nilais']['pts'][$pts_keys[$i]]->nilai ?? '-' ) }}
+                                                    @else
+                                                        -
+                                                    @endif
+    
+                                                </td>
+                                            @endfor
+                                        @else
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        @endif
+                                    </tr>
+    
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="dg-deskripsi">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Muatan Pelajaran</th>
+                                    <th>Nilai</th>
+                                    <th>Predikat</th>
+                                    <th>Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pts2 as $pt)
+                                <tr>
+                                    <td>{{ $loop->index+1 }}</td>
+                                    <td class="text-left">{{ $pt['nama_mapel'] }}</td>
+                                    <td>{{ $pt['nilai'] ? number_format($pt['nilai'],2,',',' '):'-' }}</td>
+                                    <td>{{ $pt['predikat'] }}</td>
+                                    <td class="text-left">
+                                        @if(isset($pt['deskripsi']['rt']))
+                                                Ananda {{ $siswa->nama_siswa }} {{ $pt['deskripsi']['max'] }}, {{ $pt['deskripsi']['min'] }}
+                                        @else
                                                 -
-                                            @endif
-
-                                        </td>
-                                    @endfor
-                                    @php($pts_keys = array_keys($pt['nilais']['pts']))
-                                    @for ($i = 0; $i < 5; $i++)
-                                        <td>
-                                            @if(isset($pts_keys[$i]))
-                                                {{ ($pt['nilais']['pts'][$pts_keys[$i]]->nilai ?? '-' ) }}
-                                            @else
-                                                -
-                                            @endif
-
-                                        </td>
-                                    @endfor
-                                @else
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                @endif
-                            </tr>
-
-                        @endforeach
-                    </tbody>
-                </table>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <br>
 
                 <h3 class="text-left" >B. Saran-saran</h3>
@@ -244,6 +276,13 @@
                     </h4>
                 </div>
                 <div class="card-body">
+                    <div class="form-group text-center">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="model-rapor" checked>
+                            <label class="custom-control-label" for="model-rapor">Dengan deskripsi</label>
+                        </div>
+                    </div>
+                    
                     <div class="form-group text-center">
                         <button class="btn btn-lg btn-primary" id="btn-print-rapor-pts">
                             <i class="mdi mdi-printer"></i>

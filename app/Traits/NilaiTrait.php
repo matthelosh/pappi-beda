@@ -92,6 +92,108 @@ trait NilaiTrait
         return $datas;
     }
 
+    public function rpts2($request)
+    {
+        $datas = [];
+        // [nilai, predikat, deskripsi]
+        // Ambil Mapel
+        $nisn = $request->query('nisn');
+        $periode = $request->session()->get('periode_aktif');
+        // dd($periode);
+        $rombel = $request->session()->get('rombel');
+        $mapel = ($rombel->tingkat < 4) ? ['tingkat', '<>', 'besar']:['tingkat', '<>', 'aa'];
+        $mapels = 'App\Mapel'::where([$mapel])->get();
+        foreach($mapels as $mapel)
+        {
+            $datas[$mapel->kode_mapel]['nama_mapel'] = $mapel->nama_mapel;
+            $kkm = Kkm::where([
+                ['periode_id','=',$periode],
+                ['mapel_id','=', $mapel->kode_mapel],
+                ['rombel_id','=',$rombel->kode_rombel]
+            ])->select('nilai')
+            ->first();
+            $datas[$mapel->kode_mapel]['kkm'] = $kkm->nilai;
+
+
+            $rt2 = DB::table('nilai3s')->select(DB::raw(
+                'AVG(nilai) AS nilai'
+            ))->where([
+                ['siswa_id','=', $request->query('nisn')],
+                ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['rombel_id','=',$rombel->kode_rombel],
+                ['mapel_id', '=', $mapel->kode_mapel],
+                ['jenis','<>','pas']
+            ])->first();
+            // Response Nilai dari rata2 harian dan pts;
+            $datas[$mapel->kode_mapel]['nilai'] = $rt2->nilai;
+            $datas[$mapel->kode_mapel]['predikat'] = ((($rt2->nilai >= 90) ? 'A' : ($rt2->nilai >= 80)) ? 'B': ($rt2->nilai >= $kkm->nilai)) ? 'C' : 'D';
+
+            
+            // Deskripsi
+            $rt3 = DB::table('nilai3s')->select(DB::raw(
+                'kd_id, AVG(nilai) as rt2'
+            ))
+            ->where([
+                ['mapel_id', '=', $mapel->kode_mapel],
+                ['siswa_id', '=', $request->query('nisn')],
+            ])->groupBy('mapel_id', 'kd_id')
+            ->get();
+
+            foreach($rt3 as $rt)
+            {
+                $datas[$mapel->kode_mapel]['deskripsi']['rt'][$rt->kd_id] = $rt->rt2;
+            }
+
+            $maxkd3 = (isset($datas[$mapel->kode_mapel]['deskripsi']['rt'])) ? array_keys((
+                $datas[$mapel->kode_mapel]['deskripsi']['rt']), max($datas[$mapel->kode_mapel]['deskripsi']['rt'])
+            ) : null;
+            $max3 = (isset($datas[$mapel->kode_mapel]['deskripsi']['rt'])) ? max($datas[$mapel->kode_mapel]['deskripsi']['rt']) : null;
+            // $datas[$mapel->kode_mapel]['k3']['maxkd']=$maxkd3;
+            if ( isset($maxkd3) ) {
+                foreach ($maxkd3 as $m)
+                {
+                    $kd = 'App\Kd'::where([
+                        ['kode_kd','=',$m],
+                        ['mapel_id','=',$mapel->kode_mapel],
+                        ['tingkat','=',$rombel->tingkat]
+                    ])->first();
+
+                    // $datas[$mapel->kode_mapel]['k3']['max'][$m] = $kd;
+                    $datas[$mapel->kode_mapel]['deskripsi']['max'] = $this->kata_op3($max3). ($kd ? $kd->teks_kd : 'Mohon cek tabel KD');
+                    // $datas[$mapel->kode_mapel]['k3']['max'][$m] = $this->kata_op3($max3) . ($kd) ? $kd['teks_kd'] : 'Tolong cek Tabel KD '.$m;
+                }
+            } else {
+                $datas[$mapel->kode_mapel]['deskripsi']['max'] = null;
+            }
+
+            $minkd3 = (isset($datas[$mapel->kode_mapel]['deskripsi']['rt'])) ? array_keys((
+                $datas[$mapel->kode_mapel]['deskripsi']['rt']), min($datas[$mapel->kode_mapel]['deskripsi']['rt'])
+            ) : null;
+            $min3 = (isset($datas[$mapel->kode_mapel]['deskripsi']['rt'])) ? min($datas[$mapel->kode_mapel]['deskripsi']['rt']) : null;
+            
+            if ( isset($minkd3) ) {
+                foreach ($minkd3 as $m)
+                {
+                    $kd = 'App\Kd'::where([
+                        ['kode_kd','=',$m],
+                        ['mapel_id','=',$mapel->kode_mapel],
+                        ['tingkat','=',$rombel->tingkat]
+                    ])->first();
+
+                    $datas[$mapel->kode_mapel]['deskripsi']['min'] = $this->kata_op3($min3) . ($kd ? $kd['teks_kd'] : 'Tolong cek Tabel KD '.$m);
+                }
+            } else {
+                $datas[$mapel->kode_mapel]['deskripsi']['min'] = null;
+            }
+
+
+        }
+
+        // dd($datas);
+        return $datas;
+        
+    }
+
     public function rpas($request)
     {
         // Ambil Mapel
@@ -307,7 +409,7 @@ trait NilaiTrait
     }
 
     public function saran($request)
-    {
+    { 
         $datas = [];
         $nisn = $request->query('nisn');
         $periode = $request->session()->get('periode_aktif');

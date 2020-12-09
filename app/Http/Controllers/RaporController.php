@@ -61,11 +61,11 @@ class RaporController extends Controller
             ['sekolah_id','=', $request->session()->get('sekolah_id')],
             ['jenis_rapor','=','pas']
         ])->first();
-        $pas = $this->rpas($request);
-        $sarans = $this->saran($request);
-        $ekskuls = $this->ekskul($request);
-        // dd($pts);
-        $sikaps = $this->sikap($request);
+        // $pas = $this->rpas($request);
+        // $sarans = $this->saran($request);
+        // $ekskuls = $this->ekskul($request);
+        // // dd($pts);
+        // $sikaps = $this->sikap($request);
         return view('pages.guru.dashboard', [
             'page_title' => 'Rapor Siswa', 
             'menus' => $this->showMenus($request), 
@@ -75,15 +75,16 @@ class RaporController extends Controller
                 'pts' => ($tgl_pts) ?  $tgl_pts->tanggal : date('Y-m-d'),
                 'pas' => ($tgl_pas) ? $tgl_pas->tanggal : date('Y-m-d')
             ], 
-            'pts' => $pts, 
-            'pas' => $pas, 
-            'sarans' => $sarans, 
-            'sikaps' => $sikaps, 
-            'ekskuls' => $ekskuls,
+            'pts' => $this->rpts($request), 
+            'pts2' => $this->rpts2($request),
+            'pas' => $this->rpas($request), 
+            'sarans' => $this->saran($request), 
+            'sikaps' => $this->sikap($request), 
+            'ekskuls' => $this->ekskul($request),
             'fisik' => $this->fisik($request),
-            'prestasis' => [],
-            'absensi' => [],
-            'detil'=>[],
+            // 'prestasis' => [],
+            // 'absensi' => [],
+            // 'detil'=>[],
             'data_rapor' => $this->dataRapor($request)
         ]);
     }
