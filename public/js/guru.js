@@ -1155,9 +1155,11 @@ function getRekap34(url=null) {
         if ( val == true) {
             $('.dg-deskripsi').show()
             $('.per-kd').hide()
+            $('.label-model-rapor').text('Dengan Deskripsi')
         } else {
             $('.dg-deskripsi').hide()
             $('.per-kd').show()
+            $('.label-model-rapor').text('Dengan Per KD')
         }
     })
 })

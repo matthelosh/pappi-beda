@@ -59,7 +59,7 @@
                 <h3 class="text-left">A. Nilai Pengetahuan</h3>
                 <div class="table-responsive">
                     <div class="per-kd" style="display: none;">
-                        <table id="table34" border="1" width="100%" style="border-collapse:collapse;">
+                        <table class="table table-bordered table-sm" id="table34"  style="border-collapse:collapse;">
                             <thead>
                                 <tr>
                                     <th rowspan="2" class="p-2">No</th>
@@ -114,15 +114,15 @@
                                             @endfor
                                         @endif
     
-                                            @php($uh_keys = array_keys($pt['nilais']['uh']))
-                                            @php($nhs =0)
-                                            @for ($i = 0; $i < 5; $i++)
-                                                    @if(isset($uh_keys[$i]))
-                                                    @php($nhs += $pt['nilais']['uh'][$uh_keys[$i]]['nilai'] ?? 0)
-                                                    @endif
-    
-                                            @endfor
-                                            @php($nhs = ($nhs > 0 ? number_format((float)$nhs/count($uh_keys), 2,',','') : 0))
+                                        @php($uh_keys = array_keys($pt['nilais']['uh']))
+                                        @php($nhs =0)
+                                        @for ($i = 0; $i < 5; $i++)
+                                                @if(isset($uh_keys[$i]))
+                                                @php($nhs += $pt['nilais']['uh'][$uh_keys[$i]]['nilai'] ?? 0)
+                                                @endif
+
+                                        @endfor
+                                        @php($nhs = ($nhs > 0 ? number_format((float)$nhs/count($uh_keys), 2,',','') : 0))
                                         <td rowspan="2" class="">
                                             
                                             {{ $nhs ?? '-' }}
@@ -149,7 +149,7 @@
                                                 <td>
                                                     
                                                     @if(isset($uh_keys[$i]))
-                                                    {{ $pt['nilais']['uh'][$uh_keys[$i]]->nilai ?? '-'  }}
+                                                    {{ $pt['nilais']['uh'][$uh_keys[$i]] ? round($pt['nilais']['uh'][$uh_keys[$i]]->nilai) : '-'  }}
                                                     @else
                                                         -
                                                     @endif
@@ -160,7 +160,7 @@
                                             @for ($i = 0; $i < 5; $i++)
                                                 <td>
                                                     @if(isset($pts_keys[$i]))
-                                                        {{ ($pt['nilais']['pts'][$pts_keys[$i]]->nilai ?? '-' ) }}
+                                                        {{ $pt['nilais']['pts'][$pts_keys[$i]] ? round($pt['nilais']['pts'][$pts_keys[$i]]->nilai) : '-'  }}
                                                     @else
                                                         -
                                                     @endif
@@ -277,9 +277,11 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group text-center">
+                        <h5>Model Rapor</h5>
                         <div class="custom-control custom-switch">
+                            
                             <input type="checkbox" class="custom-control-input" id="model-rapor" checked>
-                            <label class="custom-control-label" for="model-rapor">Dengan deskripsi</label>
+                            <label class="custom-control-label label-model-rapor" for="model-rapor">Dengan deskripsi</label>
                         </div>
                     </div>
                     
