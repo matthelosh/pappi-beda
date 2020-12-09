@@ -269,18 +269,19 @@ class NilaiController extends Controller
 
             }
             // dd($nilai);
-            $kds = array_keys($nilais[0]);
-            $kds = array_slice($kds,2);
-            $datas = [];
+            // $kds = array_keys($nilais[0]);
+            // $kds = array_slice($kds,2);
+            $datas1 = [];
 
             $i=0;
             foreach($nilais as $nilai)
             {
+                $kds = array_keys($nilai);
+                $kds = array_slice($kds,2);
+                $ns = array_slice($nilai,2, count($nilais) - 2, true);
                 $siswa_id = $nilai['nisn'];
-                // echo $nilai['nisn'].'<br>';
-                $js =  array_slice($nilai,2, true);
                 $datas = [];
-                foreach($js as $k=>$j) 
+                foreach($ns as $k=>$j) 
                 {
                     $Nilai::updateOrCreate(
                         [
@@ -298,9 +299,10 @@ class NilaiController extends Controller
                     );
                     // $datas[] = [$k=>$j];
                 }
+                // array_push($datas1, $datas);
                 
             }
-            // dd($kds);
+            // dd($datas1);
             return response()->json(['status' => 'sukses', 'msg' => 'Data Nilai siswa diimpor']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'gagal', 'msg' => $e->getCode().$e->getMessage()]);
