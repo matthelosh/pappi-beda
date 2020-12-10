@@ -16,7 +16,7 @@
     <meta name="author" content="Łukasz Holeczek">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-    <title>LOGIN</title>
+    <title>ERAPOR GUGUS 1 SD NEGERI BEDALISODO</title>
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('coreui/assets/favicon/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('coreui/assets/favicon/apple-icon-60x60.pn ')}}g">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('coreui/assets/favicon/apple-icon-72x72.png') }}">
@@ -26,10 +26,10 @@
     <link rel="apple-touch-icon" sizes="144x144" href="assets/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('coreui/assets/favicon/apple-icon-152x152.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('coreui/assets/favicon/apple-icon-180x180.png') }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('coreui/assets/favicon/android-icon-192x192.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('coreui/assets/favicon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('coreui/assets/favicon/favicon-96x96.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('coreui/assets/favicon/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('img/pappi.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/pappi.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('img/pappi.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/pappi.png') }}">
     <link rel="manifest" href="{{ asset('coreui/assets/favicon/manifest.json') }}">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ asset('coreui/assets/favicon/ms-icon-144x144.png') }}">
@@ -61,7 +61,7 @@
             <div class="card p-4">
               <div class="card-body">
                 <h1>Login</h1>
-                <p class="text-muted">Sign In to your account</p>
+                <p class="text-muted">Monggo! Silahkan Masuk.</p>
                 <form action="/login" method="post">
                   @csrf()
                   @error('username')
