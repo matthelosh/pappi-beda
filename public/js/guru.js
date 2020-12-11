@@ -3,7 +3,7 @@ $(document).ready(function(){
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 
-    $('img.coba-img').prop('src', urlImg+'/pappi.png')
+    // $('img.coba-img').prop('src', urlImg+'/pappi.png')
     // $(document).on('click', '.c-sidebar-nav-dropdown-toggle', function(e) {
     //     e.preventDefault()
     //     alert($(this).prop('href'))
