@@ -582,6 +582,8 @@ $(document).ready(function(){
             aspek: $('select[name="aspek"]').val()
         }
 
+        var fileName = data.rombel+"-"+data.mapel+".xlsx"
+
         // var json = [
         //     {no: 1, nama: "Saya"},
         //     {no: 2, nama: 'Kamu'}
@@ -618,7 +620,12 @@ $(document).ready(function(){
             data: data,
             dataType: 'json'
         }).done(res => {
-            console.log(res)
+            // console.log(res)
+            var data = res.data
+            var ws = XLSX.utils.json_to_sheet(data)
+            var wb = XLSX.utils.book_new()
+            XLSX.utils.book_append_sheet(wb, ws, "format.xlsx")
+            XLSX.writeFile(wb, fileName)
         }).fail(err => {
             console.log(err)
         })

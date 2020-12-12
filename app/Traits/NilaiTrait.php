@@ -341,8 +341,10 @@ trait NilaiTrait
                 ['jenis','=','pas']
             ])->first();
 
-            $na4 = (($rth4->nilai*2)+($rtt4->nilai)+($rta4->nilai))/4;
-            $datas[$mapel->kode_mapel]['k4']['na'] = $na4;
+            // $na4 = (($rth4->nilai*2)+($rtt4->nilai)+($rta4->nilai))/4;
+            $naa = array_filter([$rth4->nilai,$rtt4->nilai,$rta4->nilai]);
+            $na4 = (($rth4->nilai).'-'.($rtt4->nilai).'-'.($rta4->nilai));
+            $datas[$mapel->kode_mapel]['k4']['na'] = (count($naa)) ? array_sum($naa)/count($naa):null;
 
             $rt4 = DB::table('nilai4s')->select(DB::raw(
                 'kd_id, AVG(nilai) as rt2'
