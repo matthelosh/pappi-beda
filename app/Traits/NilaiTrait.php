@@ -98,7 +98,8 @@ trait NilaiTrait
         // [nilai, predikat, deskripsi]
         // Ambil Mapel
         $nisn = $request->query('nisn');
-        $periode = $request->session()->get('periode_aktif');
+        // $periode = $request->session()->get('periode_aktif');
+        $periode = $request->query('periode');
         // dd($periode);
         $rombel = $request->session()->get('rombel');
         $mapel = ($rombel->tingkat < 4) ? ['tingkat', '<>', 'besar']:['tingkat', '<>', 'aa'];
@@ -112,21 +113,23 @@ trait NilaiTrait
                 ['rombel_id','=',$rombel->kode_rombel]
             ])->select('nilai')
             ->first();
-            $datas[$mapel->kode_mapel]['kkm'] = $kkm->nilai;
+            $datas[$mapel->kode_mapel]['kkm'] = $kkm->nilai??null;
 
 
             $rt2 = DB::table('nilai3s')->select(DB::raw(
                 'AVG(nilai) AS nilai'
             ))->where([
                 ['siswa_id','=', $request->query('nisn')],
-                ['periode_id','=', $request->session()->get('periode_aktif')],
+                // ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['periode_id','=', $request->query('periode')],
                 ['rombel_id','=',$rombel->kode_rombel],
                 ['mapel_id', '=', $mapel->kode_mapel],
                 ['jenis','<>','pas']
             ])->first();
             // Response Nilai dari rata2 harian dan pts;
+            $kkmx = $kkm??70;
             $datas[$mapel->kode_mapel]['nilai'] = $rt2->nilai;
-            $datas[$mapel->kode_mapel]['predikat'] = ((($rt2->nilai >= 90) ? 'A' : ($rt2->nilai >= 80)) ? 'B': ($rt2->nilai >= $kkm->nilai)) ? 'C' : 'D';
+            $datas[$mapel->kode_mapel]['predikat'] = ((($rt2->nilai >= 90) ? 'A' : ($rt2->nilai >= 80)) ? 'B': ($rt2->nilai >= $kkmx)) ? 'C' : 'D';
 
             
             // Deskripsi
@@ -136,6 +139,8 @@ trait NilaiTrait
             ->where([
                 ['mapel_id', '=', $mapel->kode_mapel],
                 ['siswa_id', '=', $request->query('nisn')],
+                ['rombel_id','=', $rombel->kode_rombel],
+                ['periode_id','=', $periode],
             ])->groupBy('mapel_id', 'kd_id')
             ->get();
 
@@ -220,7 +225,8 @@ trait NilaiTrait
                 'AVG(nilai) AS nilai'
             ))->where([
                 ['siswa_id','=', $request->query('nisn')],
-                ['periode_id','=', $request->session()->get('periode_aktif')],
+                // ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['periode_id','=', $request->query('periode')],
                 ['rombel_id','=',$rombel->kode_rombel],
                 ['mapel_id', '=', $mapel->kode_mapel],
                 ['jenis','=','uh']
@@ -231,7 +237,8 @@ trait NilaiTrait
                 'AVG(nilai) AS nilai'
             ))->where([
                 ['siswa_id','=', $request->query('nisn')],
-                ['periode_id','=', $request->session()->get('periode_aktif')],
+                // ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['periode_id','=', $request->query('periode')],
                 ['rombel_id','=',$rombel->kode_rombel],
                 ['mapel_id', '=', $mapel->kode_mapel],
                 ['jenis','=','pts']
@@ -242,16 +249,17 @@ trait NilaiTrait
                 'AVG(nilai) AS nilai'
             ))->where([
                 ['siswa_id','=', $request->query('nisn')],
-                ['periode_id','=', $request->session()->get('periode_aktif')],
+                // ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['periode_id','=', $request->query('periode')],
                 ['rombel_id','=',$rombel->kode_rombel],
                 ['mapel_id', '=', $mapel->kode_mapel],
                 ['jenis','=','pas']
             ])->first();
 
             // $na3 = (($rth->nilai*2)+($rtt->nilai)+($rta->nilai))/4;
-            $naa = array_filter([$rth->nilai,$rtt->nilai,$rta->nilai]);
+            $na3 = array_filter([$rth->nilai,$rtt->nilai,$rta->nilai]);
             // $na3 = (($rth->nilai*2)+($rtt->nilai)+($rta->nilai))/4;
-            $datas[$mapel->kode_mapel]['k3']['na'] = (count($naa)) ? array_sum($naa)/count($naa) : null;
+            $datas[$mapel->kode_mapel]['k3']['na'] = (count($na3)) ? array_sum($na3)/count($na3) : null;
 
             $rt3 = DB::table('nilai3s')->select(DB::raw(
                 'kd_id, AVG(nilai) as rt2'
@@ -315,7 +323,8 @@ trait NilaiTrait
                 'AVG(nilai) AS nilai'
             ))->where([
                 ['siswa_id','=', $request->query('nisn')],
-                ['periode_id','=', $request->session()->get('periode_aktif')],
+                // ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['periode_id','=', $request->query('periode')],
                 ['rombel_id','=',$rombel->kode_rombel],
                 ['mapel_id', '=', $mapel->kode_mapel],
                 ['jenis','=','uh']
@@ -326,7 +335,8 @@ trait NilaiTrait
                 'AVG(nilai) AS nilai'
             ))->where([
                 ['siswa_id','=', $request->query('nisn')],
-                ['periode_id','=', $request->session()->get('periode_aktif')],
+                // ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['periode_id','=', $request->query('periode')],
                 ['rombel_id','=',$rombel->kode_rombel],
                 ['mapel_id', '=', $mapel->kode_mapel],
                 ['jenis','=','pts']
@@ -337,7 +347,8 @@ trait NilaiTrait
                 'AVG(nilai) AS nilai'
             ))->where([
                 ['siswa_id','=', $request->query('nisn')],
-                ['periode_id','=', $request->session()->get('periode_aktif')],
+                // ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['periode_id','=', $request->query('periode')],
                 ['rombel_id','=',$rombel->kode_rombel],
                 ['mapel_id', '=', $mapel->kode_mapel],
                 ['jenis','=','pas']
@@ -346,7 +357,7 @@ trait NilaiTrait
             // $na4 = (($rth4->nilai*2)+($rtt4->nilai)+($rta4->nilai))/4;
             $naa = array_filter([$rth4->nilai,$rtt4->nilai,$rta4->nilai]);
             $na4 = (($rth4->nilai).'-'.($rtt4->nilai).'-'.($rta4->nilai));
-            $datas[$mapel->kode_mapel]['k4']['na'] = (count($naa)) ? array_sum($naa)/count($naa):null;
+            $datas[$mapel->kode_mapel]['k4']['na'] = (count($naa)) ? array_sum($naa)/count($naa) : null;
 
             $rt4 = DB::table('nilai4s')->select(DB::raw(
                 'kd_id, AVG(nilai) as rt2'

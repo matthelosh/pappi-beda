@@ -124,7 +124,15 @@
                     <table width="100%" id="table-biodata-bawah">
                         <tr>
                             <td style="width:50%;">
-                                <div class="foto" style="border: 1px solid #666;content:'';margin-left:20px;width: 3cm; height: 4cm; background: url({{ file_exists(public_path('images/siswas/'.$siswa->nisn.'.jpg')) ? asset("'images/siswas/'.$siswa->nisn.'.jpg") : asset('img/no-photo.jpg') }}); background-size:cover;background-repeat:no-repeat; background-position: center">
+                                @php
+                                    $foto = '';
+                                    if(file_exists(public_path('img/siswas/'.Session::get('sekolah_id').'_'.$siswa->nisn.'.jpg'))){
+                                        $foto = 'img/siswas/'.Session::get('sekolah_id').'_'.$siswa->nisn.'.jpg';
+                                    } else {
+                                        $foto = 'img/no-foto.jpg';                                    
+                                    }
+                                @endphp
+                                <div class="foto" style="border: 1px solid #666;content:'';margin-left:20px;width: 3cm; height: 4cm; background: url({{ asset("$foto") }}); background-size:contain;background-repeat:no-repeat; background-position: center">
                                 </div>
                             </td>
                             <td style="width:50%; text-align: left;">
