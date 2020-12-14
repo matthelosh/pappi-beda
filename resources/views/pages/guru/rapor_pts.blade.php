@@ -253,12 +253,17 @@
                     <tr>
                         <td style="width:33.3%"></td>
                         <td style="width:33.3%">
-                            Mengetahui,
-                            <br>
-                            <br>
-                            <br>
-                            <b><u>{{ $sekolah->ks->nama ?? '-' }}</u></b> <br>
-                            NIP. {{ $sekolah->ks->nip ?? '-' }}
+                            Mengetahui,<br>
+                            @if(file_exists(public_path('/img/ttd/'.$sekolah->npsn.'_'.$sekolah->ks->nip.'.png')))
+                                <img src="{{ asset('img/ttd/'.$sekolah->npsn.'_'.$sekolah->ks->nip.'.png') }}" style="width:100px;"/>
+                            @else
+                                <br>
+                                <br>
+                                <br>
+                            @endif
+                            <br />
+                            <b><u>{{ $sekolah->ks->nama ?? '-' }}</u></b>
+                            <br>NIP. {{ $sekolah->ks->nip ?? '-' }}
                         </td>
                         <td style="width:33.3%"></td>
                     </tr>
