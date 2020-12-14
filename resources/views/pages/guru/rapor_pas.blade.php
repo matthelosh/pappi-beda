@@ -363,7 +363,7 @@
                             <br>
                             <br>
                             <br>
-                            <b><u style="text-transform: uppercase">{{ Auth::user()->nama }}</u></b> <br>
+                            <b><u>{{ Auth::user()->nama }}</u></b> <br>
                             {{ (Auth::user()->status == 'pns') ? 'NIP.':'NIG.' }}  {{ Auth::user()->nip }}
                         </td>
                     </tr>
@@ -374,7 +374,7 @@
                             <br>
                             <br>
                             <br>
-                            <b><u style="text-transform: uppercase">{{ $sekolah->ks->nama ?? '..................' }}</u></b> <br>
+                            <b><u>{{ $sekolah->ks->nama ?? '..................' }}</u></b> <br>
                             NIP. {{ $sekolah->ks->nip ?? '-' }}
                         </td>
                         <td style="width:33.3%"></td>
