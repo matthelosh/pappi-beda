@@ -467,33 +467,17 @@ $(document).ready(function() {
                 title: 'Yakin Keluarkan siswa?',
                 text: namas,
                 icon: 'warning',
-                // showCancelButton : true,,
-                // dangerMode: true
-                buttons: {
-                    cancel: "Batal",
-                    keluar: {
-                        text: "Keluarkan",
-                        value: "keluar"
-                    },
-                    lulus: {
-                        text: "Lulus",
-                        value: "lulus"
-                    }
-                }
+                showCancelButton : true,
+                showDenyButton: true,
+                denyButtonText: 'Lulus'
+                
             }).then((value) => {
-                switch(value)
-                {
-                    case "keluar":
-                        keluarkanSiswa("keluar")
-                        break;
-                    case "lulus":
-                        keluarkanSiswa("lulus")
-                        break;
-                    default:
-                        Swal.fire('Info', 'Siswa tidak dikeluarkan', 'info')
-                        break;
-
-
+                if(value.isConfirmed) {
+                    keluarkanSiswa('keluar')
+                } else if (value.isDenied) {
+                    keluarkanSiswa('lulus')
+                } else {
+                    Swal.fire('Info', 'Siswa tidak jadi dikeluarkan', 'info')
                 }
                 // if (lanjut) {
                 //     $.ajax({

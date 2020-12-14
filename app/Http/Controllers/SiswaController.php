@@ -40,16 +40,18 @@ class SiswaController extends Controller
                     return DataTables::of($siswas)->addIndexColumn()->toJson();
                 break;
                 case "dt-members":
+                    // echo $request->query('rombel_id');
                     $members = Siswa::where([
-                        ['rombel_id', $request->query('rombel_id')],
-                        ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                        ['rombel_id', '=',$request->query('rombel_id')],
+                        // ['sekolah_id','=', $request->session()->get('sekolah_id')],
                     ])->get();
+                    // dd($members);
                     return DataTables::of($members)->addIndexColumn()->toJson();
                 break;
                 case "dt-non-members":
                     $non_members = Siswa::where([
-                        ['rombel_id', '0'],
-                        ['sekolah_id','=', $request->session()->get('sekolah_id')],
+                        ['rombel_id', '=','0'],
+                        // ['sekolah_id','=', $request->session()->get('sekolah_id')],
                     ])->get();
                     return DataTables::of($non_members)->addIndexColumn()->toJson();
                 break;
