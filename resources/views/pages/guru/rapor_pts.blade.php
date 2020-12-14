@@ -205,7 +205,7 @@
                                     <td>{{ $loop->index+1 }}</td>
                                     <td class="text-left">{{ $pt['nama_mapel'] }}</td>
                                     <td>{{ $pt['nilai'] ? number_format($pt['nilai'],2,',',' '):'-' }}</td>
-                                    <td>{{ $pt['predikat'] }}</td>
+                                    <td>{{ ($pt['nilai'] >= 90) ? 'A' :  (($pt['nilai'] >= 80) ? 'B' : (($pt['nilai'] >= $pt['kkm']) ? 'C':'D')) }}</td>
                                     <td class="text-left">
                                         @if(isset($pt['deskripsi']['rt']))
                                                 Ananda {{ $siswa->nama_siswa }} {{ $pt['deskripsi']['max'] }}, {{ $pt['deskripsi']['min'] }}

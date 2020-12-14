@@ -129,7 +129,7 @@ trait NilaiTrait
             // Response Nilai dari rata2 harian dan pts;
             $kkmx = $kkm??70;
             $datas[$mapel->kode_mapel]['nilai'] = $rt2->nilai;
-            $datas[$mapel->kode_mapel]['predikat'] = ((($rt2->nilai >= 90) ? 'A' : ($rt2->nilai >= 80)) ? 'B': ($rt2->nilai >= $kkmx)) ? 'C' : 'D';
+            $datas[$mapel->kode_mapel]['predikat'] = ((($rt2->nilai >= 90) ? 'A' : ($rt2->nilai >= 80)) ? 'B': ($rt2->nilai >= 70)) ? 'C' : 'D';
 
             
             // Deskripsi
