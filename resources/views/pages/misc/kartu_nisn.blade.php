@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Kartu NISN</title>
+    <title>Cetak Kartu NISN</title>
 
     <style>
         * {
@@ -152,7 +152,7 @@
                                 <tr>
                                     <td>Tempat, Tgl. Lahir</td>
                                     <td>:</td>
-                                    <td>{{ $siswa->tempat_lahir??'-' }}, <br> {{  $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D-MM-Y') : '-' }}</td>
+                                    <td>{{ $siswa->tempat_lahir??'-' }}, <br> {{  $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('DD MMM Y') : '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td>Jenis Kelamin</td>

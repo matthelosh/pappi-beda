@@ -52,10 +52,61 @@ $(document).ready(function(){
 
     $(document).on('click', '.btn-import-siswas', function(e) {
         e.preventDefault()
-        $('#modalImport .form-import').prop('action', '/siswas/import')
+        $('#modalImport .form-import').prop('action', '/'+sessionStorage.getItem('username')+'/siswaku/import')
         $('#modalImport #model').text('Siswa')
         $('#modalImport').modal()
     })
+    
+    var selectedFile;
+    $(document).on('change', '#modalImport .form-import input[name="file"]', function(e) {
+        selectedFile = e.target.files[0];
+        // console.log(selectedFile);
+    })
+
+
+     // Submit File Import
+     $(document).on('submit', '#modalImport .form-import', function(e){
+        e.preventDefault()
+        var url = $(this).prop('action');
+        if ( selectedFile ) {
+            // console.log(selectedFile)
+            var fileReader = new FileReader();
+            fileReader.onload = function(event) {
+                var data = event.target.result;
+                var workbook = XLSX.read(data, {
+                    type: "binary"
+                });
+                workbook.SheetNames.forEach( sheet => {
+                    let datas = XLSX.utils.sheet_to_row_object_array(
+                        workbook.Sheets[sheet]
+                    );
+                    var data = {siswas :datas}
+                    // console.log(data)
+                    // var fd = new FormData();
+                    // fd.append('siswas', datas);
+                    $.ajax({
+                        headers: headers,
+                        url: url,
+                        data: data,
+                        type: 'post',
+                        dataType:'json',
+                        success: function(res) {
+                            Swal.fire('Info', res.msg, 'info')
+                            $('.modal').modal('hide')
+                            $('.table').DataTable().draw()
+                        }
+                    }).fail(err => {
+                        // console.log(err.responseJSON)
+                        var msg = (err.responseJSON.code == '23000') ? 'Data email / NIP / username ada yang sama atau sudah dipakai.' : err.responseJSON.msg
+                        Swal.fire('Error', msg, 'error')
+                    })
+                });
+            };
+            fileReader.readAsBinaryString( selectedFile );
+        }
+    })
+
+
     // Ambil Foto Siswa
     $(document).on('change', '#form-siswa input[name="foto_siswa"]', function(e) {
         $('#form-siswa img.foto-siswa').prop('src', URL.createObjectURL(e.target.files[0]))
