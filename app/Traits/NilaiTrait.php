@@ -481,7 +481,7 @@ trait NilaiTrait
             foreach($n2s as $n)
             {
                 $kd = 'App\ButirSikap'::where('kode_kd','=',$n->kd_id)->first();
-                $datas['k2'][$n->kd_id] = $this->kata_op1($n->rt2).$kd->teks;
+                $datas['k2'][$n->kd_id] = $this->kata_op2($n->rt2).$kd->teks;
             }
         }
         // dd($datas);
@@ -497,13 +497,33 @@ trait NilaiTrait
                 return " sangat ";
             break;
             case($nilai >=80):
-                return " baik dalam ";
+                return "  ";
             break;
             case($nilai >=70):
-                return " cukup dalam ";
+                return " cukup ";
             break;
             default:
                 return " perlu bimbingan dalam ";
+            break;
+            
+        }
+    }
+    public function kata_op2($nilai)
+    {
+        $teks = '';
+        switch($nilai)
+        {
+            case($nilai >=90):
+                return " sangat ";
+            break;
+            case($nilai >=80):
+                return " ";
+            break;
+            case($nilai >=70):
+                return " cukup ";
+            break;
+            default:
+                return " perlu bimbingan untuk ";
             break;
             
         }
