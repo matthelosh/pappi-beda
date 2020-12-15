@@ -287,14 +287,14 @@ class NilaiController extends Controller
                         [
                             'sekolah_id' => $request->session()->get('sekolah_id'),
                             'periode_id' => $request->periode,
-                            'rombel_id' => $request->session()->get('rombel')->kode_rombel,
+                            'rombel_id' => $request->rombel,
                             'mapel_id' => $request->mapel,
                             'jenis' => $request->jenis,
                             'kd_id' => $k,
                             'siswa_id' => $siswa_id
                         ],
                         [
-                            'nilai' => $j
+                            'nilai' => $j 
                         ]
                     );
                     // $datas[] = [$k=>$j];

@@ -521,7 +521,8 @@ $(document).ready(function(){
         var periode = $('select[name="periode_id"').val(),
             mapel = $('select[name="mapel_id"').val(),
             aspek= $('select[name="aspek"]').val(),
-            jenis = $('select[name="jenis"]').val()
+            jenis = $('select[name="jenis"]').val(),
+            rombel = $('select.selRombel') ? $('select.selRombel').val() : sessionStorage.getItem('rombel_id')
 
         if (periode == '0') {
             Swal.fire('Peringatan', 'Pilih Periode Nilai Dulu.', 'error')
@@ -557,6 +558,7 @@ $(document).ready(function(){
                             mapel: mapel,
                             jenis: jenis,
                             aspek: aspek,
+                            rombel: rombel,
                             nilais: datas
                             
                         },

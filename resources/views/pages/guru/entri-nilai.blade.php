@@ -8,6 +8,7 @@
                             <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil') }}"></use>
                         </svg>
                         Entri Nilai
+
                     </h4> 
                 </div>
                 <div class="col-sm-6">
@@ -162,3 +163,5 @@
 
     </div>
 </div>
+
+{{-- {{ dd(Session::all()) }} --}}
