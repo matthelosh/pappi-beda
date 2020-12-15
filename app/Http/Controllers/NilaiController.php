@@ -311,8 +311,10 @@ class NilaiController extends Controller
 
     public function entri(Request $request)
     {
+
+        // dd($request->query('rombel'));
         try {
-            $rombel = $request->session()->get('rombel_id');
+            $rombel = $request->query('rombel');
             $nilai = (($request->aspek == '1') ? 'App\Nilai1' : (($request->aspek == '2') ? 'App\Nilai2': (($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4')));
             $mapel = $request->mapel_id;
             $kd = $request->kd_id;

@@ -415,11 +415,15 @@ $(document).ready(function(){
 
     $(document).on('submit', '.form-nilai', function(e) {
         e.preventDefault()
-        alert('hi')
+        if (sessionStorage.getItem('rombel_id') == 'all' && $('select.selRombel').val() == '0') {
+            Swal.fire('Error', 'Pilih Dulu Rombel', 'error')
+            return false
+        }
         var data = $(this).serialize()
+        var rombel = $('select.selRombel') ? $('select.selRombel').val() : sessionStorage.getItem('rombel_id')
         $.ajax({
             headers: headers,
-            url: '/'+sessionStorage.getItem('username')+'/nilais/entri',
+            url: '/'+sessionStorage.getItem('username')+'/nilais/entri?rombel='+rombel,
             type:'post',
             data: data,
             success: function(res) {

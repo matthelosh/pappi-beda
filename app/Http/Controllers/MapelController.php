@@ -40,7 +40,8 @@ class MapelController extends Controller
                     } else {
                         $role = Auth::user()->role;
                         $rombel = 'App\Rombel'::where('kode_rombel', $request->session()->get('rombel_id'))->first();
-                        $kode_mapel = ($role == 'wali') ? '%' : ($role == 'gpai') ? 'pabp' : ($role == 'gor') ? 'pjok' : 'big';
+                        $kode_mapel = '%';
+                        
                         if($role == 'wali' && (Int) $rombel->tingkat < 4 ) {
                             $mapels = Mapel::where([
                                 ['tingkat', '<>', 'besar'],

@@ -1,7 +1,7 @@
 <div class="col-sm-12">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title"><i class="mdi mdi-card-account-details-outline"></i> Profil {{ Auth::user()->nama }}</h4>
+            <h4 class="card-title"><i class="mdi mdi-card-account-details-outline"></i> Profil</h4>
         </div>
         <div class="card-body">
             <div class="row">
@@ -28,9 +28,26 @@
                     </div>
                 </div>
             </div>
+            <hr>
             <div class="row">
                 <div class="col-sm-12">
-                    Biodata
+                    <h5>Detil</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <tr>
+                                <td><i class="mdi mdi-mail"></i> Email</td>
+                                <td>{{ Auth::user()->email }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="mdi mdi-whatsapp"></i> No. HP</td>
+                                <td>{{ Auth::user()->hp }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="mdi mdi-map"></i> Alamat</td>
+                                <td>{{ Auth::user()->alamat }}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

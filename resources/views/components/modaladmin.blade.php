@@ -121,6 +121,7 @@
                                 <option value="gpai">Guru Agama</option>
                                 <option value="gor">Guru Olahraga</option>
                                 <option value="wali">Wali Kelas</option>
+                                <option value="gbig">Guru Bahasa Inggris</option>
                                 @if(Auth::user()->level == 'admin')
                                     <option value="operator">Operator</option>
                                 @endif
