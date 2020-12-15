@@ -6,30 +6,26 @@
                     <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-people') }}"></use>
                 </svg>
                 Data Siswa
-                <button class="btn btn-export-siswas btn-danger float-right mr-2">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-cloud-download') }}"></use>
-                    </svg>
+                {{-- <button class="btn btn-export-siswas btn-danger btn-square float-right mr-2">
+                    <i class="mdi mdi-cloud-download"></i>
                     Unduh
-                </button>
-                <button class="btn btn-import-siswas btn-primary float-right mr-2">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet') }}"></use>
-                    </svg>
+                </button> --}}
+                <button class="btn btn-import-siswas btn-primary btn-square float-right mr-2">
+                    <i class="mdi mdi-cloud-upload"></i>
                     Import
                 </button>
-                <button class="btn btn-new-siswas btn-info float-right mr-2" data-toggle="modal" data-target="#modalSiswa">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
-                    </svg>
+                <button class="btn btn-new-siswas btn-info btn-square float-right mr-2" data-toggle="modal" data-target="#modalSiswa">
+                    <i class="mdi mdi-plus"></i>
                     Buat
                 </button>
-                <button class="btn btn-success float-right mr-2 btn-print-siswas d-none d-md-block">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
-                    </svg>
+                <a href="cetak-nisn?rombel={{ Session::get('rombel')->kode_rombel }}" target="_blank" class="btn btn-success float-right mr-2 btn-square btn-print-siswas d-none d-md-block">
+                    <i class="mdi mdi-card-account-details-outline"></i>
+                    Cetak Kartu NISN
+                </a>
+                {{-- <button class="btn btn-success float-right mr-2 btn-square btn-print-siswas d-none d-md-block">
+                    <i class="mdi mdi-printer"></i>
                     Cetak
-                </button>
+                </button> --}}
             </h4>
             <hr>
             <div class="table-responsive">

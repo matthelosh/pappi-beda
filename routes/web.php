@@ -285,5 +285,8 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::get('/', 'DashGuruController@profil')->name('profil.index');
         });
 
+        // MIsc Routes
+        Route::get('/cetak-nisn', 'DashGuruController@cetakNisn')->name('cetak-nisn');
+
     });
 

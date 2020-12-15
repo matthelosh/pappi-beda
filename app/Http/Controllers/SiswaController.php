@@ -262,7 +262,7 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $sekolah_id, $id)
     {
-        $redirect = (Auth::user()->level == 'operator') ? '/operator/'.Auth::user()->sekolah_id.'/siswas' : '/siswas';
+        $redirect = (Auth::user()->level == 'operator') ? '/operator/'.Auth::user()->sekolah_id.'/siswas' : (Auth::user()->level=='admin' ? '/siswas' : '/'.Auth::user()->username.'/siswaku');
         try {
             $foto = $request->file('foto_siswa');
             $dest = public_path('img/siswas/');

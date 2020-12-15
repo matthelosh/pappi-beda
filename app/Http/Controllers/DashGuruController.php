@@ -98,4 +98,13 @@ class DashGuruController extends Controller
     {
         return view('pages.guru.dashboard', ['page_title' => 'Profil', 'menus' => $this->showMenus($request)]);
     }
+
+    public function cetakNisn(Request $request)
+    {
+        $siswas = 'App\Siswa'::where([
+            ['sekolah_id','=', $request->session()->get('sekolah_id')],
+            ['rombel_id','=', $request->query('rombel')]
+        ])->with('ortus')->get();
+        return view('pages.misc.kartu_nisn', ['siswas' => $siswas, 'sekolah' => $request->session()->get('sekolah')]);
+    }
 }
