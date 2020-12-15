@@ -463,7 +463,7 @@ trait NilaiTrait
             foreach($n1s as $n)
             {
                 $kd = 'App\ButirSikap'::where('kode_kd','=',$n->kd_id)->first();
-                $datas['k1'][$n->kd_id] = $this->kata_op1($n->rt1).$kd->teks;
+                $datas['k1'][$n->kd_id] = $this->kata_op1($n->rt1, $n->kd_id).$kd->teks;
             }
         }
         $n2s = DB::table('nilai2s')->select(DB::raw('
@@ -477,24 +477,24 @@ trait NilaiTrait
         ])
         ->groupBy('kd_id')
         ->get();
-        if($n1s->count() > 0) {
+        if($n2s->count() > 0) {
             foreach($n2s as $n)
             {
                 $kd = 'App\ButirSikap'::where('kode_kd','=',$n->kd_id)->first();
-                $datas['k2'][$n->kd_id] = $this->kata_op2($n->rt2).$kd->teks;
+                $datas['k2'][$n->kd_id] = $this->kata_op2($n->rt2, $n->kd_id).$kd->teks;
             }
         }
         // dd($datas);
         return $datas;
     }
 
-    public function kata_op1($nilai)
+    public function kata_op1($nilai, $kd_id)
     {
         $teks = '';
         switch($nilai)
         {
             case($nilai >=90):
-                return " sangat ";
+                return " selalu ";
             break;
             case($nilai >=80):
                 return "  ";
@@ -508,7 +508,7 @@ trait NilaiTrait
             
         }
     }
-    public function kata_op2($nilai)
+    public function kata_op2($nilai, $kd_id)
     {
         $teks = '';
         switch($nilai)
