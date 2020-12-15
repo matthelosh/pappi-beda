@@ -94,5 +94,8 @@ class DashGuruController extends Controller
         return view('pages.admin.dashboard', ['page_title' => 'Tanggal Rapor', 'menus' => $this->showMenus($request)]);
     }
 
-    
+    public function profil(Request $request)
+    {
+        return view('pages.guru.dashboard', ['page_title' => 'Profil', 'menus' => $this->showMenus($request)]);
+    }
 }

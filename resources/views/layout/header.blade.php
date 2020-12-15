@@ -48,7 +48,7 @@
                 {{-- <svg class="c-icon mr-2">
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-comment-square') }}"></use>
                 </svg> Comments<span class="badge badge-warning ml-auto">42</span></a> --}}
-              <div class="dropdown-header bg-light py-2"><strong>Atur</strong></div><a class="dropdown-item" href="#">
+              <div class="dropdown-header bg-light py-2"><strong>Atur</strong></div><a class="dropdown-item" href="/{{ Auth::user()->username }}/profil">
                 <svg class="c-icon mr-2">
                   <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
                 </svg> Profil</a>

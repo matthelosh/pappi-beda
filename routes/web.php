@@ -281,5 +281,9 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
             Route::put('/{subtema_id}/{mapel_id}', 'PemetaanController@update')->name('pemetaan.update');
         });
 
+        Route::group(['prefix' => 'profil', 'middleware' => ['auth', 'isGuru']], function () {
+            Route::get('/', 'DashGuruController@profil')->name('profil.index');
+        });
+
     });
 

@@ -39,5 +39,8 @@ Dashboard Guru
         @case('Tema')
             @include('pages.guru.tema')
         @break
+        @case('Profil')
+            @include('pages.guru.profil')
+        @break
     @endswitch
 @endsection
