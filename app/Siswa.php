@@ -24,7 +24,9 @@ class Siswa extends Model
         'prov',
         'hp',
         'sekolah_id',
-        'rombel_id'
+        'rombel_id',
+        'tempat_lahir',
+        'tanggal_lahir'
     ];
 
     // protected $softCascade = ['ortus','ekskuls','fisiks', 'kesehatans', 'prestasis','absens','nilais'];
