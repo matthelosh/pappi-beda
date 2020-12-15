@@ -136,7 +136,7 @@
                                 </div>
                             </td>
                             <td style="width:50%; text-align: left;">
-                                {{ $sekolah->kab }},  {{  date_format(date_create($tanggal_rapor['pas']), "d F Y") }} <br>
+                                {{ $sekolah->kab }},  {{  $tanggal_rapor['biodata'] }} <br>
                                 Kepala Sekolah, <br>
                                 @if(file_exists(public_path('/img/ttd/'.$sekolah->npsn.'_'.$sekolah->ks->nip.'.png')))
                                     <img src="{{ asset('img/ttd/'.$sekolah->npsn.'_'.$sekolah->ks->nip.'.png') }}" style="width:100px;"/>

@@ -6,6 +6,8 @@ use App\Raporpas;
 use Illuminate\Http\Request;
 use App\Traits\MenuTrait;
 use App\Traits\NilaiTrait;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class RaporController extends Controller
 {
@@ -61,6 +63,11 @@ class RaporController extends Controller
             ['sekolah_id','=', $request->session()->get('sekolah_id')],
             ['jenis_rapor','=','pas']
         ])->first();
+        $tgl_biodata = DB::table('tanggal_biodata')->select('tanggal')->where([
+            ['sekolah_id','=', $request->session()->get('sekolah_id')],
+            ['rombel_id','=', $request->session()->get('rombel')->kode_rombel],
+            ['periode_id','=', $request->session()->get('periode_aktif')]
+        ])->first();
         // $pas = $this->rpas($request);
         // $sarans = $this->saran($request);
         // $ekskuls = $this->ekskul($request);
@@ -72,8 +79,9 @@ class RaporController extends Controller
             'siswa' => $siswa, 
             'sekolah' => $sekolah, 
             'tanggal_rapor' => [
-                'pts' => ($tgl_pts) ?  $tgl_pts->tanggal : date('Y-m-d'),
-                'pas' => ($tgl_pas) ? $tgl_pas->tanggal : date('Y-m-d')
+                'pts' => ($tgl_pts) ?  Carbon::parse($tgl_pts->tanggal)->isoFormat('D MMMM Y') : Carbon::parse(date('Y-m-d'))->isoFormat('D MMMM Y'),
+                'pas' => ($tgl_pas) ? Carbon::parse($tgl_pas->tanggal)->isoFormat('D MMMM Y') : Carbon::parse(date('Y-m-d'))->isoFormat('D MMMM Y'),
+                'biodata' => ($tgl_biodata) ? Carbon::parse($tgl_biodata->tanggal)->isoFormat('D MMMM Y') : Carbon::parse(date('Y-m-d'))->isoFormat('D MMMM Y')
             ], 
             'pts' => $this->rpts($request), 
             'pts2' => $this->rpts2($request),

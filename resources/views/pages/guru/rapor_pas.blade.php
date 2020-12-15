@@ -358,7 +358,7 @@
                         </td>
                         <td style="width:33.3%"></td>
                         <td style="width:33.3%">
-                            {{ $sekolah->kab }}, {{ date_format(date_create($tanggal_rapor['pas']), "d F Y") }} <br>
+                            {{ $sekolah->kab }}, {{ $tanggal_rapor['pas'] }} <br>
                             Guru Kelas,
                             <br>
                             <br>
