@@ -110,23 +110,47 @@ class SiswaController extends Controller
 
         try {
 
-            $siswas = $request->datas;
+            $siswas = $request->siswas;
+            // dd(count($siswas));
             foreach($siswas as $siswa) {
-                Siswa::create([
-                    'nis' => $siswa['nis'],
-                    'nisn' =>  $siswa['nisn'],
-                    'nama_siswa' =>  $siswa['nama_siswa'],
-                    'jk' =>  $siswa['jk'],
-                    'agama' => $siswa['agama'],
-                    'alamat' =>  $siswa['alamat'],
-                    'desa' =>  $siswa['desa'],
-                    'kec' =>  $siswa['kec'],
-                    'kab' =>  $siswa['kab'],
-                    'prov' =>  $siswa['prov'],
-                    'hp' =>  $siswa['hp'],
-                    'sekolah_id' =>  $siswa['sekolah_id'],
-                    'rombel_id' =>  $siswa['rombel_id']
-                ]);
+                // Siswa::create([
+                //     'nis' => $siswa['nis'],
+                //     'nisn' =>  $siswa['nisn'],
+                //     'nama_siswa' =>  $siswa['nama_siswa'],
+                //     'tempat_lahir' => $siswa['tempat_lahir'],
+                //     'tanggal_lahir' => $siswa['tanggal_lahir'],
+                //     'jk' =>  $siswa['jk'],
+                //     'agama' => $siswa['agama'],
+                //     'alamat' =>  $siswa['alamat'],
+                //     'desa' =>  $siswa['desa'],
+                //     'kec' =>  $siswa['kec'],
+                //     'kab' =>  $siswa['kab'],
+                //     'prov' =>  $siswa['prov'],
+                //     'hp' =>  $siswa['hp'],
+                //     'sekolah_id' =>  $siswa['sekolah_id'],
+                //     'rombel_id' =>  $siswa['rombel_id']
+                // ]);
+                Siswa::updateOrCreate(
+                    [
+                        'sekolah_id' =>  $siswa['sekolah_id'],
+                        'nisn' =>  $siswa['nisn']
+                    ],
+                    [
+                        'nis' => $siswa['nis'],
+                        'nama_siswa' =>  $siswa['nama_siswa'],
+                        'tempat_lahir' => $siswa['tempat_lahir'],
+                        'tanggal_lahir' => $siswa['tanggal_lahir'],
+                        'jk' =>  $siswa['jk'],
+                        'agama' => $siswa['agama'],
+                        'alamat' =>  $siswa['alamat'],
+                        'desa' =>  $siswa['desa'],
+                        'kec' =>  $siswa['kec'],
+                        'kab' =>  $siswa['kab'],
+                        'prov' =>  $siswa['prov'],
+                        'hp' =>  $siswa['hp'],
+                        'rombel_id' =>  $siswa['rombel_id']
+                    ]
+                    );
             }
 
             return response()->json(['status' => 'sukses', 'msg' => 'Data Siswa disimpan']);
@@ -202,6 +226,8 @@ class SiswaController extends Controller
                 'nis' => $request->nis,
                 'nisn' =>  $request->nisn,
                 'nama_siswa' =>  $request->nama_siswa,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
                 'jk' =>  $request->jk,
                 'agama' => $request->agama,
                 'alamat' =>  $request->alamat,
@@ -275,6 +301,8 @@ class SiswaController extends Controller
                 'nis' => $request->nis,
                 'nisn' =>  $request->nisn,
                 'nama_siswa' =>  $request->nama_siswa,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
                 'jk' =>  $request->jk,
                 'agama' => $request->agama,
                 'alamat' =>  $request->alamat,

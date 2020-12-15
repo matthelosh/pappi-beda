@@ -70,6 +70,28 @@
         .text-right {
             text-align: right;
         }
+
+        .btn-print-kartu-nisn {
+            position: fixed;
+            z-index: 10;
+            top: 50px;
+            right: 50px;
+            padding: 10px 20px;
+            background: #a4d4d1;
+            outline: none;
+            border: none;
+            box-shadow: 2px 3px 5px #a7c2c0a1;
+            color: #fff;
+        }
+        .btn-print-kartu-nisn:hover {
+            cursor: pointer;
+            background: #82aeab;
+        }
+        @media print {
+            button {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -130,7 +152,7 @@
                                 <tr>
                                     <td>Tempat, Tgl. Lahir</td>
                                     <td>:</td>
-                                    <td>{{ $siswa->tempat_lahir??'-' }}, {{ $siswa->tanggal_lahir??'-' }}</td>
+                                    <td>{{ $siswa->tempat_lahir??'-' }}, <br> {{  $siswa->tanggal_lahir ? \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D-MM-Y') : '-' }}</td>
                                 </tr>
                                 <tr>
                                     <td>Jenis Kelamin</td>
@@ -149,5 +171,21 @@
             </div>
         @endforeach
     </div>
+
+    <button class="btn btn-lg btn-danger btn-print-kartu-nisn">
+        Cetak
+    </button>
+
+    <script src="{{ asset('/jquery/jquery.js') }}"></script>
+    <script>
+        $(document).on('ready', function(){
+            $(window).on('load', function(){
+                window.print()
+            })
+        })
+       $(document).on('click', '.btn-print-kartu-nisn', function(){
+           window.print()
+       })
+    </script>
 </body>
 </html>

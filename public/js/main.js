@@ -758,13 +758,14 @@ $(document).ready(function() {
                     let datas = XLSX.utils.sheet_to_row_object_array(
                         workbook.Sheets[sheet]
                     );
-                    // console.log(datas)
+                    var data = {siswas :datas}
+                    // console.log(data)
                     // var fd = new FormData();
                     // fd.append('siswas', datas);
                     $.ajax({
                         headers: headers,
                         url: url,
-                        data: {datas: datas},
+                        data: data,
                         type: 'post',
                         dataType:'json',
                         success: function(res) {

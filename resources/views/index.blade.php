@@ -322,10 +322,12 @@
     @endif
 
     <script>
-      // $('.btn-logout').on('click', function(e) {
-      //   e.preventDefault()
-      //   alert('logout')
-      // })
+      
+    $(document).on('click', '.foto-siswa', function(){
+      $('#form-siswa input[name="foto_siswa"]').trigger('click')
+    })
+
+
       function logout(e) {
         Swal.fire({
           title: 'Anda yakin keluar?',

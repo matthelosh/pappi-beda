@@ -503,90 +503,107 @@
                 <form action="{{ (Auth::user()->level == 'admin') ? '/siswas/create' : '/operator/'.Auth::user()->sekolah_id.'/siswas/create' }}" method="POST" class="form form-siswa" id="form-siswa" enctype="multipart/form-data">
                     @csrf()
                     <div class="row">
-                        <div class="form-group col-sm-2">
-                            <label for="nis">NIS</label>
-                            <input type="text" name="nis"  class="form-control" placeholder="NIS">
+                        <div class="col-sm-3">
+                            <div class="form-group col-sm-12">
+                                <label for="foto">Foto Siswa (Klik gambar untuk mengganti)</label>
+                                <input type="file" name="foto_siswa" class="form-control d-none" >
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <img src="" alt="Foto Siswa" class="img img-thumbnail foto-siswa" onerror="this.onerror=null;this.src='/img/favicon.png'">
+                            </div>
                         </div>
-                        <div class="form-group col-sm-4">
-                            <label for="nisn">NISN</label>
-                            <input type="text" name="nisn"  class="form-control" placeholder="NISN">
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label for="nama_siswa">Nama Siswa</label>
-                            <input type="text" name="nama_siswa"  class="form-control" placeholder="Nama Lengkap">
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="jk">JK</label>
-                            <select name="jk" class="form-control">
-                                <option value="0">Pilih</option>
-                                <option value="L">Laki-laki</option>
-                                <option value="P">Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="agama">Agama</label>
-                            <select name="agama" class="form-control">
-                                <option value="0">Pilih</option>
-                                <option value="Islam">Islam</option>
-                                <option value="Protestan">Protestan</option>
-                                <option value="Katolik">Katolik</option>
-                                <option value="Hindu">Hindu</option>
-                                <option value="Budha">Budha</option>
-                                <option value="Konguchu">Konghuchu</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-5">
-                            <label for="alamat">Alamat</label>
-                            <textarea name="alamat" cols="30" rows="2" class="form-control" placeholder="Alamat"></textarea>
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="desa">Desa/Kelurahan</label>
-                            <input type="text" name="desa" placeholder="Desa/Kelurahan" class="form-control">
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="kec">Kecamatan</label>
-                            <input type="text" name="kec" placeholder="Kecamatan" class="form-control">
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="kab">Kab/Kota</label>
-                            <input type="text" class="form-control" name="kab" placeholder="Kab/Kota">
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="prov">Provinsi</label>
-                            <input type="text" class="form-control" name="prov" placeholder="Provinsi">
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="hp">HP</label>
-                            <input type="text" class="form-control" name="hp" placeholder="No. HP">
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="sekolah_id">Sekolah</label>
-                            <select name="sekolah_id" class="form-control selSekolah" style="width:100%">
-                                <option value="0">Sekolah</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="rombel_id">Rombel</label>
-                            <select name="rombel_id" class="form-control selRombel" style="width:100%">
-                                <option value="0">Rombel</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <label for="foto">Foto Siswa</label>
-                            <input type="file" name="foto_siswa" class="form-control">
-                        </div>
-                        <div class="form-group col-sm-4">
-                            <img src="" alt="Foto Siswa" class="img img-thumbnail foto-siswa" onerror="this.onerror=null;this.src='/img/favicon.png'">
-                        </div>
-                        <div class="form-group col-sm-12 text-right">
-                            <button class="btn btn-primary" type="submit">
-                                <svg class="c-icon">
-                                    <use xlink:href="{{ asset('/coreui/vendors/@coreui/icons/svg/free.svg#cil-save') }}"></use>
-                                </svg>
-                                Simpan
-                            </button>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="form-group col-sm-2">
+                                    <label for="nis">NIS</label>
+                                    <input type="text" name="nis"  class="form-control" placeholder="NIS">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="nisn">NISN</label>
+                                    <input type="text" name="nisn"  class="form-control" placeholder="NISN">
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="nama_siswa">Nama Siswa</label>
+                                    <input type="text" name="nama_siswa"  class="form-control" placeholder="Nama Lengkap">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="tempat_lahir">Tempat Lahir</label>
+                                    <input type="text" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="tanggal_lahir">Tanggal Lahir</label>
+                                    <input type="date" name="tanggal_lahir" class="form-control" placeholder="Tanggal Lahir">
+                                </div>
+
+                                <div class="form-group col-sm-3">
+                                    <label for="jk">JK</label>
+                                    <select name="jk" class="form-control">
+                                        <option value="0">Pilih</option>
+                                        <option value="L">Laki-laki</option>
+                                        <option value="P">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="agama">Agama</label>
+                                    <select name="agama" class="form-control">
+                                        <option value="0">Pilih</option>
+                                        <option value="Islam">Islam</option>
+                                        <option value="Protestan">Protestan</option>
+                                        <option value="Katolik">Katolik</option>
+                                        <option value="Hindu">Hindu</option>
+                                        <option value="Budha">Budha</option>
+                                        <option value="Konguchu">Konghuchu</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-5">
+                                    <label for="alamat">Alamat</label>
+                                    <textarea name="alamat" cols="30" rows="2" class="form-control" placeholder="Alamat"></textarea>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="desa">Desa/Kelurahan</label>
+                                    <input type="text" name="desa" placeholder="Desa/Kelurahan" class="form-control">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="kec">Kecamatan</label>
+                                    <input type="text" name="kec" placeholder="Kecamatan" class="form-control">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="kab">Kab/Kota</label>
+                                    <input type="text" class="form-control" name="kab" placeholder="Kab/Kota">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="prov">Provinsi</label>
+                                    <input type="text" class="form-control" name="prov" placeholder="Provinsi">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="hp">HP</label>
+                                    <input type="text" class="form-control" name="hp" placeholder="No. HP">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="sekolah_id">Sekolah</label>
+                                    <select name="sekolah_id" class="form-control selSekolah" style="width:100%">
+                                        <option value="0">Sekolah</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <label for="rombel_id">Rombel</label>
+                                    <select name="rombel_id" class="form-control selRombel" style="width:100%">
+                                        <option value="0">Rombel</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group col-sm-12 text-right">
+                                    <button class="btn btn-primary" type="submit">
+                                        <svg class="c-icon">
+                                            <use xlink:href="{{ asset('/coreui/vendors/@coreui/icons/svg/free.svg#cil-save') }}"></use>
+                                        </svg>
+                                        Simpan
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    
                 </form>
             </div>
         </div>
