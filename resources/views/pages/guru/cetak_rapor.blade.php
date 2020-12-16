@@ -49,7 +49,7 @@
             </li>
         </ul>
        
-        <div class="tab-content">
+        <div class="tab-content py-3">
             <div class="tab-pane container-fluid" id="cover">
                @include('pages.guru.cover')
             </div>
