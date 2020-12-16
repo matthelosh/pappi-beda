@@ -124,6 +124,8 @@ $(document).ready(function(){
         $('#form-siswa input[name="nisn"]').val(siswa.nisn)
         $('#form-siswa input[name="nama_siswa"]').val(siswa.nama_siswa)
         $('#form-siswa select[name="agama"]').val(siswa.agama)
+        $('#form-siswa select[name="tempat_lahir"]').val(siswa.tempat_lahir)
+        $('#form-siswa select[name="tanggal_lahir"]').val(siswa.tanggal_lahir)
         $('#form-siswa select[name="jk"]').val(siswa.jk)
         $('#form-siswa textarea[name="alamat"]').val(siswa.alamat)
         $('#form-siswa input[name="desa"]').val(siswa.desa)
