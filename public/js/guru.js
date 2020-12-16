@@ -23,6 +23,10 @@ $(document).ready(function(){
             {"data": null, render: (data) => {
                 return ((data.nis) ? data.nis: '-') +'/'+ ((data.nisn) ? data.nisn : '-')
             }},
+            {"data": null, render: (data) => {
+                
+                return `<img src=/img/siswas/${data.sekolah_id}_${data.nisn}.jpg alt="Foto ${data.nama_siswa}" onerror="this.error=null;this.src='/img/${(data.jk == 'L') ? 'no-photo.jpg' : 'siswa-p.png'}';" height="40px" class="img img-avatar" />` 
+            }},
             {"data": "nama_siswa"},
             {"data": "jk"},
             {"data": null, render: (data) => {
@@ -49,6 +53,23 @@ $(document).ready(function(){
             }}
         ]
     })
+
+    // function showFotoSiswa(siswa) {
+    //     var img = ``
+    //     $.get('/img/siswas/'+siswa.sekolah_id+'_'+siswa.nisn+'.jpg')
+    //         .done((img) => {
+    //             return img = `<img src="${img}" />`
+    //         })
+    //         .fail((err) => {
+    //             // if (siswa.jk.toLowerCase() == 'l') {
+    //                 return img = `<img src="/img/no-photo.jpg">`
+    //             // } else {
+    //             //     return img = `<img src="/img/siswa-p.png">`
+    //             // }
+    //         })
+        
+            
+    // }
 
     $(document).on('click', '.btn-import-siswas', function(e) {
         e.preventDefault()
@@ -115,6 +136,7 @@ $(document).ready(function(){
     $(document).on('click', '.btn-edit-siswa', function(e) {
         e.preventDefault()
         var siswa = tsiswas.row($(this).parents('tr')).data()
+        console.log(siswa)
         $('#modalSiswa ')
         $('#form-siswa').prop({
             'action':'/'+sessionStorage.getItem('username')+'/siswaku/'+siswa.id
@@ -124,8 +146,8 @@ $(document).ready(function(){
         $('#form-siswa input[name="nisn"]').val(siswa.nisn)
         $('#form-siswa input[name="nama_siswa"]').val(siswa.nama_siswa)
         $('#form-siswa select[name="agama"]').val(siswa.agama)
-        $('#form-siswa select[name="tempat_lahir"]').val(siswa.tempat_lahir)
-        $('#form-siswa select[name="tanggal_lahir"]').val(siswa.tanggal_lahir)
+        $('#form-siswa input[name="tempat_lahir"]').val(siswa.tempat_lahir)
+        $('#form-siswa input[name="tanggal_lahir"]').val(siswa.tanggal_lahir)
         $('#form-siswa select[name="jk"]').val(siswa.jk)
         $('#form-siswa textarea[name="alamat"]').val(siswa.alamat)
         $('#form-siswa input[name="desa"]').val(siswa.desa)
@@ -135,8 +157,9 @@ $(document).ready(function(){
         $('#form-siswa input[name=hp]').val(siswa.hp)
         $('#form-siswa select[name=sekolah_id]').append(`<option value="${(siswa.sekolahs)?siswa.sekolah_id:'0'}" selected>${(siswa.sekolahs)?siswa.sekolahs.nama_sekolah:'Pilih Sekolah'}</option>`)
         $('#form-siswa select[name=rombel_id]').append(`<option value="${(siswa.rombels)?siswa.rombel_id:'0'}" selected>${(siswa.rombels)?siswa.rombels.nama_rombel:'Pilih rombel'}</option>`)
-        $('#form-siswa img.foto-siswa').prop({'src': '/img/siswas/'+siswa.sekolah_id+'_'+siswa.nisn+'.jpg'}).on('error', function(){
-            $(this).prop('src', '/img/no-photo.jpg')
+        $('#form-siswa img.foto-siswa').css('cursor', 'pointer').prop({'src': '/img/siswas/'+siswa.sekolah_id+'_'+siswa.nisn+'.jpg'}).on('error', function(){
+            var img = (siswa.jk == 'L') ? 'no-photo.jpg' : 'siswa-p.png'
+            $(this).prop('src', '/img/'+img)
         })
 
         $('#modalSiswa').modal()

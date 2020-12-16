@@ -34,6 +34,7 @@
                         <tr>
                             <th>NO</th>
                             <th>NIS / NISN</th>
+                            <th>FOTO</th>
                             <th>NAMA</th>
                             <th>JK</th>
                             <th>WALI MURID</th>
