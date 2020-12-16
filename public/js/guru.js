@@ -820,6 +820,11 @@ function getRekap34(url=null) {
         cetakRapor('rapor_pas', 'Rapor PAS')
     })
 
+    $('#btn-print-biodata').on('click', function(e) {
+        e.preventDefault()
+        cetakRapor('biodata_rapor', 'Cetak Biodata')
+    })
+
     function cetakRapor(divId, title){
         var page = document.querySelector('#'+divId)
         var win = window.open('', '_blank', 'location=yes,height=1400,width=1024,scrollbars=yes,status=yes')
