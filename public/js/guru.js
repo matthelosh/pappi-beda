@@ -824,6 +824,10 @@ function getRekap34(url=null) {
         e.preventDefault()
         cetakRapor('biodata_rapor', 'Cetak Biodata')
     })
+    $('#btn-print-cover').on('click', function(e) {
+        e.preventDefault()
+        cetakRapor('cover_rapor', 'Cetak Cover')
+    })
 
     function cetakRapor(divId, title){
         var page = document.querySelector('#'+divId)
