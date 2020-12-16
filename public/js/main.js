@@ -53,7 +53,7 @@ $(document).ready(function() {
             {"data": "DT_RowIndex"},
             {"data": 'sekolahs.nama_sekolah'},
             {"data": null, render: (data) => {
-                return `<img class="img img-circle circled" src="/img/users/${data.nip}.jpg" onerror="this.onerror=null;this.src='${(data.jk == 'l') ? '/img/users/guru_l.png' : '/img/users/guru_p.png' }';" alt="Foto User" height="50px">`
+                return `<img class="img img-circle circled img-user-thumb" src="/img/users/${data.nip}.jpg" onerror="this.onerror=null;this.src='${(data.jk == 'l') ? '/img/users/guru_l.png' : '/img/users/guru_p.png' }';" alt="Foto User" height="50px" style="cursor:pointer;" title="Klik untuk mengunggah foto ${(data.jk == 'l') ? 'Bapak' : 'Ibu'} ${data.nama}">` 
             }},
             {"data": 'nip'},
             {"data": 'nama'},
@@ -79,11 +79,13 @@ $(document).ready(function() {
         ]
     })
 
-    // var selectedTr = [];
+    // Upload Foto User
+    $(document).on('click', '.img-user-thumb', function(e){
+        e.preventDefault()
+        var user = tusers.row($(this).parents('tr')).data()
 
-    // $(document).on('click', 'tr', function(e) {
-    //     $(this).toggleClass('selected')
-    // })
+
+    })
 
     // Edit User
     $(document).on('click', '.btn-edit-user', function(e) {
@@ -420,7 +422,7 @@ $(document).ready(function() {
             serverSide: true,
             ajax: {
                 headers: headers,
-                url: '/siswas?req=dt-members&rombel_id='+rombel.kode_rombel,
+                url: ajaxUrl+'siswas?req=dt-members&rombel_id='+rombel.kode_rombel,
                 type: 'post'
             },
             columns: [
@@ -434,7 +436,7 @@ $(document).ready(function() {
             serverSide: true,
             ajax: {
                 headers: headers,
-                url: '/siswas?req=dt-non-members',
+                url: ajaxUrl+'siswas?req=dt-non-members',
                 type: 'post'
             },
             columns: [

@@ -1,8 +1,8 @@
 tr.selected {
     background: rgb(227, 243, 238)!important;
 }
-li.side-child {
-    padding-left: 20px;
+li.side-child a{
+    padding-left: 75px!important;
 }
 .loading {
     position: fixed;
