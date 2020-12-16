@@ -24,7 +24,7 @@ class UserController extends Controller
             switch($request->query('req'))
             {
                 case "select":
-                    $where = Auth::user()->sekolah_ißd == 'all' ? [['level','<>','admin']]:[['sekolah_id','=',Auth::user()->sekolah_id],['level','=','guru']];
+                    $where = Auth::user()->sekolah_id == 'all' ? [['level','<>','admin']]:[['sekolah_id','=',Auth::user()->sekolah_id],['level','=','guru']];
 
                     $datas = User::where($where)->get();
                     $users = [];
@@ -254,6 +254,17 @@ class UserController extends Controller
         }catch (\Exception $e)
         {
             return response()->json(['status' => 'error', 'msg' => $e->getCode(). ':'. $e->getMessage()]);
+        }
+    }
+
+    public function uploadFoto(Request $request, $npsn, $nip)
+    {
+        try {
+            $file = $request->file;
+            $path = $file->storeAs('public/img', $npsn.'_'.$nip.'.jpg');
+            return response()->json(['status' => 'sukses','msg' => 'Foto Pengguna tersimpan']);
+        } catch (\Exception $e) {
+            return response()->json(['status'=> 'gagal', 'msg' => $e->getCode().':'.$e->getMessage()]);
         }
     }
 }

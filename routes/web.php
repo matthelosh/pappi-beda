@@ -179,6 +179,7 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
                 Route::post('/get', 'UserController@index')->name('operator.users.index');
                 Route::get('/edit', 'UserController@edit')->name('operator.users.edit');
                 Route::delete('/', 'UserController@destroy')->name('operator.users.delete');
+                Route::put('/foto/{nip}', 'UserController@uploadFoto')->name('operator.users.foto');
             });
 
             Route::group(['prefix' => 'siswas', 'middleware' => ['auth', 'isOperator']], function(){

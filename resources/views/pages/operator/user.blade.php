@@ -1,3 +1,5 @@
+
+
 <div class="col-sm-12">
     <div class="card">
         <div class="card-header">
@@ -19,6 +21,7 @@
         </div>
         <div class="card-body">
             <div class="card-text">
+                {{-- <img src="{{ Storage::url('img/pappi.png') }}" alt="Halo"> --}}
                 <div class="table-responsive">
                     <table class="table table-users table-sm table-striped table-users" id="table-users" style="width:100%">
                         <thead>
@@ -79,3 +82,6 @@
         </div>
     </div>
 </div>
+
+
+<input type="file" name="foto_user" id="foto_user" style="display: none;">

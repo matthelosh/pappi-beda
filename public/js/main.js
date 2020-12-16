@@ -53,7 +53,7 @@ $(document).ready(function() {
             {"data": "DT_RowIndex"},
             {"data": 'sekolahs.nama_sekolah'},
             {"data": null, render: (data) => {
-                return `<img class="img img-circle circled img-user-thumb" src="/img/users/${data.nip}.jpg" onerror="this.onerror=null;this.src='${(data.jk == 'l') ? '/img/users/guru_l.png' : '/img/users/guru_p.png' }';" alt="Foto User" height="50px" style="cursor:pointer;" title="Klik untuk mengunggah foto ${(data.jk == 'l') ? 'Bapak' : 'Ibu'} ${data.nama}">` 
+                return `<img class="img img-circle circled img-user-thumb" src="/storage/img/${data.sekolah_id+'_'+data.nip}.jpg" onerror="this.onerror=null;this.src='${(data.jk == 'l') ? '/img/users/guru_l.png' : '/img/users/guru_p.png' }';" alt="Foto User" height="50px" style="cursor:pointer;" title="Klik untuk mengunggah foto ${(data.jk == 'l') ? 'Bapak' : 'Ibu'} ${data.nama}">` 
             }},
             {"data": 'nip'},
             {"data": 'nama'},
@@ -84,7 +84,43 @@ $(document).ready(function() {
         e.preventDefault()
         var user = tusers.row($(this).parents('tr')).data()
 
-
+        $('#foto_user').trigger('click')
+        $('#foto_user').on('change', function(e){
+            // console.log(e)
+            var file = e.target.files[0]
+            var reader = new FileReader()
+            reader.onload = (x) => {
+                Swal.fire({
+                    title: 'Foto Pengguna',
+                    imageUrl: x.target.result,
+                    imageAlt: 'Foto Pengguna',
+                    confirmButtonText: 'Unggah',
+                    showCancelButton: true
+                }).then((res) => {
+                    if(res.isConfirmed) {
+                        var fd = new FormData()
+                        fd.append('file', file);
+                        fd.append('_method', 'PUT')
+                        
+                        // console.log(fd)
+                        $.ajax({
+                            url: ajaxUrl+'users/foto/'+user.nip,
+                            headers: headers,
+                            type: 'post',
+                            data: fd,
+                            contentType: false,
+                            processData: false,
+                        }).done(res => {
+                            Swal.fire('Info', res.msg, 'info')
+                            tusers.ajax.reload()
+                        }).fail(err => {
+                            Swal.fire('Error', err.response.message, 'error')
+                        })
+                    }
+                })
+            }
+            reader.readAsDataURL(file)
+        })
     })
 
     // Edit User
