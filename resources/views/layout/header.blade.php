@@ -32,7 +32,7 @@
                 <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-equalizer') }}"></use>
               </svg></a></li>
           <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" title="{{ Auth::user()->nama }}">
-              <div class="c-avatar"><img class="c-avatar-img" src="{{ asset('/img/users/'.Auth::user()->nip.'.jpg') }}" alt="user@email.com" onerror="this.onerror=null;this.src='/coreui/assets/img/avatars/6.jpg'"></div>
+              <div class="c-avatar"><img class="c-avatar-img" src="{{ asset('/img/users/'.Auth::user()->nip.'.jpg') }}" alt="user@email.com" onerror="this.onerror=null;this.src='/img/users/{{ (Auth::user()->jk == 'l') ? 'guru_l.png' : 'guru_p.png' }}'"></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
               {{-- <div class="dropdown-header bg-light py-2"><strong>Account</strong></div><a class="dropdown-item" href="#"> --}}
