@@ -78,7 +78,7 @@ li.side-child {
 .c-sidebar .c-sidebar-nav-link.c-active,
 .c-sidebar .c-active.c-sidebar-nav-dropdown-toggle {
 
-    background: #45a29e!important;
+    background: #45a29d8c!important;
 }
 /* Mdi Icons */
 .alert.mdi::before,
