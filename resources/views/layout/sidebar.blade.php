@@ -1,4 +1,4 @@
-<nav class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+<nav class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar" style="background: url({{ asset('/img/batik-pat1.png') }})">
       <div class="c-sidebar-brand d-lg-down-none">
         {{-- <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
           <use xlink:href="{{ asset('coreui/assets/brand/coreui.svg#full') }}"></use>
