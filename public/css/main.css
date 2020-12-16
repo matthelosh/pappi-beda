@@ -64,7 +64,9 @@ li.side-child {
     margin: 0!important;
     padding: 10px!important;
 } */
-
+.img-circle {
+    border-radius: 50%;
+}
 .dataTables_filter input {
     padding:5px 10px!important;
     border-radius: 3px!important;

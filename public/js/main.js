@@ -53,7 +53,7 @@ $(document).ready(function() {
             {"data": "DT_RowIndex"},
             {"data": 'sekolahs.nama_sekolah'},
             {"data": null, render: (data) => {
-                return `<img class="img img-circle circled" src="/img/users/${data.nip}.jpg" onerror="this.onerror=null;this.src='/img/users/user.jpg';" alt="Foto User" height="50px">`
+                return `<img class="img img-circle circled" src="/img/users/${data.nip}.jpg" onerror="this.onerror=null;this.src='${(data.jk == 'l') ? '/img/users/guru_l.png' : '/img/users/guru_p.png' }';" alt="Foto User" height="50px">`
             }},
             {"data": 'nip'},
             {"data": 'nama'},
