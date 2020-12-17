@@ -127,3 +127,13 @@ li.side-child a{
 .table th, .table td  {
     padding: 3px!important;
 }
+
+.file-picked {
+    border-radius: 5px;
+    border: 2px solid gray;
+    background: #c7f3c8;
+}
+
+.file-unpicked {
+    border-radius: 5px; border: 2px dashed gray;
+}

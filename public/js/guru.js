@@ -614,13 +614,15 @@ $(document).ready(function(){
     })
 
 
-    $(document).on('click', '.form-import-nilai input[name="nama_file"]', function(){
+    $(document).on('click', '.form-import-nilai span.folder-file', function(){
         $('#file_nilai').trigger('click');
     });
     var fileNilai;
     $('#file_nilai').on('change', function(e) {
         var file = e.target.files[0]
-        $('.form-import-nilai input[name="nama_file"]').val(file.name)
+        $('.form-import-nilai label[for="file_nilai"]').text(file.name)
+        $('.form-import-nilai span.folder-file').addClass('file-picked').removeClass('file-unpicked')
+        
         fileNilai = file
     })
 
@@ -673,7 +675,11 @@ $(document).ready(function(){
                             
                         },
                         dataType: 'json',
+                        beforeSend: function(){
+                            $('.loading').fadeIn()
+                        },
                         success: function(res) {
+                            $('.loading').fadeOut()
                             Swal.fire('Info', res.msg, 'info')
                             $('.btn-form-nilai').trigger('click')
                         }
@@ -707,7 +713,7 @@ $(document).ready(function(){
             var data = res.data
             var ws = XLSX.utils.json_to_sheet(data)
             var wb = XLSX.utils.book_new()
-            XLSX.utils.book_append_sheet(wb, ws, $('select[name="jenis"]').val())
+            XLSX.utils.book_append_sheet(wb, ws, $('select[name="jenis"]').val()+'-'+$('.selAspek').val())
             XLSX.writeFile(wb, fileName)
         }).fail(err => {
             console.log(err)
