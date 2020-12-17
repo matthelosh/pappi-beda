@@ -177,7 +177,9 @@ class SiswaController extends Controller
     }
     public function in(Request $request)
     {
+        
         $ids = $request->ids;
+        // dd($ids);
         try {
             foreach($ids as $id)
             {

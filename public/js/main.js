@@ -538,7 +538,7 @@ $(document).ready(function() {
             function keluarkanSiswa(ket) {
                 $.ajax({
                         headers: headers,
-                        url: '/siswas/out?ket='+ket,
+                        url: ajaxUrl+'siswas/out?ket='+ket,
                         type:'post',
                         data: {'ids': ids}
                     }).done(res => {
@@ -585,7 +585,7 @@ $(document).ready(function() {
                 if (lanjut) {
                     $.ajax({
                         headers: headers,
-                        url: '/siswas/pindah',
+                        url: ajaxUrl+'siswas/pindah',
                         type:'post',
                         data: {'ids': ids, tujuan: rombel_tujuan}
                     }).done(res => {
@@ -625,7 +625,7 @@ $(document).ready(function() {
                 if (lanjut) {
                     $.ajax({
                         headers: headers,
-                        url: '/siswas/in',
+                        url: ajaxUrl+'siswas/in',
                         type:'post',
                         data: {'ids': ids, 'rombel_id': rombel_id}
                     }).done(res => {
