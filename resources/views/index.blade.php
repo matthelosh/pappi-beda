@@ -68,7 +68,7 @@
         <img src="{{ asset('img/pappi.png') }}" alt="Pappi Beda"  class="pulse"  />
         <br>
         {{-- <i class="mdi mdi-loading mdi-spin mdi-48px mx-auto;"></i> --}}
-        <h4>Sabar, Ya.. Sebentar lagi selesai.</h4>
+        <h4 id="text-loading"></h4>
       </div>
       
     </div>
@@ -323,10 +323,23 @@
 
     <script>
       
-    $(document).on('click', '.foto-siswa', function(){
-      $('#form-siswa input[name="foto_siswa"]').trigger('click')
-    })
+      $(document).on('click', '.foto-siswa', function(){
+        $('#form-siswa input[name="foto_siswa"]').trigger('click')
+      })
 
+      var i = 0;
+var txt = 'Sabar, Ya. Sebentar lagi selesai.'; /* The text */
+var speed = 50; /* The speed/duration of the effect in milliseconds */
+
+function typeWriter() {
+  if (i < txt.length) {
+    document.getElementById("text-loading").innerHTML += txt.charAt(i);
+    i++;
+    setTimeout(typeWriter, speed);
+  }
+}
+
+typeWriter()
 
       function logout(e) {
         Swal.fire({

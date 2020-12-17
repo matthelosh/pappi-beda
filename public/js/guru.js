@@ -12,6 +12,10 @@ $(document).ready(function(){
     // Siswa
     var tsiswas = $('#table-siswaku').DataTable({
         dom: "Bftlip",
+        processing: true,
+        language: {
+            processing: '<i class="mdi mdi-load mdi-spin"></i><span class="sr-only">Sebentar...</span>'
+        },
         serverSide: true,
         ajax: {
             headers: headers,
@@ -452,10 +456,12 @@ $(document).ready(function(){
             type: 'post',
             data: data,
             beforeSend: function() {
+                $('.loading').fadeIn()
                 $('.form-list').addClass('d-flex').removeClass('d-none')
                 $('.table-form-nilai tbody').html('')
             }
         }).done(res => {
+            $('.loading').fadeOut()
             $('.card-entri-nilai-parent').removeClass('d-none')
             $('.tool-form-nilai').slideUp()
             $('.btn-show-tool-form-nilai').show()
@@ -517,7 +523,11 @@ $(document).ready(function(){
             url: '/'+sessionStorage.getItem('username')+'/nilais/entri?rombel='+rombel,
             type:'post',
             data: data,
+            beforeSend: ()=>{
+                $('.loading').fadeIn()
+            },
             success: function(res) {
+                $('.loading').fadeOut()
                 Swal.fire('Info', res.msg, 'info')
                 $('.btn-form-nilai').trigger('click')
             }
@@ -529,18 +539,7 @@ $(document).ready(function(){
     $(document).on('click', 'span.nilai', function(){
         var nilai = $(this).text()
         var id = $(this).parents('td').data('id')
-        // nilai_lama = nilai;
-        // var tdParent = $(this).parents('td.nilai')
-        // var input = `<input type="number" min="0" max="100" value="${nilai}" class="nilai" name="nilai" style="width:100%; border: none; outline: none;" />`
-        // tdParent.html(input)
-        // tdParent.children('input.nilai').focus()
-        // var span = `<span class="nilai" style="background: #b5e6dd; display: block;">${nilai}</span>`
-        //    $(document).on('click',function(e){
-        //        if(!$(e.target).closest(tdParent).length) {
-        //            tdParent.html(span)
-        //        } 
-        //    })
-
+        // alert(id)
         Swal.fire({
             title: 'Ubah Nilai ?',
             input: 'number',
@@ -573,61 +572,6 @@ $(document).ready(function(){
         })
     })
 
-    // $(document).on('change', 'td.nilai input.nilai', function(e){
-        
-    //     Swal.fire({
-    //         icon: 'warning',
-    //         title: 'Ganti Nilai?',
-    //         text: 'Nilai Lama: '+nilai_lama+', Nilai Baru: '+$(this).val(),
-    //         showCancelButton: true,
-    //         cancelButtonText: 'Tidak Jadi',
-    //         confirmButtontext:'Iya'
-    //     }).then((val) => {
-    //         if ( val.isConfirmed) {
-    //             var data = {
-    //                 id_nilai: $(this).parents('td').data('id'),
-    //                 nilai: $(this).val(),
-    //                 aspek: $('select[name="aspek"]').val(),
-    //                 _method: 'PUT'
-    //             }
-    //             var span = `<span class="nilai" style="background: #b5e6dd;display: block;">${data.nilai}</span>`
-    //             $.ajax({
-    //                 headers: headers,
-    //                 url: '/'+sessionStorage.getItem('username')+'/nilais/update',
-    //                 data: data,
-    //                 type: 'post'
-    //             }).done(res => {
-    //                 Swal.fire('Info', res.msg, 'info')
-    //                 $(this).parents('td.nilai').html(span)
-    //             }).fail(err=>{
-    //                 Swal.fire('Error', err.response.msg, 'error')
-    //             })
-    //         } else {
-    //             Swal.fire('info', 'Gak Jadi', 'info')
-    //             var span = `<span class="nilai" style="background: #b5e6dd; display: block;">${nilai_lama}</span>`
-    //             $(this).parents('td.nilai').html(span)
-    //         }
-    //     })
-    // })
-
-    // $(document).on('submit', '#modalEditNilai .formEditNilai', function(e) {
-    //     e.preventDefault()
-    //     var data = $(this).serialize()
-    //     var nisn = $('#modalEditNilai .formEditNilai input[name="nisn"]').val()
-    //     $.ajax({
-    //         headers: headers,
-    //         url: '/'+sessionStorage.getItem('username')+'/nilais/update',
-    //         data: data,
-    //         type: 'post',
-    //         success: function(res) {
-    //             // $('.btn-form-nilai').trigger('close')
-    //             // console.log(res)
-    //             Swal.fire('Info', res.msg, 'info')
-    //             $('input[name="nilais['+nisn+']"').val($('#modalEditNilai .formEditNilai input[name="nilai"]').val())
-    //             $('#modalEditNilai').modal('hide')
-    //         }
-    //     })
-    // })
 
     // Jurnal Siswa
     var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.jurnal_page select[name="rombel"]').val();
