@@ -529,55 +529,86 @@ $(document).ready(function(){
     $(document).on('click', 'span.nilai', function(){
         var nilai = $(this).text()
         var id = $(this).parents('td').data('id')
-        nilai_lama = nilai;
-        var tdParent = $(this).parents('td.nilai')
-        var input = `<input type="number" min="0" max="100" value="${nilai}" class="nilai" name="nilai" style="width:100%; border: none; outline: none;" />`
-        tdParent.html(input)
-        tdParent.children('input.nilai').focus()
-        var span = `<span class="nilai" style="background: #b5e6dd; display: block;">${nilai}</span>`
-    //    $(document).on('click',function(e){
-    //        if(!$(e.target).closest(tdParent).length) {
-    //            tdParent.html(span)
-    //        } 
-    //    })
-    })
+        // nilai_lama = nilai;
+        // var tdParent = $(this).parents('td.nilai')
+        // var input = `<input type="number" min="0" max="100" value="${nilai}" class="nilai" name="nilai" style="width:100%; border: none; outline: none;" />`
+        // tdParent.html(input)
+        // tdParent.children('input.nilai').focus()
+        // var span = `<span class="nilai" style="background: #b5e6dd; display: block;">${nilai}</span>`
+        //    $(document).on('click',function(e){
+        //        if(!$(e.target).closest(tdParent).length) {
+        //            tdParent.html(span)
+        //        } 
+        //    })
 
-    $(document).on('change', 'td.nilai input.nilai', function(e){
-        
         Swal.fire({
-            icon: 'warning',
-            title: 'Ganti Nilai?',
-            text: 'Nilai Lama: '+nilai_lama+', Nilai Baru: '+$(this).val(),
+            title: 'Ubah Nilai ?',
+            input: 'number',
+            inputValue: nilai,
             showCancelButton: true,
-            cancelButtonText: 'Tidak Jadi',
-            confirmButtontext:'Iya'
-        }).then((val) => {
-            if ( val.isConfirmed) {
-                var data = {
-                    id_nilai: $(this).parents('td').data('id'),
-                    nilai: $(this).val(),
-                    aspek: $('select[name="aspek"]').val(),
-                    _method: 'PUT'
+            inputValidator: (value) => {
+                if (value == nilai) {
+                    return "Nilai sama dengan yang lama"
+                } else {
+                    var data = {
+                        id_nilai: id,
+                        nilai: value,
+                        aspek: $('select[name="aspek"]').val(),
+                        _method: 'PUT'
+                    }
+                    var span = `<span class="nilai" style="background: #b5e6dd;display: block;">${data.nilai}</span>`
+                    $.ajax({
+                        headers: headers,
+                        url: '/'+sessionStorage.getItem('username')+'/nilais/update',
+                        data: data,
+                        type: 'post'
+                    }).done(res => {
+                        Swal.fire('Info', res.msg, 'info')
+                        $(this).parents('td.nilai').html(span)
+                    }).fail(err=>{
+                        Swal.fire('Error', err.response.msg, 'error')
+                    })
                 }
-                var span = `<span class="nilai" style="background: #b5e6dd;display: block;">${data.nilai}</span>`
-                $.ajax({
-                    headers: headers,
-                    url: '/'+sessionStorage.getItem('username')+'/nilais/update',
-                    data: data,
-                    type: 'post'
-                }).done(res => {
-                    Swal.fire('Info', res.msg, 'info')
-                    $(this).parents('td.nilai').html(span)
-                }).fail(err=>{
-                    Swal.fire('Error', err.response.msg, 'error')
-                })
-            } else {
-                Swal.fire('info', 'Gak Jadi', 'info')
-                var span = `<span class="nilai" style="background: #b5e6dd; display: block;">${nilai_lama}</span>`
-                $(this).parents('td.nilai').html(span)
             }
         })
     })
+
+    // $(document).on('change', 'td.nilai input.nilai', function(e){
+        
+    //     Swal.fire({
+    //         icon: 'warning',
+    //         title: 'Ganti Nilai?',
+    //         text: 'Nilai Lama: '+nilai_lama+', Nilai Baru: '+$(this).val(),
+    //         showCancelButton: true,
+    //         cancelButtonText: 'Tidak Jadi',
+    //         confirmButtontext:'Iya'
+    //     }).then((val) => {
+    //         if ( val.isConfirmed) {
+    //             var data = {
+    //                 id_nilai: $(this).parents('td').data('id'),
+    //                 nilai: $(this).val(),
+    //                 aspek: $('select[name="aspek"]').val(),
+    //                 _method: 'PUT'
+    //             }
+    //             var span = `<span class="nilai" style="background: #b5e6dd;display: block;">${data.nilai}</span>`
+    //             $.ajax({
+    //                 headers: headers,
+    //                 url: '/'+sessionStorage.getItem('username')+'/nilais/update',
+    //                 data: data,
+    //                 type: 'post'
+    //             }).done(res => {
+    //                 Swal.fire('Info', res.msg, 'info')
+    //                 $(this).parents('td.nilai').html(span)
+    //             }).fail(err=>{
+    //                 Swal.fire('Error', err.response.msg, 'error')
+    //             })
+    //         } else {
+    //             Swal.fire('info', 'Gak Jadi', 'info')
+    //             var span = `<span class="nilai" style="background: #b5e6dd; display: block;">${nilai_lama}</span>`
+    //             $(this).parents('td.nilai').html(span)
+    //         }
+    //     })
+    // })
 
     // $(document).on('submit', '#modalEditNilai .formEditNilai', function(e) {
     //     e.preventDefault()
