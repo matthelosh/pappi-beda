@@ -489,17 +489,6 @@ $(document).ready(function(){
                 $('.table-form-nilai tbody').html(trs)
             } else {
                 $('.table-form-nilai tbody').html(trs)
-                // $('.table-form-nilai').DataTable().destroy()
-                // $('.table-form-nilai').DataTable({
-                //     dom: 'Bt',
-                //     paging: false,
-                //     // buttons: [
-                //     //     {
-                //     //         extend:'excelHtml5',
-                //     //         title: 'Daftar Nilai '+data.jenis.toUpperCase()+' Mapel: '+data.mapel_id.toUpperCase()+' KD:'+data.kd_id
-                //     //     }
-                //     // ]
-                // })
                 $('.form-nilai button[type="submit"]').addClass('d-none')
             }
         }).fail(err => {
@@ -539,6 +528,10 @@ $(document).ready(function(){
     $(document).on('click', 'span.nilai', function(){
         var nilai = $(this).text()
         var id = $(this).parents('td').data('id')
+        var tr = $(this).parents('tr')
+        var tds = tr.find('td')
+
+        var nisn = $(tds[1]).text()
         // alert(id)
         Swal.fire({
             title: 'Ubah Nilai ?',
@@ -553,7 +546,13 @@ $(document).ready(function(){
                         id_nilai: id,
                         nilai: value,
                         aspek: $('select[name="aspek"]').val(),
-                        _method: 'PUT'
+                        _method: 'PUT',
+                        siswa_id: nisn,
+                        rombel_id: (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select.selRombel').val(),
+                        mapel_id: $('select.selMapel').val(),
+                        jenis: $('select[name="jenis"]').val(),
+                        periode: $('.selPeriode').val(),
+                        kd_id: $('.selKd').val()
                     }
                     var span = `<span class="nilai" style="background: #b5e6dd;display: block;">${data.nilai}</span>`
                     $.ajax({

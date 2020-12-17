@@ -363,9 +363,21 @@ class NilaiController extends Controller
     {
         // dd($request->all());
         $nilai = (($request->aspek == '1') ? 'App\Nilai1' : (($request->aspek == '2') ? 'App\Nilai2': (($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4')));;
-        // $nilai = ($request->aspek == '3') ? 'App\Nilai3' : 'App\Nilai4';
-        $nilai::find($request->id_nilai)
-                ->update(['nilai' => $request->nilai]);
+        $nilai::updateOrCreate(
+            [
+                'id' => $request->id_nilai,
+                'sekolah_id' => $request->session()->get('sekolah_id'),
+                'periode_id' => $request->periode,
+                'rombel_id' => $request->rombel_id,
+                'mapel_id' => $request->mapel_id,
+                'jenis' => $request->jenis,
+                'kd_id' => $request->kd_id,
+                'siswa_id' => $request->siswa_id
+            ],
+            [
+                'nilai' => $request->nilai
+            ]
+        );
         return response()->json(['status'=> 'sukses', 'msg' => 'Nilai diperbarui']);
     }
 }
