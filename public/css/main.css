@@ -129,7 +129,7 @@ li.side-child a{
 }
 
 .file-picked {
-    border-radius: 5px;
+    border-radius: 1px;
     border: 2px solid gray;
     background: #c7f3c8;
 }

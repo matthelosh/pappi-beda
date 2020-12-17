@@ -68,7 +68,7 @@
         <img src="{{ asset('img/pappi.png') }}" alt="Pappi Beda"  class="pulse"  />
         <br>
         {{-- <i class="mdi mdi-loading mdi-spin mdi-48px mx-auto;"></i> --}}
-        <h4 id="text-loading"></h4>
+        <h4 id="text-loading" class="my-4"></h4>
       </div>
       
     </div>

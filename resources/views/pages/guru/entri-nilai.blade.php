@@ -122,7 +122,7 @@
                                             </div>
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-primary d-none" type="submit">Simpan</button>
+                                    <button class="btn btn-primary d-none btn-lg btn-square mx-auto" type="submit"><i class="mdi mdi-pencil"></i> Simpan</button>
                                     
                                 </div>
                             </form>
