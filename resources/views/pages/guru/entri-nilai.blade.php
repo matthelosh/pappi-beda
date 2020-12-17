@@ -87,13 +87,41 @@
         </div>
     </div>
 </div>
-
 <div class="col-sm-12 d-none card-entri-nilai-parent">
     <div class="card card-entri-nilai">
         {{-- <div class="card-header">
         </div> --}}
         <div class="card-body">
             <div class="row" >
+                <div class="col-sm-3">
+                    <div class="card  card-impor-nilai">
+                        <div class="card-header toggle-body" >
+                            <h4 class="card-title text-center my-0"><i class="mdi mdi-clipboard-outline"></i> IMPOR NILAI</h4>
+                        </div>
+                        <div class="card-body d-none d-sm-block">
+                            <form action="/{{ Auth::user()->username }}/nilais/import" class="form-import-nilai" method="POST" enctype="multipart/form-data">
+                                @csrf()
+                                <div class="row">
+                                    <div class="form-group col-sm-12 text-center">
+                                        <label for="file_nilai">File Nilai</label>
+                                        <input type="file" name="file_nilai" style="display:none" id="file_nilai">
+                                        {{-- <input type="text" name="nama_file" class="form-control"> --}}
+                                        <span class="folder-file text-center d-block file-unpicked">
+                                            <i class="mdi mdi-folder-upload-outline mdi-48px"></i>
+                                        </span>
+                                    </div>
+                                    <div class="form-group col-sm-12 text-center">
+                                        <button class="btn btn-primary btn-square btn-import-nilai">
+                                            <i class="mdi mdi-cloud-upload-outline"></i>
+                                            Unggah
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
                 <div class="col-sm-9">
                     <div class="card card-form-nilai">
                         <div class="card-body">
@@ -122,41 +150,18 @@
                                             </div>
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-primary d-none btn-lg btn-square mx-auto" type="submit"><i class="mdi mdi-pencil"></i> Simpan</button>
+                                    
                                     
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title text-center my-0"><i class="mdi mdi-clipboard-outline"></i> IMPOR NILAI</h4>
-                        </div>
-                        <div class="card-body">
-                            <form action="/{{ Auth::user()->username }}/nilais/import" class="form-import-nilai" method="POST" enctype="multipart/form-data">
-                                @csrf()
-                                <div class="row">
-                                    <div class="form-group col-sm-12 text-center">
-                                        <label for="file_nilai">File Nilai</label>
-                                        <input type="file" name="file_nilai" style="display:none" id="file_nilai">
-                                        {{-- <input type="text" name="nama_file" class="form-control"> --}}
-                                        <span class="folder-file text-center d-block file-unpicked">
-                                            <i class="mdi mdi-folder-upload-outline mdi-48px"></i>
-                                        </span>
-                                    </div>
-                                    <div class="form-group col-sm-12 text-center">
-                                        <button class="btn btn-primary btn-square btn-import-nilai">
-                                            <i class="mdi mdi-cloud-upload-outline"></i>
-                                            Unggah
-                                        </button>
-                                    </div>
+                                <div class="row text-right">
+                                    <button class="btn btn-primary d-none btn-lg btn-square mx-auto" type="submit"><i class="mdi mdi-pencil"></i> Simpan</button>
                                 </div>
+                                
                             </form>
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
 

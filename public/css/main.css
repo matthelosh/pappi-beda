@@ -137,3 +137,7 @@ li.side-child a{
 .file-unpicked {
     border-radius: 5px; border: 2px dashed gray;
 }
+
+.d-none {
+    transition: all .35s ease-in-out;
+}

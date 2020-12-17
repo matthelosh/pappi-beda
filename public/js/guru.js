@@ -613,6 +613,11 @@ $(document).ready(function(){
         tjurnals.ajax.url('/'+sessionStorage.getItem('username')+'/jurnals?req=dt&rombel='+$(this).val()).draw()
     })
 
+    $('.toggle-body').on('click', function(){
+        // alert('hi')
+        $(this).parents('.card').css('width', '100%')
+        $(this).siblings('.card-body').toggleClass('d-none')
+    })
 
     $(document).on('click', '.form-import-nilai span.folder-file', function(){
         $('#file_nilai').trigger('click');
