@@ -444,7 +444,7 @@ $(document).ready(function(){
             rombel : (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
         }
 
-       
+        
 
         $.ajax({
             headers: headers,
@@ -453,6 +453,7 @@ $(document).ready(function(){
             data: data,
             beforeSend: function() {
                 $('.form-list').addClass('d-flex').removeClass('d-none')
+                $('.table-form-nilai tbody').html('')
             }
         }).done(res => {
             $('.card-entri-nilai-parent').removeClass('d-none')
@@ -462,10 +463,11 @@ $(document).ready(function(){
             var trs = ''
             var no = 0
             for(var i = 0; i < siswas.length; i++) {
-                trs += `<tr><td>${i+1}</td><td class="nama">${siswas[i].nisn}</td><td>${siswas[i].nama_siswa}</td><td>
+                trs += `<tr><td class="text-center">${i+1}</td><td class="text-center">${siswas[i].nisn}</td><td>${siswas[i].nama_siswa}</td><td class="nilai text-center" data-id="${siswas[i].id_nilai}">
                 <input type="hidden" name="id_nilais[${siswas[i].nisn}]" value="${siswas[i].id_nilai}]" />
-                <input type="number" min="0" max="100" name="nilais[${siswas[i].nisn}]" value="${siswas[i].nilai}" ${(res.status_form == 'update') ? 'disabled':'' } class="input_nilai">
-                <span class="d-none id_nilai">${siswas[i].id_nilai}</span>
+                <input type="${(res.status_form == 'create') ? 'number' : 'hidden'}" min="0" max="100" name="nilais[${siswas[i].nisn}]" value="${siswas[i].nilai}" ${(res.status_form == 'update') ? 'disabled':'' } class="input_nilai">
+                <span class="nilai" style="display:${(res.status_form=='update')? 'block' : 'none'};background:#b5e6dd;">${Math.round(siswas[i].nilai)}</span>
+                
                 </td></tr>`
             }
             $('.form-nilai input[name="periode_id"]').val(data.periode_id)
@@ -475,10 +477,23 @@ $(document).ready(function(){
             $('.form-nilai input[name="kd_id"]').val(data.kd_id)
             $('.form-nilai').append(`<input type="hidden" name="status_form" value="${res.status_form}" />`)
             $('.form-list').addClass('d-none').removeClass('d-flex')
-            $('.table-form-nilai tbody').html(trs)
+            // $('.table-form-nilai tbody').html(trs)
             if(res.status_form == 'create') {
                 $('.form-nilai button[type="submit"]').removeClass('d-none')
+                $('.table-form-nilai tbody').html(trs)
             } else {
+                $('.table-form-nilai tbody').html(trs)
+                // $('.table-form-nilai').DataTable().destroy()
+                // $('.table-form-nilai').DataTable({
+                //     dom: 'Bt',
+                //     paging: false,
+                //     // buttons: [
+                //     //     {
+                //     //         extend:'excelHtml5',
+                //     //         title: 'Daftar Nilai '+data.jenis.toUpperCase()+' Mapel: '+data.mapel_id.toUpperCase()+' KD:'+data.kd_id
+                //     //     }
+                //     // ]
+                // })
                 $('.form-nilai button[type="submit"]').addClass('d-none')
             }
         }).fail(err => {
@@ -509,42 +524,79 @@ $(document).ready(function(){
         })
     })
 
-    $(document).on('dblclick','.input_nilai', function(){
-        
-        var id_nilai = $(this).siblings('.id_nilai').text()
-        // alert(id_nilai)
-        var aspek = $('select[name="aspek"]').val()
-        var baris = $(this).parents('tr')
-        var nisn = baris.find('td').eq(1).text()
-        var nama = baris.find('td').eq(2).text()
-        // $('#modalEditNilai #').text(nama)
-        $('#modalEditNilai .nama_siswa').text(nama)
-        $('#modalEditNilai .formEditNilai input[name="nisn"]').val(nisn)
-        $('#modalEditNilai .formEditNilai input[name="aspek"]').val(aspek)
-        $('#modalEditNilai .formEditNilai input[name="id_nilai"]').val(id_nilai)
+    var nilai_lama;
 
-        $('#modalEditNilai').modal()
-       
+    $(document).on('click', 'span.nilai', function(){
+        var nilai = $(this).text()
+        var id = $(this).parents('td').data('id')
+        nilai_lama = nilai;
+        var tdParent = $(this).parents('td.nilai')
+        var input = `<input type="number" min="0" max="100" value="${nilai}" class="nilai" name="nilai" style="width:100%; border: none; outline: none;" />`
+        tdParent.html(input)
+        tdParent.children('input.nilai').focus()
+        var span = `<span class="nilai" style="background: #b5e6dd; display: block;">${nilai}</span>`
+    //    $(document).on('click',function(e){
+    //        if(!$(e.target).closest(tdParent).length) {
+    //            tdParent.html(span)
+    //        } 
+    //    })
     })
 
-    $(document).on('submit', '#modalEditNilai .formEditNilai', function(e) {
-        e.preventDefault()
-        var data = $(this).serialize()
-        var nisn = $('#modalEditNilai .formEditNilai input[name="nisn"]').val()
-        $.ajax({
-            headers: headers,
-            url: '/'+sessionStorage.getItem('username')+'/nilais/update',
-            data: data,
-            type: 'post',
-            success: function(res) {
-                // $('.btn-form-nilai').trigger('close')
-                // console.log(res)
-                Swal.fire('Info', res.msg, 'info')
-                $('input[name="nilais['+nisn+']"').val($('#modalEditNilai .formEditNilai input[name="nilai"]').val())
-                $('#modalEditNilai').modal('hide')
+    $(document).on('change', 'td.nilai input.nilai', function(e){
+        
+        Swal.fire({
+            icon: 'warning',
+            title: 'Ganti Nilai?',
+            text: 'Nilai Lama: '+nilai_lama+', Nilai Baru: '+$(this).val(),
+            showCancelButton: true,
+            cancelButtonText: 'Tidak Jadi',
+            confirmButtontext:'Iya'
+        }).then((val) => {
+            if ( val.isConfirmed) {
+                var data = {
+                    id_nilai: $(this).parents('td').data('id'),
+                    nilai: $(this).val(),
+                    aspek: $('select[name="aspek"]').val(),
+                    _method: 'PUT'
+                }
+                var span = `<span class="nilai" style="background: #b5e6dd;display: block;">${data.nilai}</span>`
+                $.ajax({
+                    headers: headers,
+                    url: '/'+sessionStorage.getItem('username')+'/nilais/update',
+                    data: data,
+                    type: 'post'
+                }).done(res => {
+                    Swal.fire('Info', res.msg, 'info')
+                    $(this).parents('td.nilai').html(span)
+                }).fail(err=>{
+                    Swal.fire('Error', err.response.msg, 'error')
+                })
+            } else {
+                Swal.fire('info', 'Gak Jadi', 'info')
+                var span = `<span class="nilai" style="background: #b5e6dd; display: block;">${nilai_lama}</span>`
+                $(this).parents('td.nilai').html(span)
             }
         })
     })
+
+    // $(document).on('submit', '#modalEditNilai .formEditNilai', function(e) {
+    //     e.preventDefault()
+    //     var data = $(this).serialize()
+    //     var nisn = $('#modalEditNilai .formEditNilai input[name="nisn"]').val()
+    //     $.ajax({
+    //         headers: headers,
+    //         url: '/'+sessionStorage.getItem('username')+'/nilais/update',
+    //         data: data,
+    //         type: 'post',
+    //         success: function(res) {
+    //             // $('.btn-form-nilai').trigger('close')
+    //             // console.log(res)
+    //             Swal.fire('Info', res.msg, 'info')
+    //             $('input[name="nilais['+nisn+']"').val($('#modalEditNilai .formEditNilai input[name="nilai"]').val())
+    //             $('#modalEditNilai').modal('hide')
+    //         }
+    //     })
+    // })
 
     // Jurnal Siswa
     var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.jurnal_page select[name="rombel"]').val();
@@ -666,35 +718,6 @@ $(document).ready(function(){
 
         var fileName = data.rombel+"-"+data.mapel+".xlsx"
 
-        // var json = [
-        //     {no: 1, nama: "Saya"},
-        //     {no: 2, nama: 'Kamu'}
-        // ]
-
-        // var wb = XLSX.utils.book_new()
-        //     wb.Props = {
-        //         Title: "Tes",
-        //         Subject: "tes",
-        //         Author: "MS",
-        //         CreatedDate: new Date(2020,12,2)
-        //     }
-
-        //     wb.SheetNames.push("Sheet 1")
-
-        //     var ws_data = XLSX.utils.json_to_sheet(json)
-
-        //     wb.Sheets['Sheet 1'] = ws_data
-        //     var wbout = XLSX.write(wb, {bookType:'xlsx', type: 'binary'})
-
-        //     function s2ab(s) {
-        //         var buf = new ArrayBuffer(s.length)
-        //         var view = new Uint8Array(buf)
-        //         for (var i=0;i<s.length; i++) view[i] = s.charCodeAt(i)
-        //         return buf
-        //     }
-
-        //     XLSX.writeFile(wb, 'g.xlsx')
-
         $.ajax({
             headers: headers,
             url:'/'+sessionStorage.getItem('username')+'/nilais/format',
@@ -706,7 +729,7 @@ $(document).ready(function(){
             var data = res.data
             var ws = XLSX.utils.json_to_sheet(data)
             var wb = XLSX.utils.book_new()
-            XLSX.utils.book_append_sheet(wb, ws, "format.xlsx")
+            XLSX.utils.book_append_sheet(wb, ws, $('select[name="jenis"]').val())
             XLSX.writeFile(wb, fileName)
         }).fail(err => {
             console.log(err)

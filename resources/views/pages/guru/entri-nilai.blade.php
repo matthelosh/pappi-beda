@@ -72,14 +72,12 @@
                 </div>
                 <div class="col-12 text-center">
                     {{-- <div class="btn-group"> --}}
-                        <button class="btn btn-square btn-primary btn-form-nilai">
+                        <button class="btn btn-square btn-info btn-form-nilai">
                             <i class="mdi mdi-magnify"></i>
                             Lihat
                         </button>
-                        <button class="btn btn-square btn-primary btn-unduh-format">
-                            <svg class="c-icon">
-                                <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-cloud-download') }}"></use>
-                            </svg>
+                        <button class="btn btn-square btn-danger btn-unduh-format">
+                            <i class="mdi mdi-cloud-download-outline"></i>
                             Download Format
                         </button>
                     {{-- </div> --}}
@@ -109,13 +107,13 @@
                                 <input type="hidden" name="kd_id" value="">
                                 <div class="table-responsive">
                                     
-                                    <table class="table table-striped table-form-nilai">
+                                    <table class="table table-bordered table-form-nilai" style="width: 100%;">
                                         <thead>
                                             <tr>
-                                                <th>No</th>
-                                                <th>NIS / NISN</th>
-                                                <th>NAMA</th>
-                                                <th>NILAI</th>
+                                                <th class="text-center">No</th>
+                                                <th class="text-center">NIS / NISN</th>
+                                                <th class="text-center">NAMA</th>
+                                                <th class="text-center">NILAI</th>
                                             </tr>
                                         </thead> 
                                         <tbody>
