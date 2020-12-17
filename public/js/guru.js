@@ -559,8 +559,12 @@ $(document).ready(function(){
                         headers: headers,
                         url: '/'+sessionStorage.getItem('username')+'/nilais/update',
                         data: data,
-                        type: 'post'
+                        type: 'post',
+                        beforeSend: function(){
+                            $('.loading').fadeIn()
+                        }
                     }).done(res => {
+                            $('.loading').fadeOut()
                         Swal.fire('Info', res.msg, 'info')
                         $(this).parents('td.nilai').html(span)
                     }).fail(err=>{
