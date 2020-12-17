@@ -495,7 +495,8 @@ $(document).ready(function(){
             return false
         }
         var data = $(this).serialize()
-        var rombel = $('select.selRombel') ? $('select.selRombel').val() : sessionStorage.getItem('rombel_id')
+        // var rombel = $('select.selRombel') ? $('select.selRombel').val() : sessionStorage.getItem('rombel_id')
+        var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select.selRombel').val()
         $.ajax({
             headers: headers,
             url: '/'+sessionStorage.getItem('username')+'/nilais/entri?rombel='+rombel,

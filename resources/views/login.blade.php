@@ -38,7 +38,7 @@
     <link href="{{ asset('coreui/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
     <!-- Global site tag (gtag.js) - Google Analytics-->
-    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+    {{-- <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
 
@@ -50,7 +50,8 @@
       gtag('config', 'UA-118965717-3');
       // Bootstrap ID
       gtag('config', 'UA-118965717-5');
-    </script>
+    </script> --}}
+
   </head>
   <body class="c-app flex-row align-items-center">
     
