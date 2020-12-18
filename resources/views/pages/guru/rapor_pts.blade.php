@@ -256,7 +256,7 @@
                         <td style="width:33.3%">
                             Mengetahui,<br>
                             @if(file_exists(public_path('/img/ttd/'.$sekolah->npsn.'_'.$sekolah->ks->nip.'.png')))
-                                <img src="{{ asset('img/ttd/'.$sekolah->npsn.'_'.$sekolah->ks->nip.'.png') }}" style="width:100px;"/>
+                                <img src="{{ asset('img/ttd/'.$sekolah->npsn.'_'.$sekolah->ks->nip.'.png') }}" style="width:200px;"/>
                             @else
                                 <br>
                                 <br>

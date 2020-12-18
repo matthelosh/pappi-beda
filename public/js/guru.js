@@ -471,7 +471,7 @@ $(document).ready(function(){
                     var ws = XLSX.utils.json_to_sheet(siswas)
                     var wb = XLSX.utils.book_new()
                     XLSX.utils.book_append_sheet(wb, ws, $('.selKd').val())
-                    XLSX.writeFile(wb, 'Nilai '+$('select[name="jenis"]').val()+' '+$('.selMapel').val()+'.xlsx')
+                    XLSX.writeFile(wb, 'Nilai '+$('select[name="jenis"]').val()+' '+$('.selMapel').val()+' Kelas '+ rombel +'.xlsx')
 
                 })
             }
