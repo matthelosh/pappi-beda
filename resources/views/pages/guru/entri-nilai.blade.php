@@ -124,8 +124,19 @@
                 </div>
                 <div class="col-sm-9">
                     <div class="card card-form-nilai">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4 class="card-title">Form Nilai</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-danger btn-square btn-export-nilai float-right"><i class="mdi mdi-file-excel"></i> Export Excel</button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <h4 class="card-title">Form Nilai</h4>
+                            
+                            
                             <form action="/{{ Auth::user()->username }}/nilais/entri" method="POST" class="form-nilai">
                                 @csrf()
                                 <input type="hidden" name="periode_id" value="">
@@ -135,7 +146,7 @@
                                 <input type="hidden" name="kd_id" value="">
                                 <div class="table-responsive">
                                     
-                                    <table class="table table-bordered table-form-nilai" style="width: 100%;">
+                                    <table class="table table-bordered table-form-nilai" style="width: 100%;" id="table-form-nilai">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">No</th>

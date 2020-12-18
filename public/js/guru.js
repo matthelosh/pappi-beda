@@ -356,40 +356,6 @@ $(document).ready(function(){
 
 
 
-    // Select2
-    // $('.selSekolah').select2({
-    //     ajax: {
-    //         headers: headers,
-    //         url: '/sekolah?req=select',
-    //         type: 'post',
-    //             dataType: 'json',
-    //             delay: 250,
-    //             processResults: function(response) {
-    //                 return {
-    //                     results: response.sekolahs
-    //                 };
-    //             },
-    //             cache: true,
-
-    //     },
-    // })
-
-    // $('.selPeriode').select2({
-    //     ajax: {
-    //         headers: headers,
-    //         url: '/periode?req=select',
-    //         type: 'post',
-    //             dataType: 'json',
-    //             delay: 250,
-    //             processResults: function(response) {
-    //                 return {
-    //                     results: response.periodes
-    //                 };
-    //             },
-    //             cache: true,
-
-    //     },
-    // })\
 
 // KKM
     var tkkm = $('#table-kkm').DataTable({
@@ -448,8 +414,9 @@ $(document).ready(function(){
             rombel : (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('select[name="rombel"]').val()
         }
 
-        
 
+             
+        
         $.ajax({
             headers: headers,
             url: '/'+sessionStorage.getItem('username')+'/nilais?req=view',
@@ -465,6 +432,11 @@ $(document).ready(function(){
             $('.card-entri-nilai-parent').removeClass('d-none')
             $('.tool-form-nilai').slideUp()
             $('.btn-show-tool-form-nilai').show()
+            // if(res.status_form != 'update') {
+            //     $('.btn-export-nilai').addClass('d-none')
+            // } else {
+            //     $('.btn-export-nilai').removeClass('d-none')
+            // }
             var siswas = res.datas
             var trs = ''
             var no = 0
@@ -487,9 +459,21 @@ $(document).ready(function(){
             if(res.status_form == 'create') {
                 $('.form-nilai button[type="submit"]').removeClass('d-none')
                 $('.table-form-nilai tbody').html(trs)
+                $('.btn-export-nilai').addClass('d-none')
             } else {
                 $('.table-form-nilai tbody').html(trs)
                 $('.form-nilai button[type="submit"]').addClass('d-none')
+                $('.btn-export-nilai').removeClass('d-none')
+                // Export Nilai 
+                $(document).on('click', '.btn-export-nilai', function(e){
+                    e.preventDefault()
+                    // var elt = document.getElementById('table-form-nilai')
+                    var ws = XLSX.utils.json_to_sheet(siswas)
+                    var wb = XLSX.utils.book_new()
+                    XLSX.utils.book_append_sheet(wb, ws, $('.selKd').val())
+                    XLSX.writeFile(wb, 'Nilai '+$('select[name="jenis"]').val()+' '+$('.selMapel').val()+'.xlsx')
+
+                })
             }
         }).fail(err => {
             Swal.fire('Error', err.resposne.msg, 'error')
@@ -566,7 +550,8 @@ $(document).ready(function(){
                     }).done(res => {
                             $('.loading').fadeOut()
                         Swal.fire('Info', res.msg, 'info')
-                        $(this).parents('td.nilai').html(span)
+                        // $(this).parents('td.nilai').html(span)
+                        $('.btn-form-nilai').trigger('click')
                     }).fail(err=>{
                         Swal.fire('Error', err.response.msg, 'error')
                     })
@@ -575,6 +560,7 @@ $(document).ready(function(){
         })
     })
 
+    
 
     // Jurnal Siswa
     var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.jurnal_page select[name="rombel"]').val();
