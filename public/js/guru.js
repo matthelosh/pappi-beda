@@ -722,11 +722,82 @@ $('.rekap_page select[name="rombel"]').on('change', function(){
     getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val())
     $('.alert').fadeOut()
 })
-$('.rekap_page select[name="mapel"]').on('change', function(){
-    if($.fn.DataTable.isDataTable($('.rekap_page #table-rekap'))) {
-        $('.rekap_page #table-rekap').DataTable().destroy()
+// $('.rekap_page select[name="mapel"]').on('change', function(){
+$('.btn-rekap-nilai').on('click', function(){
+    if($('.selMapel').val() == '0') {
+        Swal.fire('Error', 'Pilih Mapel', 'error')
+        return false
+    } else if ($('.selJenis').val() == '0') {
+        Swal.fire('Error', 'Pilih Jenis Penilaian', 'error')
+        return false
+    } else if ( $('.selAspek').val() == '0') {
+        Swal.fire('Error', 'Pilih Aspek Nilai', 'error')
+        return false
     }
-    getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel+'&mapel='+$(this).val())
+
+    var data = {
+        mapel : $('.selMapel').val(),
+        jenis: $('.selJenis').val(),
+        aspek: $('.selAspek').val()
+    }
+    $.ajax({
+        headers: headers,
+        url: '/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel,
+        type: 'post',
+        data: data,
+        // dataType: 'json',
+        beforeSend: function() {
+            $('.loading').fadeIn()
+        },
+        success: function(res) {
+           var datas = res.datas
+            $('.loading').fadeOut()
+        //    console.log(datas)
+            var tr =''
+            var nilais = []
+            var ths = '<td>NISN</td><td>Nama</td>'
+            var tbody =''
+            var kds = []
+            $.each(datas, (item, value)=>{
+                nilais[item] = value.nilais
+                tr += `
+                    <tr><td>${value.nisn}</td><td>${value.nama_siswa}</td></td>
+                `
+                res.kds.forEach(kd=>{
+                    tr += `<td>${Math.round(value[kd.kd_id])}</td>`
+                })
+                tr +='</tr>'
+            })
+
+            res.kds.forEach(kd=>{
+                ths += `<td>${kd.kd_id}</td>`
+            })
+            var thead = '<thead><tr>'+ths+'</tr></thead>'
+            // console.log(nilais)
+            tbody = '<tbody>'+tr+'</tbody>'
+            var table = thead+tbody
+            $('#table-rekap').html(table)
+            $('#table-rekap').DataTable({
+                dom:'Bft', 
+                paging: false,
+                buttons:[
+                    'copy',
+                    {
+                        extend: 'print',
+                        title: 'Rekap Nilai '+data.jenis+' Kelas ' + sessionStorage.getItem('rombel_id') + ' ' + data.mapel
+                    },
+                    {
+                        extend: 'excel',
+                        title: 'Rekap Nilai '+data.jenis+' Kelas ' + sessionStorage.getItem('rombel_id') + ' ' + data.mapel
+                    }
+                ]
+            }).draw()
+        },
+        fail: function(err){
+            $('.loading').fadeOut()
+        }
+    })
+    
     $('.alert').fadeOut()
 })
 
@@ -1259,4 +1330,45 @@ function getRekap34(url=null) {
             $('.label-model-rapor').text('Dengan Per KD')
         }
     })
+
+
+
+    // Chart
+    // var ctx = document.getElementById('myChart').getContext('2d');
+    //     var myChart = new Chart(ctx, {
+    //         type: 'bar',
+    //         data: {
+    //             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+    //             datasets: [{
+    //                 label: '# of Votes',
+    //                 data: [98, 80, 75, 60, 75, 85],
+    //                 backgroundColor: [
+    //                     'rgba(255, 99, 132, 1)',
+    //                     'rgba(54, 162, 235, 1)',
+    //                     'rgba(255, 206, 86, 1)',
+    //                     'rgba(75, 192, 192, 1)',
+    //                     'rgba(153, 102, 255, 1)',
+    //                     'rgba(255, 159, 64, 1)'
+    //                 ],
+    //                 // borderColor: [
+    //                 //     'rgba(255, 99, 132, 1)',
+    //                 //     'rgba(54, 162, 235, 1)',
+    //                 //     'rgba(255, 206, 86, 1)',
+    //                 //     'rgba(75, 192, 192, 1)',
+    //                 //     'rgba(153, 102, 255, 1)',
+    //                 //     'rgba(255, 159, 64, 1)'
+    //                 // ],
+    //                 borderWidth: 1
+    //             }]
+    //         },
+    //         options: {
+    //             scales: {
+    //                 yAxes: [{
+    //                     ticks: {
+    //                         beginAtZero: true
+    //                     }
+    //                 }]
+    //             }
+    //         }
+    //     });
 })

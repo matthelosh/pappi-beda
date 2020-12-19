@@ -9,4 +9,12 @@
     </div>
 </div>
 
-{{-- {{ dd(Auth::user()) }} --}}
+<div class="col-sm-6">
+   <div class="card">
+       <div class="card-body">
+           <h4 class="card-title">Coba Chart</h4>
+           <canvas id="myChart" width="100%" ></canvas>
+       </div>
+   </div>
+    
+</div>

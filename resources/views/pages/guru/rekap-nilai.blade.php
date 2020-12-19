@@ -4,25 +4,6 @@
             <h4 class="card-title">
                 <i class="mdi mdi-chart-areaspline  "></i>
                 Rekap Nilai
-                {{-- <button class="btn btn-import-kkm btn-primary float-right mr-2">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet') }}"></use>
-                    </svg>
-                    Import
-                </button> --}}
-                <button class="btn btn-new-kkm btn-info float-right mr-2" data-toggle="modal" data-target="#modalJurnalSiswa">
-                    {{-- <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
-                    </svg> --}}
-                    <i class="mdi mdi-cloud-download"></i>
-                    Unduh
-                </button>
-                <button class="btn  btn-success float-right mr-2 btn-print-kkm">
-                    <svg class="c-icon">
-                        <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
-                    </svg>
-                    Cetak
-                </button>
             </h4>
             <hr>
 
@@ -46,10 +27,40 @@
                         </div>
                     </div>
                 @endif
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="jenis">Jenis Penilaian</label>
+                        <select name="jenis" class="form-control selJenis">
+                            <option value="0">Pilih Jenis</option>
+                            <option value="uh">Harian</option>
+                            <option value="pts">PTS</option>
+                            <option value="pas">PAS</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label for="aspek">Aspek Penilaian</label>
+                        <select name="aspek" class="form-control selAspek">
+                            <option value="0">Pilih Aspek</option>
+                            <option value="1">Spiritual</option>
+                            <option value="2">Sosial</option>
+                            <option value="3">Pengetahuan</option>
+                            <option value="4">Keterampilan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label for="b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <button class="btn btn-square btn-danger btn-rekap-nilai"> Lihat  </button>
+                    </div>
+
+                </div>
             </div>
 
             <div class="table-responsive">
-                <table class="table table-sm table-striped table-rekap" id="table-rekap" style="width:100%">
+                <table class="table table-sm table-bordered table-striped table-rekap" id="table-rekap" style="width:100%">
                     {{-- <thead>
                         <tr>
                             <th>No</th>

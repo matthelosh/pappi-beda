@@ -110,6 +110,7 @@
       $(window).on('load', function(){
         // $('.loading').removeClass('d-flex').addClass('d-none')
         $('.loading').fadeOut()
+        
       })
       // $(window).on('unload', function(){
       //   alert('hi')

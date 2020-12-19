@@ -85,146 +85,163 @@ class NilaiController extends Controller
 
     public function rekap(Request $request)
     {
-        // if($request->query('rombel' == '0')) {
-        //     $data = [
-        //         "id"=> null,
-        //         "nis"=> null,
-        //         "nisn"=> null,
-        //         "nama_siswa"=> "Pilih Rombel Dulu",
-        //         "jk"=> null,
-        //         "alamat"=> null,
-        //         "desa"=> null,
-        //         "kec"=> null,
-        //         "kab"=> null,
-        //         "prov"=> null,
-        //         "hp"=> null,
-        //         "sekolah_id"=> null,
-        //         "rombel_id"=> null,
-        //         "created_at"=> null,
-        //         "updated_at"=> null,
-        //         "agama"=> null,
-        //         "siswa_id"=> null,
-        //         "n3_pabp_uh"=> null,
-        //         "n3_ppkn_uh"=> null,
-        //         "n3_bid_uh"=> null,
-        //         "n3_mtk_uh"=> null,
-        //         "n3_ipa_uh"=> null,
-        //         "n3_ips_uh"=> null,
-        //         "n3_sbdp_uh"=> null,
-        //         "n3_pjok_uh"=> null,
-        //         "n3_bd_uh"=> null,
-        //         "n3_big_uh"=> null,
-        //     ];
-        // }
-        /**
-         *  nis , nama siswa, rombel, mapel
-         *                            3.1,3.2,3,3,3.4 | 4.1, 4.2, 4.3, 4.4
-         * 1, 'A', 'i', 'pabp', 80,90,80,70
-         */
-        $datas = [];
-        $rombel = ($request->query('rombel') == '0') ? ['rombel_id', '<>','0'] : ['rombel_id', '=', $request->query('rombel')];
-
-        $siswas = 'App\Siswa'::where([
-            $rombel
-        ])
-        ->with('rombels')
-        ->get();
-        foreach($siswas as $siswa)
+        // dd($request->all());
+        switch($request->aspek)
         {
-            array_push($datas, ['NISN' => $siswa->nisn, 'NAMA SISWA' => $siswa->nama_siswa, 'KODE ROMBEL' => $siswa->rombel_id, 'NAMA ROMBEL' => $siswa->rombels->nama_rombel, 'uh' => 0, 'pts' => 0, 'pas' => 0]);
+            case "1":
+                $nilai = 'App\Nilai1';
+            break;
+            case "2":
+                $nilai = 'App\Nilai2';
+            break;
+            case "3":
+                $nilai = 'App\Nilai3';
+            break;
+            case "4":
+                $nilai = 'App\Nilai4';
+            break;
         }
-        // dd($rombel);
-        if (Auth::user()->role != 'wali' ) {
-
-            $mapel = (Auth::user()->role == 'gpai') ? 'pabp' : (Auth::user()->role == 'gor' ? 'pjok' : 'big');
-            $nilai_pabp_3 = DB::table('nilai3s')
-                        ->select(DB::raw('nilai3s.siswa_id,
-                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_'.$mapel.'_uh",
-                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pts",
-                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pas"
-                        '))
-                        ->groupBy('nilai3s.siswa_id')
-
-                        ->orderBy('nilai3s.rombel_id')
-                        ->where([
-                            ['periode_id','=', $request->session()->get('periode_aktif')],
-                            $rombel
-                        ]);
-                        // ->get();
-
-
-            $nilai4 = DB::table('nilai4s')
-                        ->select(DB::raw('nilai4s.siswa_id,
-                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n4_'.$mapel.'_uh",
-
-                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pts",
-
-
-                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pas"
-
-                        '))
-                        ->groupBy('nilai4s.siswa_id')
-                        ->where([
-                            ['periode_id','=', $request->session()->get('periode_aktif')],
-                            $rombel
-                        ]);
-        } else {
-            // $rombel = $request->query('rombel');
-            $mapel = $request->query('mapel');
-            // dd($rombel);
-            $nilai_pabp_3 = DB::table('nilai3s')
-                        ->select(DB::raw('nilai3s.siswa_id,
-                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_'.$mapel.'_uh",
-                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pts",
-                        AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pas"
-                        '))
-                        ->groupBy('nilai3s.siswa_id')
-
-                        ->orderBy('nilai3s.rombel_id')
-                        ->where([
-                            ['periode_id','=', $request->session()->get('periode_aktif')],
-                            $rombel
-                        ]);
-                        // ->get();
-
-
-            $nilai4 = DB::table('nilai4s')
-                        ->select(DB::raw('nilai4s.siswa_id,
-                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n4_'.$mapel.'_uh",
-
-                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pts",
-
-
-                        AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pas"
-
-                        '))
-                        ->groupBy('nilai4s.siswa_id')
-                        ->where([
-                            ['periode_id','=', $request->session()->get('periode_aktif')],
-                            $rombel
-                        ]);
+        $datas = [];
+        $siswas = 'App\Siswa'::where('rombel_id', $request->rombel)->get();
+        foreach($siswas as $siswa) {
+            $datas[] = ['nisn'=> $siswa->nisn,'nama_siswa' => $siswa->nama_siswa];
         }
 
-        $rekap34 = DB::table('siswas')
-                        ->joinSub($nilai_pabp_3, 'nilai3', function($join) {
-                            $join->on('siswas.nisn', '=', 'nilai3.siswa_id');
+        foreach($siswas as $siswa) {
+            $nu = $nilai::where([
+                ['sekolah_id','=',$request->session()->get('sekolah_id')],
+                ['rombel_id','=', $request->rombel],
+                ['periode_id','=', $request->session()->get('periode_aktif')],
+                ['siswa_id', '=', $siswa->nisn],
+                ['mapel_id','=', $request->mapel],
+                ['jenis','=',$request->jenis]
+            ])
+            ->get();
+                for($i=0;$i < count($datas); $i++) {
+                    foreach($nu as $n) {
+                        if($datas[$i]['nisn'] == $n->siswa_id) {
+                            $datas[$i][$n->kd_id] =$n->nilai;
+                        }
+                    }
+                }
+        }
 
-                        })
-                        ->leftJoinSub($nilai4, 'nilai4', function ($join) {
-                            $join->on('siswas.nisn', '=', 'nilai4.siswa_id');
+            // End K3
+            
+            $kds = $nilai::select('kd_id')->where([
+                ['sekolah_id','=',$request->session()->get('sekolah_id')],
+                ['rombel_id','=', $request->rombel],
+                ['periode_id','=', $request->session()->get('periode_aktif')],
+                
+                ['mapel_id','=', $request->mapel],
+                ['jenis','=',$request->jenis]
+            ])->groupBy('kd_id')
+            ->get();
+        
+        // dd($kds);
+        return response()->json(['datas' => $datas, 'kds'=>$kds]);
 
-                        })
-                        ->select('siswas.nis','siswas.nisn', 'siswas.rombel_id', 'siswas.nama_siswa', 'siswas.jk', 'nilai4.*', 'nilai3.*')
-                        ->get();
-
-        $kkms = 'App\Kkm'::all();
-
-// s
-        // dd($nilai_pabp_3);
-
-        return response()->json(['rekap34' => $rekap34, 'kkms' => $kkms]);
-        // return DataTables::of($rekaps)->addIndexColumn()->toJson();
     }
+
+    // public function rekap(Request $request)
+    // {
+
+    //     $datas = [];
+    //     $rombel = ($request->query('rombel') == '0') ? ['rombel_id', '<>','0'] : ['rombel_id', '=', $request->query('rombel')];
+
+    //     $siswas = 'App\Siswa'::where([
+    //         $rombel
+    //     ])
+    //     ->with('rombels')
+    //     ->get();
+    //     foreach($siswas as $siswa)
+    //     {
+    //         array_push($datas, ['NISN' => $siswa->nisn, 'NAMA SISWA' => $siswa->nama_siswa, 'KODE ROMBEL' => $siswa->rombel_id, 'NAMA ROMBEL' => $siswa->rombels->nama_rombel, 'uh' => 0, 'pts' => 0, 'pas' => 0]);
+    //     }
+    //     if (Auth::user()->role != 'wali' ) {
+
+    //         $mapel = (Auth::user()->role == 'gpai') ? 'pabp' : (Auth::user()->role == 'gor' ? 'pjok' : 'big');
+    //         $nilai_pabp_3 = DB::table('nilai3s')
+    //                     ->select(DB::raw('nilai3s.siswa_id,
+    //                     AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_'.$mapel.'_uh",
+    //                     AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pts",
+    //                     AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pas"
+    //                     '))
+    //                     ->groupBy('nilai3s.siswa_id')
+
+    //                     ->orderBy('nilai3s.rombel_id')
+    //                     ->where([
+    //                         ['periode_id','=', $request->session()->get('periode_aktif')],
+    //                         $rombel
+    //                     ]);
+
+
+    //         $nilai4 = DB::table('nilai4s')
+    //                     ->select(DB::raw('nilai4s.siswa_id,
+    //                     AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n4_'.$mapel.'_uh",
+
+    //                     AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pts",
+
+
+    //                     AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pas"
+
+    //                     '))
+    //                     ->groupBy('nilai4s.siswa_id')
+    //                     ->where([
+    //                         ['periode_id','=', $request->session()->get('periode_aktif')],
+    //                         $rombel
+    //                     ]);
+    //     } else {
+    //         $mapel = $request->query('mapel');
+    //         $nilai_pabp_3 = DB::table('nilai3s')
+    //                     ->select(DB::raw('nilai3s.siswa_id,
+    //                     AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "uh" THEN nilai3s.nilai END) as "n3_'.$mapel.'_uh",
+    //                     AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pts" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pts",
+    //                     AVG(CASE WHEN nilai3s.mapel_id = "'.$mapel.'" AND nilai3s.jenis = "pas" THEN nilai3s.nilai END) as "n3_'.$mapel.'_pas"
+    //                     '))
+    //                     ->groupBy('nilai3s.siswa_id')
+
+    //                     ->orderBy('nilai3s.rombel_id')
+    //                     ->where([
+    //                         ['periode_id','=', $request->session()->get('periode_aktif')],
+    //                         $rombel
+    //                     ]);
+
+
+    //         $nilai4 = DB::table('nilai4s')
+    //                     ->select(DB::raw('nilai4s.siswa_id,
+    //                     AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "uh" THEN nilai4s.nilai END) as "n4_'.$mapel.'_uh",
+
+    //                     AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pts" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pts",
+
+
+    //                     AVG(CASE WHEN nilai4s.mapel_id = "'.$mapel.'" AND nilai4s.jenis = "pas" THEN nilai4s.nilai END) as "n4_'.$mapel.'_pas"
+
+    //                     '))
+    //                     ->groupBy('nilai4s.siswa_id')
+    //                     ->where([
+    //                         ['periode_id','=', $request->session()->get('periode_aktif')],
+    //                         $rombel
+    //                     ]);
+    //     }
+
+    //     $rekap34 = DB::table('siswas')
+    //                     ->joinSub($nilai_pabp_3, 'nilai3', function($join) {
+    //                         $join->on('siswas.nisn', '=', 'nilai3.siswa_id');
+
+    //                     })
+    //                     ->leftJoinSub($nilai4, 'nilai4', function ($join) {
+    //                         $join->on('siswas.nisn', '=', 'nilai4.siswa_id');
+
+    //                     })
+    //                     ->select('siswas.nis','siswas.nisn', 'siswas.rombel_id', 'siswas.nama_siswa', 'siswas.jk', 'nilai4.*', 'nilai3.*')
+    //                     ->get();
+
+    //     $kkms = 'App\Kkm'::all();
+
+
+    //     return response()->json(['rekap34' => $rekap34, 'kkms' => $kkms]);
+    // }
 
 
     public function import(Request $request)
