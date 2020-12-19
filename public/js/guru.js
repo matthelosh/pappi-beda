@@ -766,32 +766,18 @@ $('.btn-rekap-nilai').on('click', function(){
                 res.kds.forEach(kd=>{
                     tr += `<td>${(value[kd.kd_id]) ? Math.round(value[kd.kd_id]) : '-'}</td>`
                 })
-                tr +='</tr>'
+                tr +='<td>'+Math.round(value.rekap)+'</td></tr>'
             })
 
             res.kds.forEach(kd=>{
                 ths += `<td>${kd.kd_id}</td>`
             })
+            ths += '<th>Rata2</th>'
             var thead = '<thead><tr>'+ths+'</tr></thead>'
-            // console.log(nilais)
             tbody = '<tbody>'+tr+'</tbody>'
             var table = thead+tbody
+            
             $('#table-rekap').html(table)
-            $('#table-rekap').DataTable({
-                dom:'Bft', 
-                paging: false,
-                buttons:[
-                    'copy',
-                    {
-                        extend: 'print',
-                        title: 'Rekap Nilai '+data.jenis+' Kelas ' + sessionStorage.getItem('rombel_id') + ' ' + data.mapel
-                    },
-                    {
-                        extend: 'excel',
-                        title: 'Rekap Nilai '+data.jenis+' Kelas ' + sessionStorage.getItem('rombel_id') + ' ' + data.mapel
-                    }
-                ]
-            }).draw()
         },
         fail: function(err){
             $('.loading').fadeOut()

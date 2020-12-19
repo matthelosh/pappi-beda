@@ -118,12 +118,28 @@ class NilaiController extends Controller
             ])
             ->get();
                 for($i=0;$i < count($datas); $i++) {
+                    
+                    if($datas[$i]['nisn'] == $siswa->nisn){
+                        $datas[$i]['rekap'] = $nilai::where([
+                            ['sekolah_id','=',$request->session()->get('sekolah_id')],
+                            ['rombel_id','=', $request->rombel],
+                            ['periode_id','=', $request->session()->get('periode_aktif')],
+                            ['siswa_id', '=', $siswa->nisn],
+                            ['mapel_id','=', $request->mapel],
+                            ['jenis','=',$request->jenis]
+                        ])->avg('nilai');
+                    }
                     foreach($nu as $n) {
                         if($datas[$i]['nisn'] == $n->siswa_id) {
                             $datas[$i][$n->kd_id] =$n->nilai;
                         }
                     }
+
+                    
+                    // $datas[$i]['rekap'] = $rt;
                 }
+            
+            
         }
 
             // End K3
