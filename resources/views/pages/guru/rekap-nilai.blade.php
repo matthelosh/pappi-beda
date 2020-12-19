@@ -1,17 +1,19 @@
 <div class="col-sm-12 rekap_page">
     <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">
-                <i class="mdi mdi-chart-areaspline  "></i>
-                Rekap Nilai
-            </h4>
-            <hr>
-
+        <div class="card-header">
             <div class="row">
-                @if(Auth::user()->role != 'wali')
+                <div class="col-sm-2">
+                    <h4 class="card-title">
+                        <i class="mdi mdi-chart-areaspline  "></i>
+                        Rekap Nilai
+                    </h4>
+                </div>
+                <div class="col-sm-10">
+                    <div class="row">
+                    @if(Auth::user()->role != 'wali')
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="rombel">Rombel</label>
+                            {{-- <label for="rombel">Rombel</label> --}}
                             <select name="rombel" class="form-control selRombel">
                                 <option value="0">Pilih Rombel</option>
                             </select>
@@ -20,7 +22,7 @@
                 @else 
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label for="mapel">Mapel</label>
+                            {{-- <label for="mapel">Mapel</label> --}}
                             <select name="mapel" class="form-control selMapel">
                                 <option value="0">Pilih Mapel</option>
                             </select>
@@ -29,7 +31,7 @@
                 @endif
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label for="jenis">Jenis Penilaian</label>
+                        {{-- <label for="jenis">Jenis Penilaian</label> --}}
                         <select name="jenis" class="form-control selJenis">
                             <option value="0">Pilih Jenis</option>
                             <option value="uh">Harian</option>
@@ -40,7 +42,7 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label for="aspek">Aspek Penilaian</label>
+                        {{-- <label for="aspek">Aspek Penilaian</label> --}}
                         <select name="aspek" class="form-control selAspek">
                             <option value="0">Pilih Aspek</option>
                             <option value="1">Spiritual</option>
@@ -52,13 +54,16 @@
                 </div>
                 <div class="col-sm-1">
                     <div class="form-group">
-                        <label for="b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        {{-- <label for="b">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> --}}
                         <button class="btn btn-square btn-danger btn-rekap-nilai"> Lihat  </button>
                     </div>
 
                 </div>
             </div>
-
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-sm table-bordered table-striped table-rekap" id="table-rekap" style="width:100%">
                     {{-- <thead>
