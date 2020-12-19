@@ -764,7 +764,7 @@ $('.btn-rekap-nilai').on('click', function(){
                     <tr><td>${value.nisn}</td><td>${value.nama_siswa}</td></td>
                 `
                 res.kds.forEach(kd=>{
-                    tr += `<td>${Math.round(value[kd.kd_id])}</td>`
+                    tr += `<td>${(value[kd.kd_id]) ? Math.round(value[kd.kd_id]) : '-'}</td>`
                 })
                 tr +='</tr>'
             })
