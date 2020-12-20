@@ -15,6 +15,7 @@ $(document).ready(function() {
 
     $(document).on('hidden.coreui.modal', '.modal', function(){
         $(this).find('form').trigger('reset')
+        $(this).find('select').val('0').trigger('change')
     })
 
     // Sumbit Menu
@@ -1449,6 +1450,7 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
                 cache: true,
 
         },
+        allowClear: true
     }).focus(function () { $(this).select2('focus'); })
 
      // Fungsi select User
