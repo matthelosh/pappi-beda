@@ -13,6 +13,10 @@ $(document).ready(function() {
         // modalMenu.modal()
     })
 
+    $(document).on('hidden.coreui.modal', '.modal', function(){
+        $(this).find('form').trigger('reset')
+    })
+
     // Sumbit Menu
     $(document).on('submit', '.form-menu', function(e) {
         e.preventDefault()
@@ -674,7 +678,7 @@ $(document).ready(function() {
         $('#formRombel input[name="kode_rombel"]').val(data.kode_rombel)
         $('#formRombel input[name="nama_rombel"]').val(data.nama_rombel)
         $('#formRombel select[name="tingkat"]').val(data.tingkat)
-        $('#formRombel select[name="guru_id"]').append(`<option value="${data.guru_id}" selected>${data.gurus.nama}</option>`)
+        $('#formRombel select[name="guru_id"]').append(`<option value="${(data.guru_id) ? data.guru_id : '0'}" selected>${(data.gurus != null) ? data.gurus.nama : 'Pilih Wali Kelas'}</option>`)
         $('#formRombel select[name="sekolah_id"]').append(`<option value="${data.sekolah_id}" selected>${data.sekolahs.nama_sekolah}</option>`)
 
         $('#modalRombel').modal()

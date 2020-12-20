@@ -16,7 +16,7 @@
     <meta name="author" content="Łukasz Holeczek">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-    <title>ERAPOR GUGUS 1 SD NEGERI BEDALISODO</title>
+    <title>ERAPOR GUGUS 1 SD NEGERI BEDALISODO | LOGIN</title>
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('coreui/assets/favicon/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('coreui/assets/favicon/apple-icon-60x60.pn ')}}g">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('coreui/assets/favicon/apple-icon-72x72.png') }}">
