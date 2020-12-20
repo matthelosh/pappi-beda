@@ -25,10 +25,10 @@ class RombelController extends Controller
                 case "dt":
                     $where = (Auth::user()->level == 'admin') ? [] : [
                         ['sekolah_id','=',Auth::user()->sekolah_id],
-                        ['status','=','aktif'],
+                        // ['status','=','aktif'],
                         ['tapel','=', substr($request->session()->get('periode_aktif'), 0,4)]
                     ];
-                    $rombels =  Rombel::where($where)->with('sekolahs', 'gurus', 'siswas')->get();
+                    $rombels =  Rombel::where($where)->with('sekolahs', 'gurus', 'siswas')->orderBy('tingkat')->orderBy('status')->get();
                     return DataTables::of($rombels)->addIndexColumn()->toJson();
                 break;
                 case "select":
@@ -163,13 +163,26 @@ class RombelController extends Controller
         }
     }
 
+    public function ubahStatus(Request $request)
+    {
+        try {
+            Rombel::find($request->id)->update([
+                'status' => ($request->status == 'aktif') ? 'inaktif' : 'aktif'
+            ]);
+
+            return response()->json(['status' => 'sukses', 'msg' => 'Rombel telah'. ($request->status == 'aktif') ? 'dinon-aktifkan': 'diaktifkan']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'gagal', 'msg' => $e->getCode().':'.$e->getmessage()]);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Rombel  $rombel
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $npsn, $id)
     {
         try {
             Rombel::findOrFail($id)->delete();

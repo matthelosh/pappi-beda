@@ -15,6 +15,7 @@ class AddStatusToSiswasTable extends Migration
     {
         Schema::table('siswas', function (Blueprint $table) {
             //
+            $table->string('status', 10)->default('aktif');
         });
     }
 

@@ -423,25 +423,55 @@ $(document).ready(function() {
             }},
             {"data": null, render: (data) => {
                 return  `
-                    <button class="btn btn-info btn-mnj-rombel btn-sm" title="Manajemen Rombel ${data.nama_rombel} ?">
-                        <svg class="c-icon">
-                            <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-equalizer"></use>
-                        </svg>
+                    <button class="btn btn-info btn-mnj-rombel btn-square btn-sm" title="Manajemen Rombel ${data.nama_rombel} ?">
+                        <i class="mdi mdi-wrench"></i>
                     </button>
-                    <button class="btn btn-warning btn-edit-rombel btn-sm" title="Edit Rombel ${data.nama_rombel} ?">
-                        <svg class="c-icon">
-                            <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-                        </svg>
+                    <button class="btn btn-warning btn-edit-rombel btn-square btn-sm" title="Edit Rombel ${data.nama_rombel} ?">
+                        <i class="mdi mdi-pencil"></i>
                     </button>
-                    <button class="btn btn-danger btn-delete-rombel btn-sm" title="Hapus Rombel ${data.nama_rombel} ?">
-                        <svg class="c-icon">
-                            <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                        </svg>
+                    <button class="btn btn-danger btn-delete-rombel btn-square btn-sm" title="Hapus Rombel ${data.nama_rombel} ?">
+                        <i class="mdi mdi-trash-can"></i>
                     </button>
+                    <button class="btn btn-square btn-${(data.status == 'aktif') ? 'success': 'secondary'} btn-sm btn-status-rombel" title="${(data.status == 'aktif') ? 'Nonakifkan Rombel ' : 'Aktifkan Rombel '} ${data.nama_rombel}"><i class="mdi mdi-power"></i></button>
                 `
             }}
         ]
     })
+
+    // Toggle Status Rombel
+    $(document).on('click', '.btn-status-rombel', function(e) {
+        e.preventDefault()
+        var data = trombels.row($(this).parents('tr')).data()
+        Swal.fire({
+            icon: 'warning', 
+            title: `Anda akan ${(data.status == 'aktif') ? 'Menonaktifkan' : 'Mengaktifkan'} Rombel ${data.nama_rombel}`,
+            showCancelButton: true 
+        }).then(value => {
+            if (value.isConfirmed) {
+                $.ajax({
+                    headers: headers,
+                    url: ajaxUrl+'rombels/ubah-status',
+                    type: 'post',
+                    data: {
+                        id: data.id,
+                        status: data.status,
+                        _method: 'PUT'
+                    },
+                    beforeSend: function() {
+                        $('.loading').fadeIn()
+                    }
+                }).done(res => {
+                    $('.loading').fadeOut()
+                    trombels.ajax.reload()
+
+                }).catch(err => {
+                    $('.loading').fadeOut()
+                    Swal.fire('Error', err.response.msg, 'error')
+                })
+            }
+        }) 
+    })
+
 
     // Manajemen Rombel
     $(document).on('click', '.btn-mnj-rombel', function(e) {
@@ -517,23 +547,6 @@ $(document).ready(function() {
                 } else {
                     Swal.fire('Info', 'Siswa tidak jadi dikeluarkan', 'info')
                 }
-                // if (lanjut) {
-                //     $.ajax({
-                //         headers: headers,
-                //         url: '/siswas/out',
-                //         type:'post',
-                //         data: {'ids': ids}
-                //     }).done(res => {
-                //         Swal.fire('Info', res.msg, 'info')
-                //         $('#modalMnjRombel .select-all').prop('checked', false)
-                //         tmembers.ajax.reload()
-                //         tnonmembers.draw()
-                //     }).fail(err=>{
-                //         Swal.fire('Error', err.response.msg, 'error')
-                //     })
-                // } else {
-                //     Swal.fire('Info', 'Siswa tidak dikeluarkan', 'info')
-                // }
             })
             function keluarkanSiswa(ket) {
                 $.ajax({
@@ -677,18 +690,18 @@ $(document).ready(function() {
             text: "Rombel  akan hilang dari database",
             icon: "warning",
             showCancelButton : true,
-            dangerMode: true,
           })
           .then((hapus) => {
             if (hapus.value) {
               $.ajax({
                   headers: headers,
                   type:'post',
-                  url: '/rombels/'+rombel.id,
+                  url: ajaxUrl+'rombels/'+rombel.id,
                   data: {'_method': 'delete'}
               }).done(res => {
                   Swal.fire('Info', res.msg, 'info')
                   trombels.ajax.reload()
+                  
               }).fail(err => {
                   Swal.fire('Error', err.response.msg, 'error')
               })
@@ -701,6 +714,13 @@ $(document).ready(function() {
 
     $(document).on('submit', '#formRombel', function(e) {
         e.preventDefault()
+        if($('#formRombel .selSekolah').val() == '0') {
+            Swal.fire('Error', 'Pilih Sekoolah Dulu', 'error')
+            return false
+        } else if ($('#formRombel select[name="tingkat"]').val() == '0') {
+            Swal.fire('Error', 'Pilih Tingkat Dulu', 'error')
+            return false
+        }
         var data = $(this).serialize()
         var target = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/':'/'
         var url = ($('#modalRombel .mode-form').text() == 'Buat') ? target+'rombels/create' : target+'rombels/update'
@@ -708,10 +728,16 @@ $(document).ready(function() {
             headers: headers,
             url: url,
             type: 'post',
-            data: data
+            data: data,
+            beforeSend: function(){
+                $('.loading').fadeIn()
+            }
         }).done(res => {
+            $('.loading').fadeOut()
             Swal.fire('Info', res.msg, 'info')
             trombels.ajax.reload()
+            $('#modalRombel').modal('hide')
+            $('#modalRombel #formRombel').trigger('reset')
         }).fail(err => {
             Swal.fire('Error', err.response.msg, 'error')
         })

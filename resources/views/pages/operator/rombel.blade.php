@@ -11,16 +11,12 @@
                     </h4>
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-import-rombels btn-primary float-right mr-2">
-                        <svg class="c-icon">
-                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-spreadsheet') }}"></use>
-                        </svg>
+                    <button class="btn btn-import-rombels btn-square btn-primary float-right mr-2">
+                        <i class="mdi mdi-cloud-upload-outline"></i>
                         Import
                     </button>
-                    <button class="btn btn-new-rombel btn-info float-right mr-2" data-toggle="modal" data-target="#modalRombel">
-                        <svg class="c-icon">
-                            <use xlink:href="{{ asset('coreui/vendors/@coreui/icons/svg/free.svg#cil-star') }}"></use>
-                        </svg>
+                    <button class="btn btn-new-rombel btn-square btn-info float-right mr-2" data-toggle="modal" data-target="#modalRombel">
+                        <i class="mdi mdi-plus"></i>
                         Buat
                     </button>
                 </div>

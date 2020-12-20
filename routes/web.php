@@ -190,6 +190,7 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
                 Route::post('/out', 'SiswaController@out')->name('siswas.out');
                 Route::post('/in', 'SiswaController@in')->name('siswas.in');
                 Route::post('/pindah', 'SiswaController@pindah')->name('siswas.pindah');
+                
                 Route::put('/{id}', 'SiswaController@update')->name('operator.siswa.update');
                 Route::delete('/{id}', 'SiswaController@destroy')->name('operator.siswa.delete');
             });
@@ -199,6 +200,9 @@ Route::get('/logout', 'LoginController@logout')->name('logout');
                 Route::post('/', 'RombelController@index')->name('operator.rombel.index');
                 Route::post('/create', 'RombelController@create')->name('operator.rombel.create');
                 Route::post('/import', 'RombelController@import')->name('operator.rombel.import');
+                Route::put('/ubah-status', 'RombelController@ubahStatus')->name('operator.rombels.status');
+                Route::delete('/{id}', 'RombelController@delete')->name('operator.rombel.delete');
+
             });
 
             Route::group(['prefix' => 'periodik', 'middleware' => ['auth', 'isOperator']], function(){

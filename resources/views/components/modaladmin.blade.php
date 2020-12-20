@@ -326,11 +326,11 @@
                     <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="kode_rombel">Kode Rombel</label>
-                            <input type="text" name="kode_rombel" placeholder="Kode Rombel" class="form-control">
+                            <input type="text" name="kode_rombel" placeholder="Kode Rombel" class="form-control" required>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="nama_rombel">Nama Rombel</label>
-                            <input type="text" name="nama_rombel" placeholder="Nama Rombel" class="form-control">
+                            <input type="text" name="nama_rombel" placeholder="Nama Rombel" class="form-control" required>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="tingkat">Tingkat</label>
@@ -346,14 +346,18 @@
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="guru_id">Wali Kelas</label>
-                            <select name="guru_id" class="form-control selWali" style="width:100%"></select>
+                            <select name="guru_id" class="form-control selWali" style="width:100%">
+                                <option value="0">Pilih Wali Kelas</option>
+                            </select>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="sekolah_id">Sekolah</label>
-                            <select name="sekolah_id" class="form-control selSekolah" style="width:100%"></select>
+                            <select name="sekolah_id" class="form-control selSekolah" style="width:100%">
+                                <option value="0">Pilih Sekolah</option>
+                            </select>
                         </div>
                         <div class="form-group col-sm-12 text-right">
-                            <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                            <button class="btn btn-primary btn-submit-rombel btn-square" type="submit">Simpan</button>
                         </div>
                     </div>
                 </form>
@@ -714,7 +718,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-sm-12 text-right">
-                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                                <button class="btn btn-primary btn-submit-mapel" type="submit">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -777,7 +781,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-sm-12 text-right">
-                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                                <button class="btn btn-primary btn-submit-kd" type="submit">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -832,7 +836,7 @@
                             </div>
 
                             <div class="form-group col-sm-12 text-right">
-                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                                <button class="btn btn-primary btn-submit-periode" type="submit">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -932,7 +936,7 @@
 
                             </div>
                             <div class="form-group col-sm-12 text-right">
-                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                                <button class="btn btn-primary btn-submit-kkm" type="submit">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -1000,7 +1004,7 @@
                                 </select>
                             </div>
                             <div class="form-group col-sm-12 text-right">
-                                <button class="btn btn-primary btn-submit-rombel" type="submit">Simpan</button>
+                                <button class="btn btn-primary btn-submit-jurnal" type="submit">Simpan</button>
                             </div>
                         </div>
                     </form>
