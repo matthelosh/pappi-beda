@@ -800,7 +800,17 @@ $('.btn-rekap-nilai').on('click', function(){
                     },
                     {
                         extend: 'print',
-                        title: 'Rekap Nilai '+ data.jenis+ ' '+data.mapel+ ' Kelas ' + rombel.slice(9, rombel.length).toUpperCase()
+                        // title: 'Rekap Nilai '+ data.jenis+ ' '+data.mapel+ ' Kelas ' + rombel.slice(9, rombel.length).toUpperCase(),
+                        messageTop: `
+                            <h4>Kelas: ${rombel.slice(9, rombel.length).toUpperCase()} | Mapel: ${data.mapel.toUpperCase()} | Jenis Penilaian: ${data.jenis.toUpperCase()}</h4>
+                        `,
+                        messageBottom: `
+                            <div style="width: 50%; float: right; ">
+                                <p>Dalisodo, ${new Date()} </p>
+
+
+                            </div>
+                        `
                     },
                 ]
             })
