@@ -713,33 +713,41 @@ $(document).ready(function(){
 
 
 // Rekap Nilai
-var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.rekap_page select[name="rombel"]').val();
+var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.selRombel').val();
 // var mapel =
 var trekaps;
 
-$('.rekap_page select[name="rombel"]').on('change', function(){
-    $('.rekap_page #table-rekap').DataTable().destroy()
-    getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val())
-    $('.alert').fadeOut()
-})
+// $('.rekap_page select[name="rombel"]').on('change', function(){
+//     $('.rekap_page #table-rekap').DataTable().destroy()
+//     getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val())
+//     $('.alert').fadeOut()
+// })
 // $('.rekap_page select[name="mapel"]').on('change', function(){
 $('.btn-rekap-nilai').on('click', function(){
-    if($('.selMapel').val() == '0') {
+    $('#table-rekap').html('')
+    // if ($.fn.DataTable.isDataTable('#table-rekap')) {
+    //     $('#table-rekap').DataTable().clear()
+    //     $('#table-rekap').DataTable().destroy()
+    // }
+    var rombel = (sessionStorage.getItem('role') == 'wali') ? sessionStorage.getItem('rombel_id') : $('.selRombel').val()
+    // alert(rombel)
+    var data = {
+        mapel : (sessionStorage.getItem('role') == 'wali') ? $('.selMapel').val() : sessionStorage.getItem('mapel'),
+        jenis: $('.selJenis').val(),
+        aspek: $('.selAspek').val()
+    }
+    if(data.mapel == '0') {
         Swal.fire('Error', 'Pilih Mapel', 'error')
         return false
-    } else if ($('.selJenis').val() == '0') {
+    } else if (data.jenis == '0') {
         Swal.fire('Error', 'Pilih Jenis Penilaian', 'error')
         return false
-    } else if ( $('.selAspek').val() == '0') {
+    } else if (data.aspek == '0') {
         Swal.fire('Error', 'Pilih Aspek Nilai', 'error')
         return false
     }
 
-    var data = {
-        mapel : $('.selMapel').val(),
-        jenis: $('.selJenis').val(),
-        aspek: $('.selAspek').val()
-    }
+    
     $.ajax({
         headers: headers,
         url: '/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel,
@@ -776,8 +784,26 @@ $('.btn-rekap-nilai').on('click', function(){
             var thead = '<thead><tr>'+ths+'</tr></thead>'
             tbody = '<tbody>'+tr+'</tbody>'
             var table = thead+tbody
-            
+            if ($.fn.DataTable.isDataTable('#table-rekap')) {
+                $('#table-rekap').DataTable().clear()
+                $('#table-rekap').DataTable().destroy()
+            }
             $('#table-rekap').html(table)
+            $('#table-rekap').DataTable({
+                paging: false,
+                dom: 'Bft',
+                buttons: [
+                    'copy',
+                    {
+                        extend: 'excel',
+                        title: 'Rekap Nilai '+ data.jenis+ ' '+data.mapel+ ' Kelas ' + rombel.slice(9, rombel.length).toUpperCase()
+                    },
+                    {
+                        extend: 'print',
+                        title: 'Rekap Nilai '+ data.jenis+ ' '+data.mapel+ ' Kelas ' + rombel.slice(9, rombel.length).toUpperCase()
+                    },
+                ]
+            })
         },
         fail: function(err){
             $('.loading').fadeOut()

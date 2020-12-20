@@ -316,7 +316,10 @@
         var rombel_id = "{{ Session::get('rombel_id') }}"
         var role = "{{ Session::get('role') }}"
         sessionStorage.setItem('rombel_id', rombel_id)
-        
+        var mapel = (role == "gpai") ? 'pabp' : (role == 'gor') ? 'pjok' : ('gbig') ? 'big' : ''
+        if (role != 'wali') {
+          sessionStorage.setItem('mapel', mapel)
+        }
       </script>
       <script src="{{ asset('js/guru.js') }}"></script>
 
