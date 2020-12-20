@@ -25,6 +25,8 @@
         .wrapper .box {
             text-align:center;
             color: #efefef;
+            width: 50%;
+            margin: auto;
         }
         .rotate-center {
             -webkit-animation: rotate-center 0.6s ease-in-out both;
@@ -75,7 +77,16 @@
         a {
             font-size: .2em;
         }
-        
+        #text{
+            color: white;
+            transition-delay: .35s;
+            transition-property: color;
+            transition-duration: 1s;
+           
+        }
+        .y {
+            color: #efefef;
+        }
     </style>
 </head>
 <body>
@@ -83,7 +94,7 @@
         <div class="box" >
             
             <img src="{{ asset('img/pappi.png') }}" alt="Pappi Beda" width="300px" class="rotate-center">
-            <h1 class="text-white">MAAF! SEMENTARA LAMAN INI BELUM DAPAT DIAKSES.<br> HUBUNGI ADMIN UNTUK INFO LEBIH LANJUT.</h1>
+            <h1 class="text-white" id="text"></h1>
             {{-- <a href="{{ ((Auth::user()->level == 'admin') ? '/': (Auth::user()->level == 'operator')) ? '/operator/'.Auth::user()->sekolah_id : '/'.Auth::user()->username.'/beranda' }}" title="Kembali Ke Baranda" style="color:white;">
                 <svg width="118" height="46">
                     <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-home"></use>
@@ -92,5 +103,19 @@
             
         </div>
     </div>
+    <script>
+        var txt = 'MAAF! SEMENTARA LAMAN INI BELUM DAPAT DIAKSES. HUBUNGI ADMIN UNTUK INFO LEBIH LANJUT.'; /* The text */
+        var speed = 25; /* The speed/duration of the effect in milliseconds */
+        var i = 0;
+        function typeWriter() {
+        if (i < txt.length) {
+            document.getElementById("text").innerHTML += '<span class="y">'+txt.charAt(i)+'</span>';
+            i++;
+            setTimeout(typeWriter, speed);
+        }
+        }
+
+        typeWriter()
+    </script>
 </body>
 </html>
