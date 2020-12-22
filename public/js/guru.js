@@ -3,12 +3,6 @@ $(document).ready(function(){
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 
-    // $('img.coba-img').prop('src', urlImg+'/pappi.png')
-    // $(document).on('click', '.c-sidebar-nav-dropdown-toggle', function(e) {
-    //     e.preventDefault()
-    //     alert($(this).prop('href'))
-    //     console.log(e)
-    // })
     // Siswa
     var tsiswas = $('#table-siswaku').DataTable({
         dom: "Bftlip",
@@ -44,35 +38,11 @@ $(document).ready(function(){
                 <button class="btn btn-warning btn-square btn-edit-siswa btn-sm" title="Edit ${data.nama_siswa} ?">
                     <i class="mdi mdi-pencil-outline"></i>
                 </button>`
-                // <button class="btn btn-danger btn-square btn-delete-siswa btn-sm" title="Hapus ${data.nama_siswa} ?">
-                //     <i class="mdi mdi-trash-can-outline"></i>
-                // </button>`
-                // <button class="btn btn-danger btn-delete-siswa btn-sm" title="Hapus ${data.nama_siswa} ?">
-                //     <svg class="c-icon">
-                //         <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                //     </svg>
-                // </button>
 
             }}
         ]
     })
 
-    // function showFotoSiswa(siswa) {
-    //     var img = ``
-    //     $.get('/img/siswas/'+siswa.sekolah_id+'_'+siswa.nisn+'.jpg')
-    //         .done((img) => {
-    //             return img = `<img src="${img}" />`
-    //         })
-    //         .fail((err) => {
-    //             // if (siswa.jk.toLowerCase() == 'l') {
-    //                 return img = `<img src="/img/no-photo.jpg">`
-    //             // } else {
-    //             //     return img = `<img src="/img/siswa-p.png">`
-    //             // }
-    //         })
-        
-            
-    // }
 
     $(document).on('click', '.btn-import-siswas', function(e) {
         e.preventDefault()
@@ -105,9 +75,6 @@ $(document).ready(function(){
                         workbook.Sheets[sheet]
                     );
                     var data = {siswas :datas}
-                    // console.log(data)
-                    // var fd = new FormData();
-                    // fd.append('siswas', datas);
                     $.ajax({
                         headers: headers,
                         url: url,
@@ -120,7 +87,6 @@ $(document).ready(function(){
                             $('.table').DataTable().draw()
                         }
                     }).fail(err => {
-                        // console.log(err.responseJSON)
                         var msg = (err.responseJSON.code == '23000') ? 'Data email / NIP / username ada yang sama atau sudah dipakai.' : err.responseJSON.msg
                         Swal.fire('Error', msg, 'error')
                     })
@@ -169,36 +135,6 @@ $(document).ready(function(){
 
     })
 
-    // Hapus Siswa
-    // $(document).on('click', '.btn-delete-siswa', function(e) {
-    //     e.preventDefault();
-    //     var siswa = tsiswas.row($(this).parents('tr')).data()
-    //     Swal.fire{
-    //         title: "Yakin Menghapus Siswa "+siswa.nama_siswa+"?",
-    //         text: "Siswa  akan dihapus dari database",
-    //         icon: "warning",
-    //         buttons: true,
-    //         dangerMode: true,
-    //       })
-    //       .then((hapus) => {
-    //         if (hapus.value) {
-    //           $.ajax({
-    //               headers: headers,
-    //               type:'post',
-    //               url: '/siswas/'+siswa.id,
-    //               data: {'_method': 'delete'}
-    //           }).done(res => {
-    //               Swal.fire('Info', res.msg, 'info')
-    //               tsiswas.ajax.reload()
-    //           }).fail(err => {
-    //               Swal.fire('Error', err.response.msg, 'error')
-    //           })
-    //         } else {
-    //           Swal.fire"Data Siswa Aman");
-    //         }
-    //       });
-
-    // })
 
     // Modal Ortu
     $(document).on('click', '.btn-ortu', function(e) {
@@ -255,20 +191,6 @@ $(document).ready(function(){
             {"data": "nama_mapel"},
             {"data": "label"},
             {"data": "tingkat"},
-            // {"data": null, render: (data) => {
-            //     return `
-            //     <button class="btn btn-warning btn-edit-mapel btn-sm" title="Edit ${data.nama_mapel} ?">
-            //         <svg class="c-icon">
-            //             <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-            //         </svg>
-            //     </button>
-            //     <button class="btn btn-danger btn-delete-mapel btn-sm" title="Hapus ${data.nama_mapel} ?">
-            //         <svg class="c-icon">
-            //             <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-            //         </svg>
-            //     </button>
-            //     `
-            // }},
         ]
     })
 
@@ -625,7 +547,7 @@ $(document).ready(function(){
             mapel = $('select[name="mapel_id"').val(),
             aspek= $('select[name="aspek"]').val(),
             jenis = $('select[name="jenis"]').val(),
-            rombel = $('select.selRombel') ? $('select.selRombel').val() : sessionStorage.getItem('rombel_id')
+            rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.getItem('rombel_id') : $('.selRombel').val()
 
         if (periode == '0') {
             Swal.fire('Peringatan', 'Pilih Periode Nilai Dulu.', 'error')
@@ -717,20 +639,9 @@ var rombel = (sessionStorage.getItem('rombel_id') != 'all') ? sessionStorage.get
 // var mapel =
 var trekaps;
 
-// $('.rekap_page select[name="rombel"]').on('change', function(){
-//     $('.rekap_page #table-rekap').DataTable().destroy()
-//     getRekap34('/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+$(this).val())
-//     $('.alert').fadeOut()
-// })
-// $('.rekap_page select[name="mapel"]').on('change', function(){
 $('.btn-rekap-nilai').on('click', function(){
     $('#table-rekap').html('')
-    // if ($.fn.DataTable.isDataTable('#table-rekap')) {
-    //     $('#table-rekap').DataTable().clear()
-    //     $('#table-rekap').DataTable().destroy()
-    // }
     var rombel = (sessionStorage.getItem('role') == 'wali') ? sessionStorage.getItem('rombel_id') : $('.selRombel').val()
-    // alert(rombel)
     var data = {
         mapel : (sessionStorage.getItem('role') == 'wali') ? $('.selMapel').val() : sessionStorage.getItem('mapel'),
         jenis: $('.selJenis').val(),
@@ -753,14 +664,12 @@ $('.btn-rekap-nilai').on('click', function(){
         url: '/'+sessionStorage.getItem('username')+'/nilais/rekap?req=dt&rombel='+rombel,
         type: 'post',
         data: data,
-        // dataType: 'json',
         beforeSend: function() {
             $('.loading').fadeIn()
         },
         success: function(res) {
            var datas = res.datas
             $('.loading').fadeOut()
-        //    console.log(datas)
             var tr =''
             var nilais = []
             var ths = '<td>NISN</td><td>Nama</td>'
@@ -800,7 +709,6 @@ $('.btn-rekap-nilai').on('click', function(){
                     },
                     {
                         extend: 'print',
-                        // title: 'Rekap Nilai '+ data.jenis+ ' '+data.mapel+ ' Kelas ' + rombel.slice(9, rombel.length).toUpperCase(),
                         messageTop: `
                             <h4>Kelas: ${rombel.slice(9, rombel.length).toUpperCase()} | Mapel: ${data.mapel.toUpperCase()} | Jenis Penilaian: ${data.jenis.toUpperCase()}</h4>
                         `,
@@ -1058,12 +966,6 @@ function getRekap34(url=null) {
     // KEsehatan
     $(document).on('dblclick','.sht', function(){
         $('#modalKesehatan .modal-title span.nama_siswa').text($('td.nama_siswa').text())
-        // var pendengaran = $('.sht-dengar').text(),
-        //     penglihatan = $('.sht-lihat').text(),
-        //     gigi = $('.sht-gigi').text(),
-        //     lain = $('.sht-lain').text(),
-        //     id = $('#table-kesehatan').data('id')
-        
      
         $('#modalKesehatan').modal()
     })
@@ -1097,7 +999,6 @@ function getRekap34(url=null) {
             headers: headers
         },
         columns:[
-            // {'data': 'DT_RowIndex'},
             {'data': 'kode_tema'},
             {'data': 'teks_tema'},
             {'data': null, render: (data) => {
@@ -1148,7 +1049,6 @@ function getRekap34(url=null) {
 
         $(document).on('click', '.btn-tambah-kdtema', function(){
             var subtema = tsubtema.row($(this).parents('tr')).data()
-            // console.log(subtema)
             $('.row-kd .card-title #subtema').text(subtema.kode_subtema+' . '+subtema.teks_subtema)
 
             $.ajax({
@@ -1159,7 +1059,6 @@ function getRekap34(url=null) {
                 var datas = res.datas
                 var tr = ''
                 $.each(datas, (key,value) => {
-                    // var kds = value.split(',')
                     tr += `<tr>
                         <td>${key}</td>
                         <td>
@@ -1355,42 +1254,4 @@ function getRekap34(url=null) {
 
 
 
-    // Chart
-    // var ctx = document.getElementById('myChart').getContext('2d');
-    //     var myChart = new Chart(ctx, {
-    //         type: 'bar',
-    //         data: {
-    //             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    //             datasets: [{
-    //                 label: '# of Votes',
-    //                 data: [98, 80, 75, 60, 75, 85],
-    //                 backgroundColor: [
-    //                     'rgba(255, 99, 132, 1)',
-    //                     'rgba(54, 162, 235, 1)',
-    //                     'rgba(255, 206, 86, 1)',
-    //                     'rgba(75, 192, 192, 1)',
-    //                     'rgba(153, 102, 255, 1)',
-    //                     'rgba(255, 159, 64, 1)'
-    //                 ],
-    //                 // borderColor: [
-    //                 //     'rgba(255, 99, 132, 1)',
-    //                 //     'rgba(54, 162, 235, 1)',
-    //                 //     'rgba(255, 206, 86, 1)',
-    //                 //     'rgba(75, 192, 192, 1)',
-    //                 //     'rgba(153, 102, 255, 1)',
-    //                 //     'rgba(255, 159, 64, 1)'
-    //                 // ],
-    //                 borderWidth: 1
-    //             }]
-    //         },
-    //         options: {
-    //             scales: {
-    //                 yAxes: [{
-    //                     ticks: {
-    //                         beginAtZero: true
-    //                     }
-    //                 }]
-    //             }
-    //         }
-    //     });
 })

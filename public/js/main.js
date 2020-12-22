@@ -4,13 +4,10 @@ $(document).ready(function() {
     }
 
     var ajaxUrl = (sessionStorage.getItem('role') == 'operator') ? '/operator/'+sessionStorage.getItem('sekolah_id')+'/' : '/'
-    // Swal.fire("Halo")
     // Add Menu MOdal
     $('.btn-add-menu').on('click', function(e) {
         e.preventDefault()
         $('#menuModal').modal({'show': true})
-        // var modalMenu = new coreui.Modal(document.getElementById('menuModal'), options);
-        // modalMenu.modal()
     })
 
     $(document).on('hidden.coreui.modal', '.modal', function(){
@@ -107,7 +104,6 @@ $(document).ready(function() {
                         fd.append('file', file);
                         fd.append('_method', 'PUT')
                         
-                        // console.log(fd)
                         $.ajax({
                             url: ajaxUrl+'users/foto/'+user.nip,
                             headers: headers,
@@ -189,8 +185,6 @@ $(document).ready(function() {
           })
           .then((hapus) => {
             if (hapus.value) {
-                // var fd = new FormData();
-                // fd.append('_method', 'DELETE');
               $.ajax({
                   headers: headers,
                   type:'post',
@@ -198,7 +192,6 @@ $(document).ready(function() {
                   data: {'_method': 'delete', 'nip': user[3]}
               }).done(res => {
                   Swal.fire('Info', res.msg, 'info')
-                //   window.location.reload()
               }).fail(err => {
                   Swal.fire('Error', err.response.msg, 'error')
               })
@@ -397,7 +390,6 @@ $(document).ready(function() {
             tsekolahs.ajax.reload()
             Swal.fire('Info', res.msg, 'info')
         }).fail(err => {
-            // Swal.fire('Error', err.response.msg, 'error')
             console.log(err)
         })
     })
@@ -828,9 +820,6 @@ $(document).ready(function() {
                         workbook.Sheets[sheet]
                     );
                     var data = {siswas :datas}
-                    // console.log(data)
-                    // var fd = new FormData();
-                    // fd.append('siswas', datas);
                     $.ajax({
                         headers: headers,
                         url: url,
@@ -1318,12 +1307,12 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
     $(document).on('click', '.btn-detil-periodik', function(){
         var periodik = tperiodik.row($(this).parents('tr')).data()
 
-        console.log(periodik)
+        // console.log(periodik)
         $('#modalPeriodik .card span#periode_terpilih').text(periodik.kode_periode)
-        // getDataPeriodik(periodik.kode_periode)
         var tDetilPeriodik = $('.table-periodik-detil').DataTable({
             serverSide: true,
-            dom: "Bftilp",
+            dom: "Bftlip",
+            lengthMenu: [[10,25,50,-1],[10,25,50,"Semua"]],
             ajax: {
                 headers: headers,
                 url: ajaxUrl+'periodik?req=dt_detil',
@@ -1337,10 +1326,26 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
                 {'data': 'rombels.nama_rombel'}
             ]
         })
-        $('#modalPeriodik').modal()
 
         
+        $('#modalPeriodik').modal()
+        
+        
+        
+        
     })
+
+    $(document).on('shown.coreui.modal', '#modalPeriodik', function(){
+        var info = $('#modalPeriodik .dataTables_info').text()
+        var split = info.split(' ')
+        // alert(split[5])
+        if(split[5] == '0') {
+            $('#modalPeriodik .btn-create-periodik').removeClass('d-none')
+        } else {
+            $('#modalPeriodik .btn-create-periodik').addClass('d-none')
+        }
+    })
+
 
     $('#modalPeriodik').on('hidden.coreui.modal' , function(){
         $('.table-periodik-detil').DataTable().destroy()
@@ -1471,23 +1476,6 @@ $(document).on('click', '.btn-edit-tanggal-rapor', function(e) {
         },
     }).focus(function () { $(this).select2('focus'); })
 
-    // Select Sekolah
-    // $('.selSekolah').select2({
-    //     ajax: {
-    //         headers: headers,
-    //         url: '/sekolah?req=select',
-    //         type: 'post',
-    //             dataType: 'json',
-    //             delay: 250,
-    //             processResults: function(response) {
-    //                 return {
-    //                     results: response.sekolahs
-    //                 };
-    //             },
-    //             cache: true,
-
-    //     },
-    // })
     // Fungsi Cetak Tabel
     function cetakTabel(table, title) {
         var doc = `
