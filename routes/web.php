@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/tes', function(){
+    Storage::disk('google')->put('tes.txt', 'ganti.txt');
+});
+
 Route::get('/', function() {
     if(Auth::check()) {
         if(Auth::user()->level == 'admin') {

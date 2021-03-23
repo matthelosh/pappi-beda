@@ -30,8 +30,11 @@
                 <div class="col-6 col-md-2">
                     <div class="form-group">
                         <label for="periode_id">Periode</label>
+                        @php
+                            $periode = Session::get('periode_aktif');
+                        @endphp
                         <select name="periode_id" style="width:100%" class="selPeriode">
-                            <option value="{{ Session::get('periode_aktif') }}">{{ '20'.substr(Session::get('periode_aktif'),0,2).'/20'.substr(Session::get('periode_aktif'),2,2).'-'.(substr(Session::get('periode_aktif'),4,1) == '1' ) ? 'Ganjil' : 'Genap'  }}</option>
+                            <option value="{{ $periode }}">20{{ substr($periode, 0, 2) }}/20{{ substr($periode, 2,2) }} - {{ (substr($periode, 4,1) == '1') ? 'Ganjil': 'Genap' }}</option>
                         </select>
                     </div>
                 </div>
